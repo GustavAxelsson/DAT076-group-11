@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ShoppingCartService} from "../../services/shopping-cart.service";
 
 @Component({
   selector: 'app-products',
@@ -9,7 +10,7 @@ export class ProductsComponent implements OnInit {
 
   public products: Product[] = [];
 
-  constructor() { }
+  constructor(private shoppingCartService: ShoppingCartService) {}
 
   ngOnInit(): void {
     this.products = [
@@ -34,6 +35,10 @@ export class ProductsComponent implements OnInit {
         url: 'assets/happycat.jpg'
       },
     ];
+  }
+
+  public addToCart() {
+    this.shoppingCartService.addToShoppingCart();
   }
 }
 

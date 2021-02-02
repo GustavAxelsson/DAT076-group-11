@@ -15,7 +15,7 @@ export class ProductsComponent implements OnInit {
     this.products = [
       {
         name: 'Yummy cat food',
-        price: undefined,
+        price: 4.20,
         url: 'assets/happycat.jpg'
       },
       {
@@ -40,5 +40,5 @@ export class ProductsComponent implements OnInit {
 export interface Product {
   name: string;
   url: string;
-  price: number | undefined;
+  price: number;
 }

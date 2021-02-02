@@ -5,7 +5,7 @@
       <div class="card" *ngFor="let product of products">
         <img [src]="product.url" alt="cat food">
         <h1>{{product.name}}</h1>
-        <p class="price">${{product.price ? product.price : 'Gustav'}}</p>
+        <p class="price">${{product.price}}</p>
         <p>Will make your cat happy</p>
         <p><button>Add to Cart</button></p>
       </div>

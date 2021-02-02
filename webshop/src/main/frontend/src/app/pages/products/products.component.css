@@ -27,7 +27,7 @@
   opacity: 0.7;
 }
 
-.produtHeader{
+.productHeader{
   text-align: center;
   color: lightcoral;
 }
@@ -36,8 +36,10 @@
   margin-bottom: 10px;
 }
 
-.navigation-bar {
-  display: flex;
-  justify-content: space-evenly;
+img {
   width: 100%;
+}
+
+.col-sm {
+  display: flex;
 }

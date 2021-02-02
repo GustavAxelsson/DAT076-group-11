@@ -1,58 +1,11 @@
-<h1 class="produtHeader">Products</h1>
-<div class="container">
+<h1 class="productHeader">Products</h1>
+<div class="container" *ngIf="products">
   <div class="row">
     <div class="col-sm">
-      <div class="card">
-        <img src="assets/happycat.jpg" alt="cat food" style="width: 100%">
-        <h1>Yummy cat food</h1>
-        <p class="price">$4.20</p>
-        <p>Will make your cat happy</p>
-        <p><button>Add to Cart</button></p>
-      </div>
-    </div>
-    <div class="col-sm">
-      <div class="card">
-        <img src="assets/happycat.jpg" alt="cat food" style="width: 100%">
-        <h1>Yummy cat food</h1>
-        <p class="price">$4.20</p>
-        <p>Will make your cat happy</p>
-        <p><button>Add to Cart</button></p>
-      </div>
-    </div>
-    <div class="col-sm">
-      <div class="card">
-        <img src="assets/happycat.jpg" alt="cat food" style="width: 100%">
-        <h1>Yummy cat food</h1>
-        <p class="price">$4.20</p>
-        <p>Will make your cat happy</p>
-        <p><button>Add to Cart</button></p>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm">
-      <div class="card">
-        <img src="assets/happycat.jpg" alt="cat food" style="width: 100%">
-        <h1>Yummy cat food</h1>
-        <p class="price">$4.20</p>
-        <p>Will make your cat happy</p>
-        <p><button>Add to Cart</button></p>
-      </div>
-    </div>
-    <div class="col-sm">
-      <div class="card">
-        <img src="assets/happycat.jpg" alt="cat food" style="width: 100%">
-        <h1>Yummy cat food</h1>
-        <p class="price">$4.20</p>
-        <p>Will make your cat happy</p>
-        <p><button>Add to Cart</button></p>
-      </div>
-    </div>
-    <div class="col-sm">
-      <div class="card">
-        <img src="assets/happycat.jpg" alt="cat food" style="width: 100%">
-        <h1>Yummy cat food</h1>
-        <p class="price">$4.20</p>
+      <div class="card" *ngFor="let product of products">
+        <img [src]="product.url" alt="cat food">
+        <h1>{{product.name}}</h1>
+        <p class="price">${{product.price ? product.price : 'Gustav'}}</p>
         <p>Will make your cat happy</p>
         <p><button>Add to Cart</button></p>
       </div>

@@ -1,2 +1,6 @@
 /webshop/target/
 .idea
+/webshop/src/main/frontend/node_modules
+/webshop/src/main/frontend/.editorconfig
+/webshop/src/main/frontend/src/assets/.gitkeep
+/webshop/src/main/frontend/dist

@@ -44,3 +44,9 @@ and open the template in the editor.
 .row{
     margin-bottom: 10px;
 }
+
+.navigation-bar {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}

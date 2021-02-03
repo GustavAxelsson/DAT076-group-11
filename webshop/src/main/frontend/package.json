@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "buildProduction": "ng build --prod --base-href /webshop/",
+    "buildProd": "ng build --prod --base-href /webshop/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -24,7 +24,8 @@
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3",
     "bootstrap": "^5.0.0-beta1",
-    "bootstrap-icons": "^1.3.0"
+    "bootstrap-icons": "^1.3.0",
+    "@popperjs/core": "2.5.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1101.2",

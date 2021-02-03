@@ -54,3 +54,8 @@ html {
     max-width: 100%;
     height: auto;
 }
+
+.row {
+  display: flex;
+  justify-content: center
+}

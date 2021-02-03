@@ -1,7 +1,6 @@
 <h1 class="productHeader">Products</h1>
 <div class="container" *ngIf="products">
-  <div class="row">
-    <div class="col-sm">
+  <div class="product-layout">
       <div class="card" *ngFor="let product of products">
         <img [src]="product.url" alt="cat food">
         <h1>{{product.name}}</h1>
@@ -9,6 +8,5 @@
         <p>{{productDescription}}</p>
         <p><button (click)="addToCart()">{{purchaseButtonText}}</button></p>
       </div>
-    </div>
   </div>
 </div>

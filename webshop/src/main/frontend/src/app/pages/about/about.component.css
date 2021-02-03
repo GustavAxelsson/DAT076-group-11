@@ -12,10 +12,11 @@ html {
 }
 
 .col-sm {
-    width: 50%;
+    float: left;
+    width: 33.3%;
+    margin-bottom: 16px;
     padding: 0 8px;
     display: flex;
-    margin: 0 auto;
 }
 
 .about-card {
@@ -27,7 +28,7 @@ html {
     margin: 16px;
     padding: 50px;
     text-align: center;
-    background-color: lightcoral;
+    background-color: darkblue;
     color: white;
 }
 
@@ -42,7 +43,7 @@ html {
 }
 
 .title {
-    color: gray;
+    color: grey;
 }
 
 .team-header {

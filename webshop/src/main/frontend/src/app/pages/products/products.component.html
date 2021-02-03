@@ -6,8 +6,8 @@
         <img [src]="product.url" alt="cat food">
         <h1>{{product.name}}</h1>
         <p class="price">${{product.price}}</p>
-        <p>Will make your cat happy</p>
-        <p><button (click)="addToCart()">Add to Cart</button></p>
+        <p>{{productDescription}}</p>
+        <p><button (click)="addToCart()">{{purchaseButtonText}}</button></p>
       </div>
     </div>
   </div>

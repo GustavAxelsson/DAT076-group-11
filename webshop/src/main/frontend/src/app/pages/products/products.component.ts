@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ShoppingCartService} from "../../services/shopping-cart.service";
+import {ShoppingCartService} from '../../services/shopping-cart.service';
 
 @Component({
   selector: 'app-products',
@@ -9,6 +9,10 @@ import {ShoppingCartService} from "../../services/shopping-cart.service";
 export class ProductsComponent implements OnInit {
 
   public products: Product[] = [];
+
+  public productDescription = 'Will make your cat happy';
+  public purchaseButtonText = 'Add to Cart';
+
 
   constructor(private shoppingCartService: ShoppingCartService) {}
 
@@ -37,6 +41,7 @@ export class ProductsComponent implements OnInit {
     ];
   }
 
+  // tslint:disable-next-line:typedef
   public addToCart() {
     this.shoppingCartService.addToShoppingCart();
   }

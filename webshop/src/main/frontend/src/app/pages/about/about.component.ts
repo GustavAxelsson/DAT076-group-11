@@ -9,10 +9,6 @@ export class AboutComponent implements OnInit {
 
   public aboutCards: AboutCard[] = [];
 
-  public headerOne = 'This is us!';
-  public descriptionFounding = 'Our company was founded in 2021 on the backs of two hard working men';
-  public descriptionWhatWeDo = 'We sell lots of stuff!';
-
   constructor() { }
 
   ngOnInit(): void {

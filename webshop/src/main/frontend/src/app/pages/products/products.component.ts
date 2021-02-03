@@ -10,33 +10,33 @@ export class ProductsComponent implements OnInit {
 
   public products: Product[] = [];
 
-  public productDescription = 'Will make your cat happy';
-  public purchaseButtonText = 'Add to Cart';
-
-
   constructor(private shoppingCartService: ShoppingCartService) {}
 
   ngOnInit(): void {
     this.products = [
       {
-        name: 'Yummy cat food',
-        price: 4.20,
-        url: 'assets/happycat.jpg'
+        name: 'Jeans',
+        price: 50,
+        url: 'assets/pants1.png',
+        description: 'Cool pants for all occasions'
       },
       {
-        name: 'Yummy cat food',
-        price: 4.20,
-        url: 'assets/happycat.jpg'
+        name: 'Black shirt',
+        price: 12,
+        url: 'assets/shirt1.png',
+        description: 'Plain shirt that always works'
       },
       {
-        name: 'Yummy cat food',
-        price: 4.20,
-        url: 'assets/happycat.jpg'
+        name: 'Nike shoe',
+        price: 100,
+        url: 'assets/shoe1.png',
+        description: 'Sporty and nice shoes'
       },
       {
-        name: 'Yummy cat food',
-        price: 4.20,
-        url: 'assets/happycat.jpg'
+        name: 'Beige sweater',
+        price: 80,
+        url: 'assets/sweater1.png',
+        description: 'Comfy knitted sweater'
       },
     ];
   }
@@ -51,4 +51,5 @@ export interface Product {
   name: string;
   url: string;
   price: number;
+  description: string;
 }

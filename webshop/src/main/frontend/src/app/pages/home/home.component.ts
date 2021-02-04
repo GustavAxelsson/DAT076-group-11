@@ -8,7 +8,7 @@ declare var $: any;
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('carousel') carousel: any
+  @ViewChild('carousel') carousel: any;
 
 
   constructor() { }
@@ -17,15 +17,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
-  nextSlide() {
+  nextSlide(): void {
     $('.carousel').carousel('next');
   }
 
-  previousSlide() {
-    $('.carousel').carousel('prev')
+  previousSlide(): void {
+    $('.carousel').carousel('prev');
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
   }
 
 

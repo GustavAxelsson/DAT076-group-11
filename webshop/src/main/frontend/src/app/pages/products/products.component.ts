@@ -41,8 +41,7 @@ export class ProductsComponent implements OnInit {
     ];
   }
 
-  // tslint:disable-next-line:typedef
-  public addToCart() {
+  public addToCart(): void {
     this.shoppingCartService.addToShoppingCart();
   }
 }

@@ -1,5 +1,5 @@
 <div class="container mt-3">
-    <div id="bootstrapCarousel" class="carousel slide" data-ride="carousel">
+    <div id="bootstrapCarousel" class="carousel slide" data-ride="carousel" #carousel>
         <!-- Slide Indicators -->
         <ul class="carousel-indicators">
             <li data-target="#bootstrapCarousel" data-slide-to="0" class="active"></li>
@@ -27,10 +27,10 @@
         </div>
 
         <!--  Controls (Left and right) -->
-        <a class="carousel-control-prev" href="#bootstrapCarousel" data-slide="prev">
+        <a class="carousel-control-prev" (click)="previousSlide()">
             <span class="carousel-control-prev-icon"></span>
         </a>
-        <a class="carousel-control-next" href="#bootstrapCarousel" data-slide="next">
+        <a class="carousel-control-next" (click)="nextSlide()">
             <span class="carousel-control-next-icon"></span>
         </a>
     </div>

@@ -1,11 +1,11 @@
-package entity.dao;
+package model.dao;
 
-import entity.Product;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.Getter;
-import javax.ejb.Stateless;
+import model.entity.Product;
 
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
@@ -19,10 +19,5 @@ public class ProductDAO extends AbstractDAO<Product> {
 
     public List<Product> findProductsName() {
         throw new UnsupportedOperationException("Not imp yet");
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return entityManager;
     }
 }

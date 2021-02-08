@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
+import java.util.Random;
 
 @RunWith(Arquillian.class)
 public class ProductDAOTest {
@@ -26,10 +27,12 @@ public class ProductDAOTest {
     private ProductDAO productDAO;
     @Before
     public void init() {
-        productDAO.create(new Product());
+        long generatedLong = new Random().nextLong();
+        productDAO.create(new Product(generatedLong, "nike", "url", 2, "desc", "shoe"));
     }
     @Test
-    public void checkThatFindCarsMatchingNameMatchesCorrectly() {
+    public void newTestCase() {
+        System.out.println("it works");
         Assert.assertTrue(true); /* Some better condition */
     }
 }

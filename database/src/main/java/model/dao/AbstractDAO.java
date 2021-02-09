@@ -13,6 +13,7 @@ import java.util.List;
 public abstract class AbstractDAO<T> {
     private final Class<T> entityType;
     protected abstract EntityManager getEntityManager();
+
     public long count() {
         final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         final CriteriaQuery cq = builder.createQuery();
@@ -24,11 +25,13 @@ public abstract class AbstractDAO<T> {
     public void create(T entity) {
         getEntityManager().persist(entity);
     }
-    public List<T> findAll() {
+
+    public List findAll() {
         final CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityType));
         return getEntityManager().createQuery(cq).getResultList();
     }
+
     public void remove(T entity) {
         getEntityManager().remove(getEntityManager().merge(entity));
     }

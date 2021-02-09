@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
+import java.util.List;
 import java.util.Random;
 
 @RunWith(Arquillian.class)
@@ -34,5 +35,12 @@ public class ProductDAOTest {
     public void newTestCase() {
         System.out.println("it works");
         Assert.assertTrue(true); /* Some better condition */
+    }
+
+    @Test
+    public void fetchAll() {
+        List<Product> products = productDAO.findAll();
+        System.out.println(products);
+        Assert.assertTrue(true);
     }
 }

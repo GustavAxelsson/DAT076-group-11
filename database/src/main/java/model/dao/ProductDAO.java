@@ -10,14 +10,14 @@ import java.util.List;
 
 @Stateless
 public class ProductDAO extends AbstractDAO<Product> {
-    @Getter @PersistenceContext(unitName = "default")
+    @Getter @PersistenceContext(unitName = "academy")
     private EntityManager entityManager;
 
     public ProductDAO() {
         super(Product.class);
     }
 
-    public List<Product> findProductsName() {
-        throw new UnsupportedOperationException("Not imp yet");
+    public List<Product> findAll() {
+        return entityManager.createNamedQuery("Product.getAll", Product.class).getResultList();
     }
 }

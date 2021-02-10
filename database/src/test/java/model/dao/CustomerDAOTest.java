@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(Arquillian.class)
-public class ProductOrderDAOTest {
+public class CustomerDAOTest {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
@@ -27,6 +27,7 @@ public class ProductOrderDAOTest {
                 .addClasses(ProductDAO.class, Product.class)
                 .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+
     }
     @EJB
     private ProductOrderDAO productOrderDAO;
@@ -58,30 +59,35 @@ public class ProductOrderDAOTest {
         productOrder.setProductList(products);
         productOrderDAO.create(productOrder);
 
+        ArrayList<ProductOrder> productOrders = new ArrayList<>();
+        productOrders.add(productOrder);
+
+        customer.setProductOrderList(productOrders);
+
     }
 
     @Test
     public void findAllTest() { //TODO compare lists
-        List<Product> products = productOrderDAO.findAll();
+        List<Product> products = customerDAO.findAll();
         Assert.assertFalse(products.isEmpty());
     }
 
     @Test
     public void countTest() {
-        long countBeforeInc = productOrderDAO.count();
-        ProductOrder productOrder = new ProductOrder();
-        productOrderDAO.create(productOrder);
-        long countAfterInc = productOrderDAO.count();
+        long countBeforeInc = customerDAO.count();
+        Customer customer = new Customer();
+        customerDAO.create(customer);
+        long countAfterInc = customerDAO.count();
         Assert.assertEquals(countAfterInc, countBeforeInc+1);
     }
 
     @Test
     public void removeTest() {
-        ProductOrder productOrder = new ProductOrder();
-        productOrderDAO.create(productOrder);
-        long countBeforeRemove = productOrderDAO.count();
-        productOrderDAO.remove(productOrder);
-        long countAfterRemove = productOrderDAO.count();
+        Customer customer = new Customer();
+        customerDAO.create(customer);
+        long countBeforeRemove = customerDAO.count();
+        customerDAO.remove(customer);
+        long countAfterRemove = customerDAO.count();
         Assert.assertEquals(countBeforeRemove-1, countAfterRemove);
     }
 }

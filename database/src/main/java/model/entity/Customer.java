@@ -4,20 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product implements Serializable {
+public class Customer implements Serializable {
     @Id
     @GeneratedValue
-    private long id;
+    private int customerId;
+
     private String name;
-    private String url;
-    private int price;
-    private String description;
-    private String category;
 }

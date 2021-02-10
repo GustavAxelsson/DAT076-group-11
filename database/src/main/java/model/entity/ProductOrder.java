@@ -11,13 +11,11 @@ import java.io.Serializable;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product implements Serializable {
+public class ProductOrder implements Serializable {
     @Id
     @GeneratedValue
     private long id;
-    private String name;
-    private String url;
-    private int price;
-    private String description;
-    private String category;
+
+    @ManyToOne
+    private Customer customer;
 }

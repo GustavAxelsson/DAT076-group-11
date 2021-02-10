@@ -1,19 +1,18 @@
 package model.dao;
 
 import lombok.Getter;
-import model.entity.Product;
+import model.entity.ProductOrder;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
-public class ProductDAO extends AbstractDAO<Product> {
+public class ProductOrderDAO extends AbstractDAO<ProductOrder>{
     @Getter @PersistenceContext(unitName = "webshop")
     private EntityManager entityManager;
 
-    public ProductDAO() {
-        super(Product.class);
+    public ProductOrderDAO() {
+        super(ProductOrder.class);
     }
-
 }

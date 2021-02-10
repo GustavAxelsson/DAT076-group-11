@@ -1,6 +1,7 @@
 package model.dao;
 
-import model.entity.Product;
+import model.entity.Customer;
+import model.entity.ProductOrder;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -12,33 +13,37 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
-import java.util.List;
 
 @RunWith(Arquillian.class)
-public class ProductDAOTest {
+public class ProductOrderDAOTest {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(ProductDAO.class, Product.class)
+                .addClasses(ProductOrderDAO.class, ProductOrder.class)
+                .addClasses(CustomerDAO.class, Customer.class)
                 .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
     @EJB
-    private ProductDAO productDAO;
+    private ProductOrderDAO productOrderDAO;
+
+    @EJB
+    private CustomerDAO customerDAO;
+
     @Before
     public void init() {
-        productDAO.create(new Product());
-    }
-    @Test
-    public void newTestCase() {
-        System.out.println("it works");
-        Assert.assertTrue(true); /* Some better condition */
+        Customer customer = new Customer();
+        customer.setName("Gurra G");
+        customerDAO.create(customer);
+
+        ProductOrder productOrder = new ProductOrder();
+        productOrder.setCustomer(customer);
+        productOrderDAO.create(productOrder);
     }
 
     @Test
-    public void fetchAll() {
-        List<Product> products = productDAO.findAll();
-        System.out.println(products);
-        Assert.assertTrue(true);
+    public void newTestCase() {
+        System.out.println("Works");
+        Assert.assertTrue(true); /* Some better condition */
     }
 }

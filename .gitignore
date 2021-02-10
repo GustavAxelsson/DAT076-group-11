@@ -6,3 +6,5 @@
 /webshop/src/main/frontend/dist
 /webshop/src/main/frontend/node
 /database/target/
+/database/database.iml
+/database/derby.log

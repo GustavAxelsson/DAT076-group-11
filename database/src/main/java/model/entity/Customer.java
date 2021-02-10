@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,4 +18,7 @@ public class Customer implements Serializable {
     private int customerId;
 
     private String name;
+
+    @OneToMany
+    private List<ProductOrder> productOrderList;
 }

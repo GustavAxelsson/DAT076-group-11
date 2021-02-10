@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,4 +19,7 @@ public class ProductOrder implements Serializable {
 
     @ManyToOne
     private Customer customer;
+
+    @OneToMany
+    private List<Product> productList;
 }

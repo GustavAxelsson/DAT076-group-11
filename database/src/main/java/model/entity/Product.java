@@ -20,4 +20,6 @@ public class Product implements Serializable {
     private int price;
     private String description;
     private String category;
+    @ManyToOne
+    private ProductOrder productOrder;
 }

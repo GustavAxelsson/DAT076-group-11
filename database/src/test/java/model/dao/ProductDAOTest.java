@@ -49,6 +49,9 @@ public class ProductDAOTest {
         Product product = new Product("Nike", "https://nike.com", 1200, "Very nice shirt");
         Product product2 = new Product("Adidas", "https://adidas.com", 1800, "Running shoe");
         Product product3 = new Product("Gucci", "https://gucci.com", 10000, "Luxury bag");
+        product.setCategory(new Category("T-shirt"));
+        product2.setCategory(new Category("Shoe"));
+        product3.setCategory(new Category("Bag"));
         productDAO.createAll(Arrays.asList(product, product2, product3));
 
         ProductOrder order = new ProductOrder();
@@ -58,7 +61,8 @@ public class ProductDAOTest {
         ProductOrder order2 = new ProductOrder();
         order.setCustomer(customer2);
         order.setProductList(Collections.singletonList(product3));
-        productOrderDAO.createAll(Collections.singletonList(order2));
+
+        productOrderDAO.createAll(Arrays.asList(order, order2));
 
     }
 

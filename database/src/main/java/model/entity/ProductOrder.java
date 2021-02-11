@@ -17,7 +17,7 @@ public class ProductOrder implements Serializable {
     @GeneratedValue
     private long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Customer customer;
 
     @ManyToMany()

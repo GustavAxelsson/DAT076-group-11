@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,7 +20,18 @@ public class Product implements Serializable {
     private String url;
     private int price;
     private String description;
-    private String category;
-    @ManyToOne
-    private ProductOrder productOrder;
+
+    @ManyToOne()
+    private Category category;
+
+
+    @ManyToMany(mappedBy = "productList")
+    private List<ProductOrder> productOrder;
+
+    public Product(String name, String url, int price, String description) {
+        this.setName(name);
+        this.setUrl(url);
+        this.setPrice(price);
+        this.setDescription(description);
+    }
 }

@@ -41,12 +41,12 @@ public class CustomerDAOTest {
     @Before
     public void init() {
         Customer customer = new Customer();
-        customer.setName("Gurra G");
+//        customer.setName("Gurra G");
         customerDAO.create(customer);
 
         Product nikeShoe = new Product();
         nikeShoe.setName("Air");
-        nikeShoe.setCategory("Shoe");
+//        nikeShoe.setCategory("Shoe");
         nikeShoe.setDescription("New nike air");
         nikeShoe.setPrice(800);
         productDAO.create(nikeShoe);

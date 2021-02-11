@@ -15,10 +15,18 @@ import java.util.List;
 public class Customer implements Serializable {
     @Id
     @GeneratedValue
-    private int customerId;
+    private long customerId;
 
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String email;
 
-    @OneToMany
+    public Customer(String firstName, String lastName, String email) {
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+        this.setEmail(email);
+    }
+
+    @OneToMany(mappedBy = "customer")
     private List<ProductOrder> productOrderList;
 }

@@ -21,7 +21,7 @@ public class Product implements Serializable {
     private int price;
     private String description;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Category category;
 
 

@@ -58,7 +58,8 @@ public class ProductDAOTest {
         ProductOrder order2 = new ProductOrder();
         order.setCustomer(customer2);
         order.setProductList(Collections.singletonList(product3));
-        productOrderDAO.createAll(Collections.singletonList(order2));
+
+        productOrderDAO.createAll(Arrays.asList(order, order2));
 
     }
 

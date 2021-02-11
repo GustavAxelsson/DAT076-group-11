@@ -1,6 +1,7 @@
 package model.dao;
 
 import lombok.Getter;
+import model.entity.Product;
 import model.entity.ProductOrder;
 
 import javax.ejb.Stateless;

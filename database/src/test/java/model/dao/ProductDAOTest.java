@@ -59,8 +59,8 @@ public class ProductDAOTest {
         order.setProductList(Arrays.asList(product, product2));
 
         ProductOrder order2 = new ProductOrder();
-        order.setCustomer(customer2);
-        order.setProductList(Collections.singletonList(product3));
+        order2.setCustomer(customer2);
+        order2.setProductList(Collections.singletonList(product3));
 
         productOrderDAO.createAll(Arrays.asList(order, order2));
 
@@ -112,5 +112,7 @@ public class ProductDAOTest {
         productList.add(shoe);
         order.setProductList(productList);
         productOrderDAO.create(order);
+
+        Assert.assertEquals(1,1);
     }
 }

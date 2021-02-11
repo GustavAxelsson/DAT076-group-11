@@ -1,5 +1,6 @@
 package model.dao;
 
+import model.entity.Category;
 import model.entity.Customer;
 import model.entity.Product;
 import model.entity.ProductOrder;
@@ -15,6 +16,8 @@ import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RunWith(Arquillian.class)
@@ -25,6 +28,7 @@ public class CustomerDAOTest {
                 .addClasses(ProductOrderDAO.class, ProductOrder.class)
                 .addClasses(CustomerDAO.class, Customer.class)
                 .addClasses(ProductDAO.class, Product.class)
+                .addClasses(CategoryDAO.class, Category.class)
                 .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 
@@ -33,61 +37,62 @@ public class CustomerDAOTest {
     private ProductOrderDAO productOrderDAO;
 
     @EJB
-    private CustomerDAO customerDAO;
+    private ProductDAO productDAO;
 
     @EJB
-    private ProductDAO productDAO;
+    private CustomerDAO customerDAO;
 
     @Before
     public void init() {
-        Customer customer = new Customer();
-//        customer.setName("Gurra G");
-        customerDAO.create(customer);
+        Customer customer = new Customer("Anders", "Andersson", "anders.a@gmail.com");
+        Customer customer2 = new Customer("Sofia", "Karlsson", "sofia.k@gmail.com");
 
-        Product nikeShoe = new Product();
-        nikeShoe.setName("Air");
-//        nikeShoe.setCategory("Shoe");
-        nikeShoe.setDescription("New nike air");
-        nikeShoe.setPrice(800);
-        productDAO.create(nikeShoe);
+        Product product = new Product("Nike", "https://nike.com", 1200, "Very nice shirt");
+        Product product2 = new Product("Adidas", "https://adidas.com", 1800, "Running shoe");
+        Product product3 = new Product("Gucci", "https://gucci.com", 10000, "Luxury bag");
+        product.setCategory(new Category("T-shirt"));
+        product2.setCategory(new Category("Shoe"));
+        product3.setCategory(new Category("Bag"));
+        productDAO.createAll(Arrays.asList(product, product2, product3));
 
-        ArrayList<Product> products = new ArrayList<Product>();
-        products.add(nikeShoe);
+        ProductOrder order = new ProductOrder();
+        order.setCustomer(customer);
+        order.setProductList(Arrays.asList(product, product2));
 
-        ProductOrder productOrder = new ProductOrder();
-        productOrder.setCustomer(customer);
-        productOrder.setProductList(products);
-        productOrderDAO.create(productOrder);
+        ProductOrder order2 = new ProductOrder();
+        order2.setCustomer(customer2);
+        order2.setProductList(Collections.singletonList(product3));
 
-        ArrayList<ProductOrder> productOrders = new ArrayList<>();
-        productOrders.add(productOrder);
-
-        customer.setProductOrderList(productOrders);
+        productOrderDAO.createAll(Arrays.asList(order, order2));
 
     }
 
     @Test
     public void findAllTest() { //TODO compare lists
-        List<Product> products = customerDAO.findAll();
-        Assert.assertFalse(products.isEmpty());
+        List<Customer> customers = customerDAO.findAll();
+        customers.forEach(customer -> {
+            System.out.println("Customer");
+            System.out.println(customer);
+        });
+        Assert.assertFalse(customers.isEmpty());
     }
 
     @Test
     public void countTest() {
-        long countBeforeInc = customerDAO.count();
-        Customer customer = new Customer();
-        customerDAO.create(customer);
-        long countAfterInc = customerDAO.count();
+        long countBeforeInc = productDAO.count();
+        Product shoe = new Product();
+        productDAO.create(shoe);
+        long countAfterInc = productDAO.count();
         Assert.assertEquals(countAfterInc, countBeforeInc+1);
     }
 
     @Test
     public void removeTest() {
-        Customer customer = new Customer();
-        customerDAO.create(customer);
-        long countBeforeRemove = customerDAO.count();
-        customerDAO.remove(customer);
-        long countAfterRemove = customerDAO.count();
+        Product shoe = new Product();
+        productDAO.create(shoe);
+        long countBeforeRemove = productDAO.count();
+        productDAO.remove(shoe);
+        long countAfterRemove = productDAO.count();
         Assert.assertEquals(countBeforeRemove-1, countAfterRemove);
     }
 }

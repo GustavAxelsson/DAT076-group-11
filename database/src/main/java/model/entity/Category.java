@@ -17,10 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Category implements Serializable {
     @Id
-    @GeneratedValue
-    private long id;
-    private String categoryId;
-
     private String name;
 
     @OneToMany(mappedBy = "category")

@@ -27,4 +27,8 @@ public class ProductOrder implements Serializable {
             inverseJoinColumns=
             @JoinColumn(name="product_id"))
     private List<Product> productList;
+
+    public ProductOrder(Customer customer) {
+        this.customer = customer;
+    }
 }

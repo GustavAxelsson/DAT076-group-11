@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,14 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 public class Product implements Serializable {
     @Id
+    @NotNull
     @GeneratedValue
     private long id;
+
     private String name;
     private String url;
     private int price;
     private String description;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="category_name")
     private Category category;
 
 
@@ -29,9 +33,13 @@ public class Product implements Serializable {
     private List<ProductOrder> productOrder;
 
     public Product(String name, String url, int price, String description) {
-        this.setName(name);
-        this.setUrl(url);
-        this.setPrice(price);
-        this.setDescription(description);
+        this.name = name;
+        this.url = url;
+        this.price = price;
+        this.description = description;
+    }
+
+    public Product(String name) {
+        this.name = name;
     }
 }

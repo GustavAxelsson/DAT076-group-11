@@ -32,7 +32,7 @@ public abstract class AbstractDAO<T> {
         });
     }
 
-    public List findAll() {
+    public List<T> findAll() {
         final CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityType));
         return getEntityManager().createQuery(cq).getResultList();

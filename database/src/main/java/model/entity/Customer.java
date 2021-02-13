@@ -14,17 +14,26 @@ import java.util.List;
 @AllArgsConstructor
 public class Customer implements Serializable {
     @Id
-    @GeneratedValue
-    private long customerId;
-
+    private String email;
     private String firstName;
     private String lastName;
-    private String email;
+    private String personalNumber;
+    private String billingAddress;
 
-    public Customer(String firstName, String lastName, String email) {
+    public Customer(String email, String firstName,
+                    String lastName) {
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setEmail(email);
+    }
+
+    public Customer(String email) {
+        this.email = email;
+    }
+
+    public Customer(String email, String personalNumber) {
+        this.email = email;
+        this.personalNumber = personalNumber;
     }
 
     @OneToMany(mappedBy = "customer")

@@ -20,46 +20,35 @@ public class CustomerDAOTest extends AbstractDAOTest {
     @EJB
     private ProductOrderDAO productOrderDAO;
 
-    void insertData() throws Exception {
-        utx.begin();
-        em.joinTransaction();
-        Customer c1 = new Customer("anders.a@gmail.com","Anders", "Andersson");
-        Customer c2 = new Customer( "sofia.k@gmail.com","Sofia", "Karlsson");
-        customerDAO.createAll(Arrays.asList(c1, c2));
-        utx.commit();
-        em.clear();
-    }
-
+    private static final Customer c1 = new Customer("anders.a@gmail.com","Anders", "Andersson");
+    private static final Customer c2 = new Customer( "sofia.k@gmail.com","Sofia", "Karlsson");
 
     @Test
-    public void findAllTest() {
+    public void createTwoCustomers() {
+        customerDAO.createAll(Arrays.asList(c1, c2));
         List<Customer> customers = customerDAO.findAll();
         Assert.assertEquals(2, customers.size());
     }
 
     @Test
     public void getCustomerNamed() {
-        Customer c = customerDAO.getCustomerNamed("Anders");
-        Customer c2 = customerDAO.getCustomerNamed("Jacob");
+        customerDAO.create(c1);
+        Customer c = customerDAO.getCustomerNamed(c1.getFirstName());
         Assert.assertEquals(c.getLastName(), "Andersson");
-        Assert.assertNull(c2);
+        Assert.assertEquals(customerDAO.count(), 1);
     }
 
     @Test
     public void addAnOrderWithANewCustomerAndCheckThatCustomerIsPersisted() {
-        String customerEmail = "abc@gmail.com";
-        String customerPersonalNumber = "85-11-24-1111";
-        ProductOrder o = new ProductOrder(new Customer(customerEmail, customerPersonalNumber));
+        ProductOrder o = new ProductOrder(c1);
         productOrderDAO.create(o);
-
-        Customer persistedCustomer = customerDAO.getCustomerByEmail(customerEmail);
-        Assert.assertEquals(persistedCustomer.getEmail(), customerEmail);
-        Assert.assertEquals(persistedCustomer.getPersonalNumber(), customerPersonalNumber);
-        Assert.assertEquals(customerDAO.count(), 3);
+        Customer persistedCustomer = customerDAO.getCustomerByEmail(c1.getEmail());
+        Assert.assertEquals(persistedCustomer.getEmail(), c1.getEmail());
     }
 
     @Test
-    public void removeCustomerByEmail() {
+    public void createTwoCustomersRemoveOneByEmail() {
+        customerDAO.createAll(Arrays.asList(c1, c2));
         customerDAO.removeCustomerByEmail("anders.a@gmail.com");
         Assert.assertEquals(customerDAO.count(), 1);
     }

@@ -10,12 +10,10 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
-import java.util.Arrays;
 
 abstract class AbstractDAOTest {
     @Deployment
@@ -35,11 +33,9 @@ abstract class AbstractDAOTest {
     @Inject
     UserTransaction utx;
 
-
     @Before
     public void preparePersistenceTest() throws Exception {
         clearData();
-        insertData();
         startTransaction();
     }
 
@@ -49,10 +45,9 @@ abstract class AbstractDAOTest {
         em.createQuery("delete from Customer ").executeUpdate();
         em.createQuery("delete from ProductOrder ").executeUpdate();
         em.createQuery("delete from Product ").executeUpdate();
+        em.createQuery("delete from Category ").executeUpdate();
         utx.commit();
     }
-
-    abstract void insertData() throws Exception;
 
     private void startTransaction() throws Exception {
         utx.begin();

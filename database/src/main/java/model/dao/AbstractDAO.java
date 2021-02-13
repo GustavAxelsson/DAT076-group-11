@@ -30,6 +30,7 @@ public abstract class AbstractDAO<T> {
         entities.forEach(entity -> {
             getEntityManager().persist(entity);
         });
+        getEntityManager().flush();
     }
 
     public List<T> findAll() {

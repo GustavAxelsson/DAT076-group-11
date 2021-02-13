@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Product implements Serializable {
     @Id
-    @NotNull
     @GeneratedValue
     private long id;
 

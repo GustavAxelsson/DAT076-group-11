@@ -31,4 +31,9 @@ public class ProductOrder implements Serializable {
     public ProductOrder(Customer customer) {
         this.customer = customer;
     }
+
+    public ProductOrder(Customer customer, List<Product> productList) {
+        this.customer = customer;
+        this.productList = productList;
+    }
 }

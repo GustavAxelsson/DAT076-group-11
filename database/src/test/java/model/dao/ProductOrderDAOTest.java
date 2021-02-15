@@ -4,94 +4,65 @@ import model.entity.Category;
 import model.entity.Customer;
 import model.entity.Product;
 import model.entity.ProductOrder;
-import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @RunWith(Arquillian.class)
-public class ProductOrderDAOTest {
-    @Deployment
-    public static WebArchive createDeployment() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addClasses(ProductOrderDAO.class, ProductOrder.class)
-                .addClasses(CustomerDAO.class, Customer.class)
-                .addClasses(ProductDAO.class, Product.class)
-                .addClasses(CategoryDAO.class, Category.class)
-                .addAsResource("META-INF/persistence.xml")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-
-    }
+public class ProductOrderDAOTest extends AbstractDAOTest{
     @EJB
     private ProductOrderDAO productOrderDAO;
 
     @EJB
     private ProductDAO productDAO;
 
-    @Before
-    public void init() {
-        Customer customer = new Customer("Anders", "Andersson", "anders.a@gmail.com");
-        Customer customer2 = new Customer("Sofia", "Karlsson", "sofia.k@gmail.com");
+    /*              Test Customers              */
+    private static final Customer c1 = new Customer("Anders", "Andersson", "anders.a@gmail.com");
+    private static final Customer c2 = new Customer("Sofia", "Karlsson", "sofia.k@gmail.com");
 
-        Product product = new Product("Nike", "https://nike.com", 1200, "Very nice shirt");
-        Product product2 = new Product("Adidas", "https://adidas.com", 1800, "Running shoe");
-        Product product3 = new Product("Gucci", "https://gucci.com", 10000, "Luxury bag");
-        product.setCategory(new Category("T-shirt"));
-        product2.setCategory(new Category("Shoe"));
-        product3.setCategory(new Category("Bag"));
-        productDAO.createAll(Arrays.asList(product, product2, product3));
+    /*              Test Products               */
+    private static final Product p1 =  new Product("Nike", "https://nike.com", 1200, "Very nice shirt");
+    private static final Product p2 =  new Product("Adidas", "https://adidas.com", 1800, "Running shoe");
+    private static final Product p3 =  new Product("Gucci", "https://gucci.com", 10000, "Luxury bag");
 
-        ProductOrder order = new ProductOrder();
-        order.setCustomer(customer);
-        order.setProductList(Arrays.asList(product, product2));
-
-        ProductOrder order2 = new ProductOrder();
-        order2.setCustomer(customer2);
-        order2.setProductList(Collections.singletonList(product3));
-
-        productOrderDAO.createAll(Arrays.asList(order, order2));
-
-    }
+    /*              Test Categories              */
+    private static final Category cat1 = new Category("T-shirt");
+    private static final Category cat2 = new Category("Shoe");
+    private static final Category cat3 = new Category("Bag");
 
     @Test
-    public void findAllTest() { //TODO compare lists
+    public void createTwoProductOrders() {
+        productDAO.createAll(Arrays.asList(p1, p2, p3));
+        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
+        ProductOrder productOrder1 = new ProductOrder(c2, Arrays.asList(p2,p3));
+        productOrderDAO.createAll(Arrays.asList(productOrder, productOrder1));
+
         List<ProductOrder> productOrders = productOrderDAO.findAll();
-        productOrders.forEach(productOrder -> {
-            System.out.println("ProductOrder");
-            System.out.println(productOrder);
-            System.out.println("ProductOrderList");
-            System.out.println(productOrder.getProductList());
-        });
-        Assert.assertFalse(productOrders.isEmpty());
+        Assert.assertEquals(productOrders.size(), 2);
     }
 
     @Test
     public void countTest() {
-        long countBeforeInc = productDAO.count();
-        Product shoe = new Product();
-        productDAO.create(shoe);
-        long countAfterInc = productDAO.count();
-        Assert.assertEquals(countAfterInc, countBeforeInc+1);
+        productDAO.createAll(Arrays.asList(p1, p2, p3));
+        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
+        ProductOrder productOrder1 = new ProductOrder(c2, Arrays.asList(p2,p3));
+        productOrderDAO.createAll(Arrays.asList(productOrder, productOrder1));
+        Assert.assertEquals(productOrderDAO.count(), 2);
     }
 
     @Test
     public void removeTest() {
-        Product shoe = new Product();
-        productDAO.create(shoe);
-        long countBeforeRemove = productDAO.count();
-        productDAO.remove(shoe);
-        long countAfterRemove = productDAO.count();
-        Assert.assertEquals(countBeforeRemove-1, countAfterRemove);
+        productDAO.createAll(Arrays.asList(p1, p2, p3));
+        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
+        ProductOrder productOrder1 = new ProductOrder(c2, Arrays.asList(p2,p3));
+        productOrderDAO.createAll(Arrays.asList(productOrder, productOrder1));
+        Assert.assertEquals(productOrderDAO.count(), 2);
+        productOrderDAO.remove(productOrder);
+        Assert.assertEquals(productOrderDAO.count(), 1);
     }
 }

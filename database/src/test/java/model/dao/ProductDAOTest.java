@@ -36,12 +36,12 @@ public class ProductDAOTest  extends  AbstractDAOTest {
         productDAO.createAll(Arrays.asList(p1,p2));
         List<Product> productList = productDAO.findAll();
         Assert.assertEquals(productList.size(), 2);
-        Assert.assertEquals(productList.get(0).getName(), p1.getName());
-        Assert.assertEquals(productList.get(1).getName(), p2.getName());
+        Assert.assertEquals(productList.get(1).getName(), p1.getName());
+        Assert.assertEquals(productList.get(0).getName(), p2.getName());
     }
 
     @Test
-    public void insertTwoObjectsCheckCount() {
+    public void insertTwoProductsCheckCount() {
         productDAO.createAll(Arrays.asList(p1,p2));
         Assert.assertEquals(productDAO.count(), 2);
     }

@@ -8,3 +8,5 @@
 /database/target/
 /database/database.iml
 /database/derby.log
+/database/src/main/webapp/frontend/dist
+/database/src/main/webapp/frontend/node_modules

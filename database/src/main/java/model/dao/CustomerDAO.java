@@ -4,11 +4,13 @@ import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.Getter;
 import model.entity.Customer;
+import model.entity.ProductOrder;
 import model.entity.QCustomer;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Stateless
 public class CustomerDAO extends AbstractDAO<Customer>{
@@ -43,6 +45,15 @@ public class CustomerDAO extends AbstractDAO<Customer>{
         QCustomer customer = QCustomer.customer;
         new JPADeleteClause(entityManager, customer)
                 .where(customer.email.eq(email)).execute();
+    }
+
+    public List<ProductOrder> getProductOrdersByEmail(String email) {
+        QCustomer customer = QCustomer.customer;
+        JPAQuery<Customer> query = new JPAQuery<>(entityManager);
+        return query.select(customer.productOrderList)
+                .from(customer)
+                .where(customer.email.eq(email))
+                .fetchOne();
     }
 
 }

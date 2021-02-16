@@ -21,11 +21,11 @@ public class Product implements Serializable {
     private String url;
     private int price;
     private String description;
+    private int stock;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="category_name")
     private Category category;
-
 
     @ManyToMany(mappedBy = "productList")
     private List<ProductOrder> productOrder;

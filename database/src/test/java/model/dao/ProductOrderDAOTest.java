@@ -65,4 +65,28 @@ public class ProductOrderDAOTest extends AbstractDAOTest{
         productOrderDAO.remove(productOrder);
         Assert.assertEquals(productOrderDAO.count(), 1);
     }
+
+    @Test
+    public void getCustomerByProductOrderIdTest() {
+        productDAO.createAll(Arrays.asList(p1, p2));
+        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
+        productOrderDAO.create(productOrder);
+        List<ProductOrder> productOrderList = productOrderDAO.findAll();
+        long id = productOrderList.get(0).getId();
+        Assert.assertEquals(c1, productOrderDAO.getCustomerByProductOrderId(id));
+    }
+
+    //TODO Fetch the productlist from the correct table
+    /*@Test
+    public void getProductListByProductOrderIdTest() {
+        productDAO.createAll(Arrays.asList(p1, p2));
+        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
+        productOrderDAO.create(productOrder);
+        List<ProductOrder> productOrderList = productOrderDAO.findAll();
+        long id = productOrderList.get(0).getId();
+        List<Product> productList = productDAO.findAll();
+        System.out.println(productList);
+        System.out.println(productOrderList.get(0).getProductList());
+        Assert.assertEquals(productList, productOrderDAO.getProductListByProductOrderId(id));
+    }*/
 }

@@ -35,8 +35,8 @@ abstract class AbstractDAOTest {
 
     @Before
     public void preparePersistenceTest() throws Exception {
-        clearData();
-        startTransaction();
+        //clearData();
+        //startTransaction();
     }
 
     private void clearData() throws Exception {

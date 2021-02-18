@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.Getter;
 import model.entity.Customer;
+import model.entity.Product;
 import model.entity.ProductOrder;
 import model.entity.QCustomer;
 
@@ -55,5 +56,4 @@ public class CustomerDAO extends AbstractDAO<Customer>{
                 .where(customer.email.eq(email))
                 .fetchOne();
     }
-
 }

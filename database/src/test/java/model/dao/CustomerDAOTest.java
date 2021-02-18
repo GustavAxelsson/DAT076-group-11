@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class CustomerDAOTest extends AbstractDAOTest {
 
     private static final Customer c1 = new Customer("anders.a@gmail.com","Anders", "Andersson");
     private static final Customer c2 = new Customer( "sofia.k@gmail.com","Sofia", "Karlsson");
+
+    private static final ProductOrder po1 = new ProductOrder(c1);
+    private static final ProductOrder po2 = new ProductOrder(c1);
 
     @Test
     public void createTwoCustomers() {
@@ -43,6 +47,7 @@ public class CustomerDAOTest extends AbstractDAOTest {
         ProductOrder o = new ProductOrder(c1);
         productOrderDAO.create(o);
         Customer persistedCustomer = customerDAO.getCustomerByEmail(c1.getEmail());
+        System.out.println(persistedCustomer);
         Assert.assertEquals(persistedCustomer.getEmail(), c1.getEmail());
     }
 
@@ -52,4 +57,13 @@ public class CustomerDAOTest extends AbstractDAOTest {
         customerDAO.removeCustomerByEmail("anders.a@gmail.com");
         Assert.assertEquals(customerDAO.count(), 1);
     }
+
+    //TODO add products to the productorder
+    /*@Test
+    public void getProductOrdersForCustomerByEmailTest() {
+        productOrderDAO.createAll(Arrays.asList(po1, po2));
+        Customer persistedCustomer = customerDAO.getCustomerByEmail(c1.getEmail());
+        System.out.println(persistedCustomer);
+        Assert.assertEquals(customerDAO.getProductOrdersByEmail(persistedCustomer.getEmail()), c1.getProductOrderList());
+    }*/
 }

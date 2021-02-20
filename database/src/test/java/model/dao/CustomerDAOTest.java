@@ -1,6 +1,7 @@
 package model.dao;
 
 import model.entity.Customer;
+import model.entity.Product;
 import model.entity.ProductOrder;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Assert;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import javax.ejb.EJB;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @RunWith(Arquillian.class)
@@ -20,6 +22,10 @@ public class CustomerDAOTest extends AbstractDAOTest {
 
     @EJB
     private ProductOrderDAO productOrderDAO;
+
+    private static final Product p1 =  new Product("Nike", "https://nike.com", 1200, "Very nice shirt");
+    private static final Product p2 =  new Product("Adidas", "https://adidas.com", 1800, "Running shoe");
+    private static final Product p3 =  new Product("Gucci", "https://gucci.com", 10000, "Luxury bag");
 
     private static final Customer c1 = new Customer("anders.a@gmail.com","Anders", "Andersson");
     private static final Customer c2 = new Customer( "sofia.k@gmail.com","Sofia", "Karlsson");
@@ -58,12 +64,11 @@ public class CustomerDAOTest extends AbstractDAOTest {
         Assert.assertEquals(customerDAO.count(), 1);
     }
 
-    //TODO add products to the productorder
-    /*@Test
+    @Test
     public void getProductOrdersForCustomerByEmailTest() {
-        productOrderDAO.createAll(Arrays.asList(po1, po2));
+        productOrderDAO.createAll(Arrays.asList(po2, po1));
         Customer persistedCustomer = customerDAO.getCustomerByEmail(c1.getEmail());
-        System.out.println(persistedCustomer);
-        Assert.assertEquals(customerDAO.getProductOrdersByEmail(persistedCustomer.getEmail()), c1.getProductOrderList());
-    }*/
+        Assert.assertTrue(listEqualsIgnoreOrder(productOrderDAO.getProductOrdersByCustomerEmail(persistedCustomer.getEmail()),
+                productOrderDAO.findAll()));
+    }
 }

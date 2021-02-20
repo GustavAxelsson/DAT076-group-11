@@ -47,13 +47,4 @@ public class CustomerDAO extends AbstractDAO<Customer>{
         new JPADeleteClause(entityManager, customer)
                 .where(customer.email.eq(email)).execute();
     }
-
-    public List<ProductOrder> getProductOrdersByEmail(String email) {
-        QCustomer customer = QCustomer.customer;
-        JPAQuery<Customer> query = new JPAQuery<>(entityManager);
-        return query.select(customer.productOrderList)
-                .from(customer)
-                .where(customer.email.eq(email))
-                .fetchOne();
-    }
 }

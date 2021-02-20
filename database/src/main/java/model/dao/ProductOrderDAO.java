@@ -2,10 +2,7 @@ package model.dao;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.Getter;
-import model.entity.Customer;
-import model.entity.Product;
-import model.entity.ProductOrder;
-import model.entity.QProductOrder;
+import model.entity.*;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -33,10 +30,21 @@ public class ProductOrderDAO extends AbstractDAO<ProductOrder> {
 
     public List<Product> getProductListByProductOrderId(long id) {
         QProductOrder productOrder = QProductOrder.productOrder;
+        QProduct product = QProduct.product;
         JPAQuery<Product> query = new JPAQuery<>(entityManager);
-        return query.select(productOrder.productList)
-                .from(productOrder)
+        return query.from(product)
+                .innerJoin(product.productOrder, productOrder)
                 .where(productOrder.id.eq(id))
-                .fetchOne();
+                .fetch();
+    }
+
+    public List<ProductOrder> getProductOrdersByCustomerEmail(String email) {
+        QProductOrder productOrder = QProductOrder.productOrder;
+        QCustomer customer = QCustomer.customer;
+        JPAQuery<Product> query = new JPAQuery<>(entityManager);
+        return query.select(productOrder)
+                .from(productOrder, customer)
+                .where(customer.email.eq(email))
+                .fetch();
     }
 }

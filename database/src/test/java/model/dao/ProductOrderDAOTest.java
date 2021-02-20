@@ -22,8 +22,8 @@ public class ProductOrderDAOTest extends AbstractDAOTest{
     private ProductDAO productDAO;
 
     /*              Test Customers              */
-    private static final Customer c1 = new Customer("Anders", "Andersson", "anders.a@gmail.com");
-    private static final Customer c2 = new Customer("Sofia", "Karlsson", "sofia.k@gmail.com");
+    private static final Customer c1 = new Customer("anders.a@gmail.com", "Anders", "Andersson");
+    private static final Customer c2 = new Customer("sofia.k@gmail.com", "Sofia", "Karlsson");
 
     /*              Test Products               */
     private static final Product p1 =  new Product("Nike", "https://nike.com", 1200, "Very nice shirt");
@@ -76,17 +76,14 @@ public class ProductOrderDAOTest extends AbstractDAOTest{
         Assert.assertEquals(c1, productOrderDAO.getCustomerByProductOrderId(id));
     }
 
-    //TODO Fetch the productlist from the correct table
-    /*@Test
+    @Test
     public void getProductListByProductOrderIdTest() {
         productDAO.createAll(Arrays.asList(p1, p2));
         ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
         productOrderDAO.create(productOrder);
         List<ProductOrder> productOrderList = productOrderDAO.findAll();
         long id = productOrderList.get(0).getId();
-        List<Product> productList = productDAO.findAll();
-        System.out.println(productList);
-        System.out.println(productOrderList.get(0).getProductList());
-        Assert.assertEquals(productList, productOrderDAO.getProductListByProductOrderId(id));
-    }*/
+        Assert.assertTrue(listEqualsIgnoreOrder(productDAO.findAll(),
+                productOrderDAO.getProductListByProductOrderId(id)));
+    }
 }

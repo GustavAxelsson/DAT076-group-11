@@ -1,13 +1,15 @@
 package model.dao;
 
-import model.entity.Category;
-import model.entity.Customer;
-import model.entity.Product;
-import model.entity.ProductOrder;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import restApi.model.dao.ProductDAO;
+import restApi.model.dao.ProductOrderDAO;
+import restApi.model.entity.Category;
+import restApi.model.entity.Customer;
+import restApi.model.entity.Product;
+import restApi.model.entity.ProductOrder;
 
 import javax.ejb.EJB;
 import java.util.Arrays;

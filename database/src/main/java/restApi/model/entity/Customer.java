@@ -38,4 +38,9 @@ public class Customer implements Serializable {
 
     @OneToMany(mappedBy = "customer")
     private List<ProductOrder> productOrderList;
+
+    public Customer(String email, List<ProductOrder> productOrderList) {
+        this.email = email;
+        this.productOrderList = productOrderList;
+    }
 }

@@ -9,6 +9,7 @@ import restApi.model.entity.Category;
 import restApi.model.entity.Product;
 
 import javax.ejb.EJB;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ProductDAOTest  extends  AbstractDAOTest {
     /*              Test products               */
     private static final Product p1 = new Product("Nike", "https://nike.com", 1200, "Very nice shirt");
     private static final Product p2 = new Product("Adidas", "https://adidas.com", 1800, "Running shoe");
-    private static final Product p3 = new Product("Gucci", "https://gucci.com", 10000, "Luxury bag");
+    private static final Product p3 = new Product("Gucci", "https://gucci.com", 10000, "Luxury bag", 2);
 
     /*              Test Categories             */
     private static final Category c1 = new Category("T-shirt");
@@ -53,6 +54,27 @@ public class ProductDAOTest  extends  AbstractDAOTest {
         Assert.assertEquals(categoryDAO.count(), 2);
         List<Category> categories = categoryDAO.findAll();
         Assert.assertEquals(categories.size(),2);
+    }
+
+    @Test
+    public void getProductByNameTest() {
+        productDAO.create(p1);
+        Assert.assertEquals(p1 ,productDAO.getProductByName("Nike"));
+    }
+
+    @Test
+    public void getStockByProductNameTest() {
+        productDAO.create(p3);
+        Assert.assertEquals(2, productDAO.getStockByProductName("Gucci"));
+    }
+
+    @Test
+    public void getProductsByCategoryTest() {
+        p1.setCategory(c1);
+        List<Product> expectedList = new ArrayList<>();
+        expectedList.add(p1);
+        productDAO.create(p1);
+        Assert.assertEquals(expectedList, productDAO.getProductsByCategory(c1));
     }
 
 }

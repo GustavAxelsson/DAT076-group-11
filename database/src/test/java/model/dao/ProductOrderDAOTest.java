@@ -24,8 +24,8 @@ public class ProductOrderDAOTest extends AbstractDAOTest{
     private ProductDAO productDAO;
 
     /*              Test Customers              */
-    private static final Customer c1 = new Customer("Anders", "Andersson", "anders.a@gmail.com");
-    private static final Customer c2 = new Customer("Sofia", "Karlsson", "sofia.k@gmail.com");
+    private static final Customer c1 = new Customer("anders.a@gmail.com", "Anders", "Andersson");
+    private static final Customer c2 = new Customer("sofia.k@gmail.com", "Sofia", "Karlsson");
 
     /*              Test Products               */
     private static final Product p1 =  new Product("Nike", "https://nike.com", 1200, "Very nice shirt");
@@ -37,34 +37,55 @@ public class ProductOrderDAOTest extends AbstractDAOTest{
     private static final Category cat2 = new Category("Shoe");
     private static final Category cat3 = new Category("Bag");
 
-    @Test
-    public void createTwoProductOrders() {
-        productDAO.createAll(Arrays.asList(p1, p2, p3));
-        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
-        ProductOrder productOrder1 = new ProductOrder(c2, Arrays.asList(p2,p3));
-        productOrderDAO.createAll(Arrays.asList(productOrder, productOrder1));
+//    @Test
+//    public void createTwoProductOrders() {
+//        productDAO.createAll(Arrays.asList(p1, p2, p3));
+//        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
+//        ProductOrder productOrder1 = new ProductOrder(c2, Arrays.asList(p2,p3));
+//        productOrderDAO.createAll(Arrays.asList(productOrder, productOrder1));
+//
+//        List<ProductOrder> productOrders = productOrderDAO.findAll();
+//        Assert.assertEquals(productOrders.size(), 2);
+//    }
+//
+//    @Test
+//    public void countTest() {
+//        productDAO.createAll(Arrays.asList(p1, p2, p3));
+//        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
+//        ProductOrder productOrder1 = new ProductOrder(c2, Arrays.asList(p2,p3));
+//        productOrderDAO.createAll(Arrays.asList(productOrder, productOrder1));
+//        Assert.assertEquals(productOrderDAO.count(), 2);
+//    }
+//
+//    @Test
+//    public void removeTest() {
+//        productDAO.createAll(Arrays.asList(p1, p2, p3));
+//        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
+//        ProductOrder productOrder1 = new ProductOrder(c2, Arrays.asList(p2,p3));
+//        productOrderDAO.createAll(Arrays.asList(productOrder, productOrder1));
+//        Assert.assertEquals(productOrderDAO.count(), 2);
+//        productOrderDAO.remove(productOrder);
+//        Assert.assertEquals(productOrderDAO.count(), 1);
+//    }
 
-        List<ProductOrder> productOrders = productOrderDAO.findAll();
-        Assert.assertEquals(productOrders.size(), 2);
+    @Test
+    public void getCustomerByProductOrderIdTest() {
+        productDAO.createAll(Arrays.asList(p1, p2));
+        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
+        productOrderDAO.create(productOrder);
+        List<ProductOrder> productOrderList = productOrderDAO.findAll();
+        long id = productOrderList.get(0).getId();
+        Assert.assertEquals(c1, productOrderDAO.getCustomerByProductOrderId(id));
     }
 
     @Test
-    public void countTest() {
-        productDAO.createAll(Arrays.asList(p1, p2, p3));
+    public void getProductListByProductOrderIdTest() {
+        productDAO.createAll(Arrays.asList(p1, p2));
         ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
-        ProductOrder productOrder1 = new ProductOrder(c2, Arrays.asList(p2,p3));
-        productOrderDAO.createAll(Arrays.asList(productOrder, productOrder1));
-        Assert.assertEquals(productOrderDAO.count(), 2);
-    }
-
-    @Test
-    public void removeTest() {
-        productDAO.createAll(Arrays.asList(p1, p2, p3));
-        ProductOrder productOrder = new ProductOrder(c1, Arrays.asList(p1, p2));
-        ProductOrder productOrder1 = new ProductOrder(c2, Arrays.asList(p2,p3));
-        productOrderDAO.createAll(Arrays.asList(productOrder, productOrder1));
-        Assert.assertEquals(productOrderDAO.count(), 2);
-        productOrderDAO.remove(productOrder);
-        Assert.assertEquals(productOrderDAO.count(), 1);
+        productOrderDAO.create(productOrder);
+        List<ProductOrder> productOrderList = productOrderDAO.findAll();
+        long id = productOrderList.get(0).getId();
+        Assert.assertTrue(listEqualsIgnoreOrder(productDAO.findAll(),
+                productOrderDAO.getProductListByProductOrderId(id)));
     }
 }

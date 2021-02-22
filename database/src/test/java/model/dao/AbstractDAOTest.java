@@ -18,6 +18,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
+import java.util.HashSet;
+import java.util.List;
 
 abstract class AbstractDAOTest {
     @Deployment
@@ -56,5 +58,9 @@ abstract class AbstractDAOTest {
     private void startTransaction() throws Exception {
         utx.begin();
         em.joinTransaction();
+    }
+
+    public static <T> boolean listEqualsIgnoreOrder(List<T> list1, List<T> list2) {
+        return new HashSet<>(list1).equals(new HashSet<>(list2));
     }
 }

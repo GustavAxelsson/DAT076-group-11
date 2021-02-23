@@ -24,7 +24,7 @@ public class Product implements Serializable {
     private int stock;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="category_name")
+    @JoinColumn(name="category_id")
     private Category category;
 
     @ManyToMany(mappedBy = "productList")

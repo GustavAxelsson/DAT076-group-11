@@ -1,6 +1,7 @@
 package restApi.model.dao;
 
 import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.Getter;
 import restApi.model.entity.Category;
 import restApi.model.entity.Product;
@@ -49,5 +50,10 @@ public class ProductDAO extends AbstractDAO<Product> {
                 .from(product)
                 .where(product.category.eq(category))
                 .fetch();
+    }
+
+    public void updateProductCategory(Product product, Category category) {
+        product.setCategory(category);
+        entityManager.merge(product);
     }
 }

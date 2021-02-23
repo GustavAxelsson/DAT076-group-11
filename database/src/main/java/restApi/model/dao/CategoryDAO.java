@@ -14,4 +14,9 @@ public class CategoryDAO extends AbstractDAO<Category>{
     private EntityManager entityManager;
 
     public CategoryDAO() {super(Category.class);}
+
+    public void changeNameOfCategory(Category category, String name) {
+        category.setName(name);
+        entityManager.merge(category);
+    }
 }

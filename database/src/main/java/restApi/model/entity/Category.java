@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,6 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Category implements Serializable {
     @Id
+    @GeneratedValue
+    private long id;
+
     private String name;
 
     @OneToMany(mappedBy = "category")

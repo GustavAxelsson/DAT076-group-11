@@ -30,7 +30,6 @@ public class ProductDAOTest  extends  AbstractDAOTest {
     /*              Test Categories             */
     private static final Category c1 = new Category("T-shirt");
     private static final Category c2 = new Category("Shoe");
-    private static final Category c3 = new Category("Bag");
 
 
     @Test

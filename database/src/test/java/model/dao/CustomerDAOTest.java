@@ -54,7 +54,6 @@ public class CustomerDAOTest extends AbstractDAOTest {
         ProductOrder o = new ProductOrder(c1);
         productOrderDAO.create(o);
         Customer persistedCustomer = customerDAO.getCustomerByEmail(c1.getEmail());
-        System.out.println(persistedCustomer);
         Assert.assertEquals(persistedCustomer.getEmail(), c1.getEmail());
     }
 

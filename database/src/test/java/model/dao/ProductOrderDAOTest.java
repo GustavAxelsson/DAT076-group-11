@@ -114,4 +114,17 @@ public class ProductOrderDAOTest extends AbstractDAOTest{
         Assert.assertTrue(listEqualsIgnoreOrder(productDAO.findAll(),
                 productOrderDAO.getProductListByProductOrderId(id)));
     }
+
+    @Test
+    public void addItemsToProductOrder() {
+        productDAO.createAll(Arrays.asList(p1,p2,p3));
+        ProductOrder productOrder = new ProductOrder(c1);
+        productOrderDAO.create(productOrder);
+        ProductOrder po = productOrderDAO.findAll().get(0);
+        List<Product> products = productOrderDAO.getProductListByProductOrderId(po.getId());
+        Assert.assertEquals(0, products.size());
+        productOrderDAO.addItemsToProductOrder(po,Arrays.asList(p1,p2));
+        List<Product> newList = productOrderDAO.getProductListByProductOrderId(po.getId());
+        Assert.assertEquals(2, newList.size());
+    }
 }

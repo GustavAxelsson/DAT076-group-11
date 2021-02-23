@@ -47,4 +47,12 @@ public class ProductOrderDAO extends AbstractDAO<ProductOrder> {
                 .where(customer.email.eq(email))
                 .fetch();
     }
+
+    public void addItemsToProductOrder(ProductOrder productOrder, List<Product> products) {
+        products.forEach(product -> {
+            productOrder.getProductList().add(product);
+        });
+        entityManager.merge(productOrder);
+    }
+
 }

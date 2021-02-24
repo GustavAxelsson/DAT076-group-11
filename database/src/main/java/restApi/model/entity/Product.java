@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Product implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
 
     private String name;

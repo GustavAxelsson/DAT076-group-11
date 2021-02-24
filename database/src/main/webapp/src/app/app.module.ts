@@ -8,6 +8,12 @@ import {HomeComponent} from './pages/home/home.component';
 import {AboutComponent} from './pages/about/about.component';
 import {ShoppingCartComponent} from './pages/shopping-cart/shopping-cart.component';
 import {HttpClientModule} from "@angular/common/http";
+import { AdminProductsComponent } from './pages/admin-products/admin-products.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -15,12 +21,18 @@ import {HttpClientModule} from "@angular/common/http";
     ProductsComponent,
     HomeComponent,
     AboutComponent,
-    ShoppingCartComponent
+    ShoppingCartComponent,
+    AdminProductsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

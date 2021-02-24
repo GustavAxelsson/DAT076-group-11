@@ -1,0 +1,28 @@
+<div class="main-container">
+  <div >
+    <form [formGroup]="formGroup" class="form-container">
+
+      <mat-form-field color="primary" >
+        <mat-label>Name</mat-label>
+        <input class="input-field" matInput type="text" formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field color="primary">
+        <mat-label>Price</mat-label>
+        <input class="input-field" matInput type="text" formControlName="price">
+      </mat-form-field>
+
+      <mat-form-field color="primary">
+        <mat-label>URL</mat-label>
+        <input class="input-field" matInput type="text" formControlName="url">
+      </mat-form-field>
+
+      <mat-form-field color="primary">
+        <mat-label>Description</mat-label>
+        <input class="input-field" matInput type="text" formControlName="description">
+      </mat-form-field>
+
+    </form>
+    <button mat-raised-button (click)="onSubmit()">Submit</button>
+  </div>
+</div>

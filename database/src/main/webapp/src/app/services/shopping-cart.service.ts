@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Product} from "../pages/products/products.component";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,12 @@ export class ShoppingCartService {
   private _itemsInShoppingCart$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public itemsInShoppingCart$: Observable<number> = this._itemsInShoppingCart$.asObservable();
 
+  private apiUrl:string = '/products/';
+
+   httpOptions = {
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
+  }
+
   constructor(private httpClient: HttpClient) {
   }
   public addToShoppingCart(): void {
@@ -17,6 +24,14 @@ export class ShoppingCartService {
   }
 
   public fetchProducts(): Observable<Product[]> {
-    return this.httpClient.get<Product[]>('http://localhost:8080/database-2.0/api/products');
+    return this.httpClient.get<Product[]>(environment.apiUrl + this.apiUrl + 'list-all-products');
+  }
+
+  public addProduct(name: string): Observable<Object>{
+    return this.httpClient.post(environment.apiUrl + this.apiUrl + 'add-product', name, this.httpOptions);
   }
 }
+//        this.name = name;
+//         this.url = url;
+//         this.price = price;
+//         this.description = description;

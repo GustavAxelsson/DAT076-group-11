@@ -7,7 +7,9 @@ import restApi.model.entity.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Stateless
 public class ProductOrderDAO extends AbstractDAO<ProductOrder> {
@@ -28,14 +30,14 @@ public class ProductOrderDAO extends AbstractDAO<ProductOrder> {
                 .fetchOne();
     }
 
-    public List<Product> getProductListByProductOrderId(long id) {
+    public Set<Product> getProductListByProductOrderId(long id) {
         QProductOrder productOrder = QProductOrder.productOrder;
-        QProduct product = QProduct.product;
         JPAQuery<Product> query = new JPAQuery<>(entityManager);
-        return query.from(product)
-                .innerJoin(product.productOrder, productOrder)
+        ProductOrder po = query.select(productOrder)
+                .from(productOrder)
                 .where(productOrder.id.eq(id))
-                .fetch();
+                .fetchOne();
+        return po.getProductList();
     }
 
     public List<ProductOrder> getProductOrdersByCustomerEmail(String email) {

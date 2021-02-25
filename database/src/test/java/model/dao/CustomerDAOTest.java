@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import restApi.model.dao.CustomerDAO;
 import restApi.model.dao.ProductOrderDAO;
 import restApi.model.entity.Customer;
-import restApi.model.entity.Product;
 import restApi.model.entity.ProductOrder;
 
 import javax.ejb.EJB;
@@ -23,10 +22,6 @@ public class CustomerDAOTest extends AbstractDAOTest {
 
     @EJB
     private ProductOrderDAO productOrderDAO;
-
-    private static final Product p1 =  new Product("Nike", "https://nike.com", 1200, "Very nice shirt");
-    private static final Product p2 =  new Product("Adidas", "https://adidas.com", 1800, "Running shoe");
-    private static final Product p3 =  new Product("Gucci", "https://gucci.com", 10000, "Luxury bag");
 
     private static final Customer c1 = new Customer("anders.a@gmail.com","Anders", "Andersson");
     private static final Customer c2 = new Customer( "sofia.k@gmail.com","Sofia", "Karlsson");
@@ -46,7 +41,7 @@ public class CustomerDAOTest extends AbstractDAOTest {
         customerDAO.create(c1);
         Customer c = customerDAO.getCustomerNamed(c1.getFirstName());
         Assert.assertEquals(c.getLastName(), "Andersson");
-        Assert.assertEquals(customerDAO.count(), 1);
+        Assert.assertEquals(1, customerDAO.count());
     }
 
     @Test
@@ -54,14 +49,14 @@ public class CustomerDAOTest extends AbstractDAOTest {
         ProductOrder o = new ProductOrder(c1);
         productOrderDAO.create(o);
         Customer persistedCustomer = customerDAO.getCustomerByEmail(c1.getEmail());
-        Assert.assertEquals(persistedCustomer.getEmail(), c1.getEmail());
+        Assert.assertEquals(c1.getEmail(), persistedCustomer.getEmail());
     }
 
     @Test
     public void createTwoCustomersRemoveOneByEmail() {
         customerDAO.createAll(Arrays.asList(c1, c2));
         customerDAO.removeCustomerByEmail("anders.a@gmail.com");
-        Assert.assertEquals(customerDAO.count(), 1);
+        Assert.assertEquals(1, customerDAO.count());
     }
 
     @Test

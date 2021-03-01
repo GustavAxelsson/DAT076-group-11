@@ -5,15 +5,17 @@
       <mat-form-field color="primary">
         <mat-label>Name</mat-label>
         <input id="name" class="input-field" matInput type="text" formControlName="name">
+        <mat-error *ngIf=" name?.valid && (name?.dirty || name?.touched)"
+                   class="mat-error">
+        </mat-error>
+        <mat-error *ngIf="name?.errors?.required">
+          Name is required.
+        </mat-error>
       </mat-form-field>
 
-      <div *ngIf=" name?.valid && (name?.dirty || name?.touched)"
-           class="mat-error">
-      </div>
 
-        <div *ngIf="name?.errors?.required">
-          Name is required.
-        </div>
+
+
 
       <mat-form-field color="primary">
         <mat-label>Price</mat-label>

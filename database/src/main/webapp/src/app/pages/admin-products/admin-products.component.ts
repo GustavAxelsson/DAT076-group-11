@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ShoppingCartService} from "../../services/shopping-cart.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Product} from "../products/products.component";
 
 @Component({
@@ -11,7 +11,7 @@ import {Product} from "../products/products.component";
 export class AdminProductsComponent implements OnInit {
 
   formGroup = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', [Validators.required, Validators.minLength(4)]),
     price: new FormControl(''),
     url: new FormControl(''),
     description: new FormControl(''),
@@ -34,5 +34,7 @@ export class AdminProductsComponent implements OnInit {
       error => console.warn('error', error)
     );
   }
+
+  get name() { return this.formGroup.get('name'); }
 
 }

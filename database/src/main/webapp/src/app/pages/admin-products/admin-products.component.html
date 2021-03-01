@@ -2,10 +2,18 @@
   <div >
     <form [formGroup]="formGroup" class="form-container">
 
-      <mat-form-field color="primary" >
+      <mat-form-field color="primary" formControlName="name">
         <mat-label>Name</mat-label>
-        <input class="input-field" matInput type="text" formControlName="name">
+        <input id="name" class="input-field" matInput type="text" formControlName="name">
       </mat-form-field>
+
+      <div *ngIf=" name?.valid && (name?.dirty || name?.touched)"
+           class="mat-error">
+      </div>
+
+        <div *ngIf="name?.errors?.required">
+          Name is required.
+        </div>
 
       <mat-form-field color="primary">
         <mat-label>Price</mat-label>

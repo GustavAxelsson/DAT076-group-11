@@ -12,9 +12,9 @@ export class AdminProductsComponent implements OnInit {
 
   formGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    price: new FormControl(''),
+    price: new FormControl('', [Validators.required, Validators.min(1), Validators.max(100000)]),
     url: new FormControl(''),
-    description: new FormControl(''),
+    description: new FormControl('', [Validators.required]),
   });
   constructor(private shoppingCartService: ShoppingCartService) { }
 
@@ -35,5 +35,7 @@ export class AdminProductsComponent implements OnInit {
   }
 
   get name() { return this.formGroup.get('name'); }
+  get price() { return this.formGroup.get('price'); }
+  get description() { return this.formGroup.get('description'); }
 
 }

@@ -25,11 +25,10 @@ export class AdminProductsComponent implements OnInit {
     const p: Product = {
       name: this.formGroup.get('name')?.value,
       price: this.formGroup.get('price')?.value,
-      url: this.formGroup.get('url')?.value,
       description: this.formGroup.get('description')?.value,
     };
 
-    this.shoppingCartService.addProduct(this.formGroup.get('name')?.value).subscribe(
+    this.shoppingCartService.addProduct(p).subscribe(
       res => console.log('res', res),
       error => console.warn('error', error)
     );

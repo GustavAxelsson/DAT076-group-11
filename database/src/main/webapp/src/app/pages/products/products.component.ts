@@ -27,7 +27,7 @@ export class ProductsComponent implements OnInit {
 
 export interface Product {
   name: string;
-  url: string;
+  url?: string;
   price: number;
   description: string;
 }

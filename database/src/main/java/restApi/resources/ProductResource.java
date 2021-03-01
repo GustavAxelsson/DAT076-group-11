@@ -4,6 +4,7 @@ import restApi.model.dao.ProductDAO;
 import restApi.model.entity.Product;
 
 import javax.ejb.EJB;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -25,7 +26,13 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("add-product")
-    public void addNewProduct(String name) {
-        productDAO.addNewProduct(name);
+    public void addNewProduct(@NotNull Product product) throws IllegalArgumentException{
+        if (product == null) {
+            throw new IllegalArgumentException();
+        }
+        try {
+            productDAO.addNewProduct(product);
+        } catch (Exception e) {
+        }
     }
 }

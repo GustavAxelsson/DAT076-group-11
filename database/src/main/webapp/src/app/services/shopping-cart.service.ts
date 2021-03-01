@@ -27,8 +27,8 @@ export class ShoppingCartService {
     return this.httpClient.get<Product[]>(environment.apiUrl + this.apiUrl + 'list-all-products');
   }
 
-  public addProduct(name: string): Observable<Object>{
-    return this.httpClient.post(environment.apiUrl + this.apiUrl + 'add-product', name, this.httpOptions);
+  public addProduct(product: Product): Observable<Object>{
+    return this.httpClient.post(environment.apiUrl + this.apiUrl + 'add-product', null, this.httpOptions);
   }
 }
 //        this.name = name;

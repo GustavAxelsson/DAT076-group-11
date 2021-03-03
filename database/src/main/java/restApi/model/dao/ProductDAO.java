@@ -27,8 +27,13 @@ public class ProductDAO extends AbstractDAO<Product> {
         entityManager.persist(p);
     }
 
-    public Product getTestProduct() {
-        return new Product("Nike");
+    public Product getProductById(long id) {
+        QProduct product = QProduct.product;
+        JPAQuery<Product> query = new JPAQuery<>(entityManager);
+        return query.select(product)
+                .from(product)
+                .where(product.id.eq(id))
+                .fetchOne();
     }
 
     public Product getProductByName(String name) {

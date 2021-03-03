@@ -33,7 +33,7 @@ const routes: Routes = [
     component: AdminProductsComponent
   },
   {
-    path: 'product/:productId',
+    path: 'product/:id',
     component: ProductComponent
   }
 ];

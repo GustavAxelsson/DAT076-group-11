@@ -32,7 +32,7 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("list-category-products")
-    public List<Product> productsByCategory(@NotNull String name) throws FileNotFoundException {
+    public List<Product> allProductsByCategory(@NotNull String name) throws FileNotFoundException {
         List<Product> products = categoryDAO.getAllProductsForCategory(name);
         if (products == null) {
             throw new FileNotFoundException();
@@ -44,7 +44,7 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("product-id")
-    public Product getProductById(@NotNull Long id) throws FileNotFoundException{
+    public Product getProductById(@QueryParam("id")@NotNull Long id) throws FileNotFoundException{
         Product product = productDAO.getProductById(id);
         if (product == null) {
             throw new FileNotFoundException();

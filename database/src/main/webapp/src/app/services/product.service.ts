@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Product } from '../models/product';
+import { Category } from '../models/category';
 
 @Injectable({
   providedIn: 'root',
@@ -40,11 +41,17 @@ export class ProductService {
     });
   }
 
-  public addProduct(name: string): Observable<Object> {
+  public addProduct(product: Product): Observable<Object> {
     return this.httpClient.post(
       this.serviceUrl + 'add-product',
       name,
       this.httpOptions
+    );
+  }
+
+  public fetchCategories(): Observable<Category[]> {
+    return this.httpClient.get<Category[]>(
+      environment.baseUrl + '/category/' + 'list-all-categories'
     );
   }
 }

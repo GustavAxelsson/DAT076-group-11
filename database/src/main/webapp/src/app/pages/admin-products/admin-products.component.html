@@ -1,41 +1,76 @@
 <div class="main-container">
-  <div>
+  <div >
     <form [formGroup]="formGroup" class="form-container">
+
       <mat-form-field color="primary">
-        <mat-label>Name</mat-label>
-        <input
-          class="input-field"
-          matInput
-          type="text"
-          formControlName="name"
-        />
+        <mat-label>
+          Name
+          <span
+            class="text-danger"
+            *ngIf=" name?.errors && name?.hasError('required')"
+          >*</span>
+        </mat-label>
+        <input id="name" class="input-field" matInput type="text" formControlName="name">
+        <mat-error *ngIf=" name?.invalid && name?.errors && (name?.dirty || name?.touched)"
+                   class="mat-error">
+        </mat-error>
+        <mat-error *ngIf="name?.hasError('minlength')">
+          Minimum length is 4 characters.
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field color="primary">
-        <mat-label>Price</mat-label>
-        <input
-          class="input-field"
-          matInput
-          type="text"
-          formControlName="price"
-        />
+        <mat-label>
+          Price
+          <span
+            class="text-danger"
+            *ngIf=" name?.errors && name?.hasError('required')"
+          >*</span>
+        </mat-label>
+        <input class="input-field" matInput type="text" formControlName="price">
+        <mat-error *ngIf=" price?.valid && (price?.dirty || price?.touched)"
+                   class="mat-error">
+        </mat-error>
+        <mat-error *ngIf="price?.hasError('min')">
+          Minimum price is 1.
+        </mat-error>
+        <mat-error *ngIf="price?.hasError('max')">
+          Maximum price is 100 000.
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field color="primary">
         <mat-label>URL</mat-label>
-        <input class="input-field" matInput type="text" formControlName="url" />
+        <input class="input-field" matInput type="text" formControlName="url">
       </mat-form-field>
 
       <mat-form-field color="primary">
-        <mat-label>Description</mat-label>
-        <input
-          class="input-field"
-          matInput
-          type="text"
-          formControlName="description"
-        />
+        <mat-label>
+          Description
+          <span
+            class="text-danger"
+            *ngIf=" name?.errors && name?.hasError('required')"
+          >*</span>
+        </mat-label>
+        <input class="input-field" matInput type="text" formControlName="description">
+        <mat-error *ngIf=" description?.valid && (description?.dirty || description?.touched)"
+                   class="mat-error">
+        </mat-error>
       </mat-form-field>
+
+      <mat-form-field color="primary">
+        <mat-label>
+          Category
+        </mat-label>
+        <mat-select>
+          <mat-option *ngFor="let category of categories" [value]="category.name">
+            {{category.name}}
+          </mat-option>
+        </mat-select>
+        <input id="category" class="input-field" matInput type="text" formControlName="name">
+      </mat-form-field>
+
     </form>
-    <button mat-raised-button (click)="onSubmit()">Submit</button>
+    <button mat-raised-button [disabled]="!formGroup.valid" (click)="onSubmit()">Submit</button>
   </div>
 </div>

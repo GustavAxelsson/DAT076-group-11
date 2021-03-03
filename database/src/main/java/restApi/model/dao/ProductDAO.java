@@ -21,9 +21,12 @@ public class ProductDAO extends AbstractDAO<Product> {
         super(Product.class);
     }
 
-    public void addNewProduct(String name) {
+    public void addNewProduct(Product product) {
         Product p = new Product();
-        p.setName(name);
+        p.setName(product.getName());
+        p.setPrice(product.getPrice());
+        p.setDescription(product.getDescription());
+        p.setCategory(product.getCategory());
         entityManager.persist(p);
     }
 

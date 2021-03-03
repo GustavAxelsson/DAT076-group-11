@@ -58,6 +58,18 @@
         </mat-error>
       </mat-form-field>
 
+      <mat-form-field color="primary">
+        <mat-label>
+          Category
+        </mat-label>
+        <mat-select>
+          <mat-option *ngFor="let category of categories" [value]="category.name">
+            {{category.name}}
+          </mat-option>
+        </mat-select>
+        <input id="category" class="input-field" matInput type="text" formControlName="name">
+      </mat-form-field>
+
     </form>
     <button mat-raised-button [disabled]="!formGroup.valid" (click)="onSubmit()">Submit</button>
   </div>

@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Product} from "../pages/products/products.component";
 import {environment} from "../../environments/environment";
+import {Category} from "../models/category";
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,11 @@ export class ShoppingCartService {
   }
 
   public addProduct(product: Product): Observable<Object>{
-    return this.httpClient.post(environment.apiUrl + this.apiUrl + 'add-product', null, this.httpOptions);
+    return this.httpClient.post(environment.apiUrl + this.apiUrl + 'add-product', product, this.httpOptions);
+  }
+
+  public fetchCategories():Observable<Category[]> {
+    return this.httpClient.get<Category[]>(environment.apiUrl + '/category/' + 'list-all-categories');
   }
 }
 //        this.name = name;

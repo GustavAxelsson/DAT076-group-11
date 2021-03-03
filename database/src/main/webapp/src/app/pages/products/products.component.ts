@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ShoppingCartService} from '../../services/shopping-cart.service';
+import {Category} from "../../models/category";
 
 @Component({
   selector: 'app-products',
@@ -30,4 +31,5 @@ export interface Product {
   url?: string;
   price: number;
   description: string;
+  category: Category;
 }

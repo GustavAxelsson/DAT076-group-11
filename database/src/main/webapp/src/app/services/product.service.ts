@@ -44,7 +44,7 @@ export class ProductService {
   public addProduct(product: Product): Observable<Object> {
     return this.httpClient.post(
       this.serviceUrl + 'add-product',
-      name,
+      product,
       this.httpOptions
     );
   }

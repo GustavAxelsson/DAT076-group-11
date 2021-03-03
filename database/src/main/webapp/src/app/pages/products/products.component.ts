@@ -26,8 +26,8 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  public addToCart(): void {
-    // this.shoppingCartService.addProductToShoppingCart();
+  public addToCart(product: Product): void {
+    this.shoppingCartService.addProductToShoppingCart(product);
   }
 
   navigateToProduct(product: Product) {

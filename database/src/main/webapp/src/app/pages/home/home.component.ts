@@ -1,7 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 
-declare var $: any;
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -13,14 +11,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor() {}
 
   ngOnInit(): void {}
-
-  nextSlide(): void {
-    $('.carousel').carousel('next');
-  }
-
-  previousSlide(): void {
-    $('.carousel').carousel('prev');
-  }
 
   ngAfterViewInit(): void {}
 }

@@ -10,6 +10,6 @@ import { Observable } from 'rxjs';
 export class AppComponent {
   title = 'frontend';
   itemsInShoppingCart$: Observable<number> = this.shoppingCartService
-    .itemsInShoppingCart$;
+    .numberOfItemsInShoppingCart;
   constructor(private shoppingCartService: ShoppingCartService) {}
 }

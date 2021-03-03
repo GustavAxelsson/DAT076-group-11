@@ -17,7 +17,7 @@ export class AuthServiceService {
 
   public getRoles(): Observable<string> {
     return this.httpClient.get<string>(
-      environment.apiUrl + this.apiUrl + 'get-roles'
+      environment.baseUrl + this.apiUrl + 'get-roles'
     );
   }
 }

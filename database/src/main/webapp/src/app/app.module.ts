@@ -14,6 +14,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {ReactiveFormsModule} from "@angular/forms";
+import { ProductComponent } from './pages/products/id/product/product.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     HomeComponent,
     AboutComponent,
     ShoppingCartComponent,
-    AdminProductsComponent
+    AdminProductsComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,

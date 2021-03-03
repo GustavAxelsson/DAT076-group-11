@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+
 declare var $: any;
 
 @Component({
@@ -14,7 +15,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit(): void {
-
   }
 
   nextSlide(): void {

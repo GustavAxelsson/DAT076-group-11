@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ShoppingCartService} from "../../services/shopping-cart.service";
 import {FormControl, FormGroup} from "@angular/forms";
-import {Product} from "../products/products.component";
+import {ProductService} from "../../services/product.service";
+import {Product} from "../../models/product";
 
 @Component({
   selector: 'app-admin-products',
@@ -16,7 +16,7 @@ export class AdminProductsComponent implements OnInit {
     url: new FormControl(''),
     description: new FormControl(''),
   });
-  constructor(private shoppingCartService: ShoppingCartService) { }
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
   }
@@ -29,7 +29,7 @@ export class AdminProductsComponent implements OnInit {
       description: this.formGroup.get('description')?.value,
     };
 
-    this.shoppingCartService.addProduct(this.formGroup.get('name')?.value).subscribe(
+    this.productService.addProduct(this.formGroup.get('name')?.value).subscribe(
       res => console.log('res', res),
       error => console.warn('error', error)
     );

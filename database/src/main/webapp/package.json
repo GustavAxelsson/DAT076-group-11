@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prettier:check": "npx prettier --check ./src"
+    "prettier:check": "npx prettier --check ./src",
+    "prettier:write": "npx prettier --write ./src"
   },
   "private": true,
   "dependencies": {

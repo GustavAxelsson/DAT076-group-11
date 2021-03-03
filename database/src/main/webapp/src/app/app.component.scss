@@ -36,15 +36,15 @@ header {
   }
 
   .right-aligned > div:hover {
-  transform: scale(1.2);
-  cursor: pointer;
+    transform: scale(1.2);
+    cursor: pointer;
   }
 
   .icon-buttons {
     color: white;
     display: flex;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     width: 36px;
     height: 36px;
     font-size: 28px;
@@ -54,7 +54,6 @@ header {
 .products {
   position: relative;
   width: 400px;
-
 }
 
 .products-link {
@@ -93,7 +92,6 @@ header {
   transform: scale(1.4);
   cursor: pointer;
 }
-
 
 .about-container {
   display: flex;

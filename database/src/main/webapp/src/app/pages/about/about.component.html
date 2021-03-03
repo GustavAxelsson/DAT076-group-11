@@ -7,10 +7,10 @@
 <h2 class="team-header">The team</h2>
 <div class="row">
   <div class="col-md-4 about-card" *ngFor="let aboutCard of aboutCards">
-    <img class="about-picture" [src]="aboutCard.url" alt="picture of founder">
-    <h2>{{aboutCard.name}}</h2>
-    <p class="title">{{aboutCard.title}}</p>
-    <p>{{aboutCard.description}}</p>
-    <p>{{aboutCard.email}}</p>
+    <img class="about-picture" [src]="aboutCard.url" alt="picture of founder" />
+    <h2>{{ aboutCard.name }}</h2>
+    <p class="title">{{ aboutCard.title }}</p>
+    <p>{{ aboutCard.description }}</p>
+    <p>{{ aboutCard.email }}</p>
   </div>
 </div>

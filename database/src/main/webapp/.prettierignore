@@ -1,0 +1,7 @@
+/.idea
+.project
+.classpath
+WEB-INF
+node_modules
+e2e
+dist

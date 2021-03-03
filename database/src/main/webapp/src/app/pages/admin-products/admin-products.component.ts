@@ -38,7 +38,7 @@ export class AdminProductsComponent implements OnInit {
       name: this.formGroup.get('name')?.value,
       price: this.formGroup.get('price')?.value,
       description: this.formGroup.get('description')?.value,
-      category: this.formGroup.get('category')?.value,
+      category: this.category?.value,
     };
 
     this.productService.addProduct(p).subscribe(

@@ -30,6 +30,10 @@ public class Product implements Serializable {
     @ManyToMany(mappedBy = "productList")
     private List<ProductOrder> productOrder;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name ="sale_id")
+    private Sale sale;
+
     public Product(String name, String url, int price, String description) {
         this.name = name;
         this.url = url;

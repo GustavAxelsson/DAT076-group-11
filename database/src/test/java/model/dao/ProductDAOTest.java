@@ -62,12 +62,6 @@ public class ProductDAOTest  extends  AbstractDAOTest {
     }
 
     @Test
-    public void getStockByProductNameTest() {
-        productDAO.create(p3);
-        Assert.assertEquals(2, productDAO.getStockByProductName("Gucci"));
-    }
-
-    @Test
     public void getProductsByCategoryTest() {
         p1.setCategory(c1);
         List<Product> expectedList = new ArrayList<>();

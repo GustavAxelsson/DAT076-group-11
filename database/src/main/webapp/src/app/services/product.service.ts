@@ -34,7 +34,7 @@ export class ProductService {
     );
   }
 
-  public getProductById(id: number): Observable<Product> {
+  public getProductById(id: number): Observable<Product | undefined> {
     return this.httpClient.get<Product>(this.serviceUrl + 'product-id', {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       params: new HttpParams().set('id', id.toString()),
@@ -53,5 +53,16 @@ export class ProductService {
     return this.httpClient.get<Category[]>(
       environment.baseUrl + '/category/' + 'list-all-categories'
     );
+  }
+
+  public uploadProductImage(img: FormData): Observable<any> {
+    return this.httpClient.post<any>(this.serviceUrl + '/upload-image', img, {
+      reportProgress: true,
+      observe: 'events',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/octet-stream',
+      },
+    });
   }
 }

@@ -26,7 +26,8 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  public addToCart(product: Product): void {
+  public addToCart(product: Product, event: Event): void {
+    event.stopPropagation();
     this.shoppingCartService.addProductToShoppingCart(product);
   }
 

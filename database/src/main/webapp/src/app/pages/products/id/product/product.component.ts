@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap, take } from 'rxjs/operators';
 import { ProductService } from '../../../../services/product.service';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
+import { Product } from '../../../../models/product';
 
 @Component({
   selector: 'app-product',
@@ -10,6 +11,7 @@ import { of, throwError } from 'rxjs';
   styleUrls: ['./product.component.css'],
 })
 export class ProductComponent implements OnInit {
+  product: Product | undefined = undefined;
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService
@@ -22,11 +24,11 @@ export class ProductComponent implements OnInit {
           if (id != undefined) {
             return productService.getProductById(id);
           }
-          return of();
+          return of(undefined);
         })
         // switchMap(id => productService.getProductById(id))
       )
-      .subscribe((res) => console.log(res));
+      .subscribe((product) => (this.product = product));
   }
 
   ngOnInit(): void {}

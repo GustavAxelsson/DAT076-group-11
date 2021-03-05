@@ -1,1 +1,9 @@
-<div class="main-container"></div>
+<div class="main-container">
+  <mat-card *ngIf="product">
+    <h3>{{ product.name }}</h3>
+    <img src="" />
+    <div>{{ product.category?.name }}</div>
+    <div>{{ product.description }}</div>
+    <div>{{ product.price }}</div>
+  </mat-card>
+</div>

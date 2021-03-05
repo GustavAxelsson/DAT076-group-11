@@ -22,12 +22,7 @@ public class ProductDAO extends AbstractDAO<Product> {
     }
 
     public void addNewProduct(Product product) {
-        Product p = new Product();
-        p.setName(product.getName());
-        p.setPrice(product.getPrice());
-        p.setDescription(product.getDescription());
-        p.setCategory(product.getCategory());
-        entityManager.merge(p);
+        entityManager.merge(product);
     }
 
     public Product getProductById(long id) {
@@ -43,15 +38,6 @@ public class ProductDAO extends AbstractDAO<Product> {
         QProduct product = QProduct.product;
         JPAQuery<Product> query = new JPAQuery<>(entityManager);
         return query.select(product)
-                .from(product)
-                .where(product.name.eq(name))
-                .fetchOne();
-    }
-
-    public int getStockByProductName(String name) {
-        QProduct product = QProduct.product;
-        JPAQuery<Product> query = new JPAQuery<>(entityManager);
-        return query.select(product.stock)
                 .from(product)
                 .where(product.name.eq(name))
                 .fetchOne();

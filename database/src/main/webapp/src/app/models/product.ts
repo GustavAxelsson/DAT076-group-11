@@ -6,4 +6,5 @@ export interface Product {
   description: string;
   id?: string;
   category?: Category;
+  amount?: number;
 }

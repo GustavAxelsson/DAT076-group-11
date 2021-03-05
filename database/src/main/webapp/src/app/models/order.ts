@@ -1,6 +1,6 @@
 import { Product } from './product';
 
 export interface Order {
-  items: Product;
+  items: Product[];
   sum: number;
 }

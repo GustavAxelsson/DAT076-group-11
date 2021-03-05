@@ -5,6 +5,25 @@
   align-items: center;
 }
 
+.container {
+  display: flex;
+}
+
+.photo-container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  margin-right: 16px;
+}
+
+.upload-photo-container {
+  position: absolute;
+  bottom: 16px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .form-container {
   display: flex;
   flex-direction: column;

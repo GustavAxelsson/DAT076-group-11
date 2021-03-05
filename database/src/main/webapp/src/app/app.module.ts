@@ -16,6 +16,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { ProductComponent } from './pages/products/id/product/product.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { ShoppingCartTableComponent } from './components/shopping-cart-table/shopping-cart-table.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +32,7 @@ import { ProductComponent } from './pages/products/id/product/product.component'
     ShoppingCartComponent,
     AdminProductsComponent,
     ProductComponent,
+    ShoppingCartTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +44,11 @@ import { ProductComponent } from './pages/products/id/product/product.component'
     MatButtonModule,
     ReactiveFormsModule,
     MatSelectModule,
+    MatCardModule,
+    MatListModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

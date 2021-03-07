@@ -1,7 +1,7 @@
 <div class="main-container">
   <div >
+    <h1>Add product</h1>
     <form [formGroup]="formGroup" class="form-container">
-
       <mat-form-field color="primary">
         <mat-label>
           Name
@@ -71,6 +71,25 @@
       </mat-form-field>
 
     </form>
-    <button mat-raised-button [disabled]="!formGroup.valid" (click)="onSubmit()">Submit</button>
+    <button mat-raised-button [disabled]="!formGroup.valid" (click)="onSubmitProduct()">Add</button>
+  </div>
+  <div>
+    <h1>Add sale</h1>
+    <form [formGroup]="formGroupSale" class="form-container">
+      <mat-form-field color="primary">
+        <mat-label>
+          Sale name
+        </mat-label>
+        <input class="input-field" matInput type="text" formControlName="name">
+      </mat-form-field>
+      <mat-form-field color="primary">
+        <mat-label>
+          Sale percentage
+        </mat-label>
+        <input class="input-field" matInput type="text" formControlName="percentage">
+      </mat-form-field>
+    </form>
+    <button mat-raised-button (click)="onSubmitSale()">Add</button>
   </div>
 </div>
+

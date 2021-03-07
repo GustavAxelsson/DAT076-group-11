@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Product } from '../models/product';
 import { Category } from '../models/category';
+import { Sale } from '../models/sale';
 
 @Injectable({
   providedIn: 'root',
@@ -52,6 +53,14 @@ export class ProductService {
   public fetchCategories(): Observable<Category[]> {
     return this.httpClient.get<Category[]>(
       environment.baseUrl + '/category/' + 'list-all-categories'
+    );
+  }
+
+  public addSale(sale: Sale): Observable<Object> {
+    return this.httpClient.post(
+      environment.baseUrl + '/sale/' + 'add-sale',
+      sale,
+      this.httpOptions
     );
   }
 }

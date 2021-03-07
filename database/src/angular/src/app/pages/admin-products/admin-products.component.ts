@@ -4,7 +4,7 @@ import { Category } from '../../models/category';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
 import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
@@ -19,6 +19,9 @@ export class AdminProductsComponent implements OnInit {
   uploadInProgress = false;
   uploadProgress = 0;
   imageUrl: SafeUrl | undefined;
+  products: Product[] | undefined;
+  newCategory: string | undefined;
+  selectedProduct: Product | undefined;
 
   formGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
@@ -37,9 +40,23 @@ export class AdminProductsComponent implements OnInit {
   public categories: Category[] = [];
 
   public uploadImage() {
-    const img = new FormData();
-    img.append('file', this.selectedFile!);
 
+    const img = new FormData();
+    const productId: string = this.selectedProduct?.id!;
+    img.append('file', this.selectedFile!, productId);
+
+
+    // if (!this.selectedProduct?.id) {
+    //   console.log('no id set for product');
+    //   return;
+    // }
+
+    // console.log(this.selectedFile);
+    //
+    // const img = new FormData();
+    // img.append(this.selectedProduct?.id!.toString(), this.selectedFile!);
+    // console.log(img.get(this.selectedProduct?.id!.toString()));
+    // console.log(this.selectedProduct?.id!.toString());
     this.productService
       .uploadProductImage(img)
       .pipe(
@@ -68,17 +85,27 @@ export class AdminProductsComponent implements OnInit {
   }
 
   downloadImage() {
-    this.productService.downloadImage(1).subscribe(
-      (response: HttpEvent<Blob>) => {
+    // this.productService.downloadImage(1).subscribe(
+    //   (response: HttpEvent<Blob>) => {
+    //
+    //     if (response.type === HttpEventType.Response) {
+    //       console.log(response.body);
+    //       let objectURL = URL.createObjectURL(response.body);
+    //       this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    //     }
+    //   },
+    //   error => console.log(error)
+    // );
+  }
 
-        if (response.type ===HttpEventType.Response) {
-          let objectURL = URL.createObjectURL(response.body);
-          this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-        }
-      },
-      error => console.log(error)
-    );
-
+  addCategory() {
+    if (this.newCategory === undefined) {
+      return;
+    }
+    this.productService.addNewCategory(this.newCategory).pipe(take(1))
+      .subscribe(response => {
+        console.log('res', response);
+      });
   }
 
   onFileSelected() {
@@ -94,6 +121,9 @@ export class AdminProductsComponent implements OnInit {
         this.categories = categories;
       }
     });
+    this.productService.getAllProducts$().subscribe(res => {
+      this.products = res;
+    })
   }
 
   onSubmit() {

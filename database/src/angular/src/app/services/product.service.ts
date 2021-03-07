@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { forkJoin, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Product } from '../models/product';
 import { Category } from '../models/category';
+import { DomSanitizer } from '@angular/platform-browser';
+import { map, switchMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +17,36 @@ export class ProductService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private sanitizer:DomSanitizer) {}
 
   public getAllProducts$(): Observable<Product[]> {
     return this.httpClient.get<Product[]>(
       this.serviceUrl + 'list-all-products',
       this.httpOptions
+    );
+  }
+
+  public getProductWithImage(product: Product): Observable<Product | undefined> {
+    return this.downloadImage(product.productImage?.id!).pipe(
+      map((response:Blob) => {
+
+          let objectURL = URL.createObjectURL(response);
+          product.url = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+          return product;
+      })
+    )
+  }
+
+  public getAllProductsWithImage(): Observable<Product[]> {
+    return this.getAllProducts$().pipe(
+      switchMap(products => {
+        const observables: Array<Observable<Product | undefined>> = [];
+        products.forEach(product => {
+          observables.push(this.getProductWithImage(product).pipe(take(1)))
+        });
+        return forkJoin(...observables);
+      }),
+      map((batch) => [].concat(...batch))
     );
   }
 
@@ -56,19 +82,28 @@ export class ProductService {
   }
 
   public uploadProductImage(img: FormData): Observable<any> {
+
+    console.log(img);
     return this.httpClient.post<any>(this.serviceUrl + 'upload-image', img, {
       reportProgress: true,
       observe: 'events',
     });
   }
 
-  public downloadImage(id: number): Observable<HttpEvent<Blob>>{
+  public downloadImage(id: number): Observable<Blob>{
 
     return this.httpClient.get<Blob>(this.serviceUrl + 'download-image', {
-        observe: 'events',
         responseType: 'blob' as 'json',
         params: new HttpParams().set('id', id.toString())
        },
+    );
+  }
+
+  public addNewCategory(name: string) {
+
+    return this.httpClient.post(
+      environment.baseUrl + '/category/' + 'add-category', name,
+      this.httpOptions
     );
   }
 }

@@ -36,9 +36,10 @@ public class CategoryResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("add-category")
-    public void addCategory(@QueryParam("category")@NotNull Category category) {
+    public void addCategory(@NotNull String categoryName) throws InternalServerErrorException {
         try {
-            categoryDAO.create(category);
+            Category cat = new Category(categoryName);
+            categoryDAO.create(cat);
         } catch (Exception e) {
             throw new InternalServerErrorException();
         }

@@ -24,6 +24,10 @@ public class Product implements Serializable {
     private String description;
     private int stock;
 
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "product_image_id", referencedColumnName = "id")
+    private ProductImage productImage;
+
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name="category_id")
     private Category category;

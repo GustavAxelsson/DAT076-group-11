@@ -99,6 +99,7 @@ public class ProductResource {
 
 
     @POST
+
     @Path("/upload-image")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public void uploadFile(@FormDataParam("file") InputStream inputStream,
@@ -115,7 +116,16 @@ public class ProductResource {
 
             ProductImage upload = new ProductImage(fileDetail.getName(),
                     byteArrayOutputStream.toByteArray());
-            productImageDAO.create(upload);
+
+            long id = Long.parseLong(fileDetail.getFileName());
+
+            Product product = productDAO.getProductById(id);
+
+            if (product == null) {
+                return;
+            }
+
+            productDAO.updateProductImage(product, upload);
         } catch (Exception e) {
             System.out.println(e);
         }

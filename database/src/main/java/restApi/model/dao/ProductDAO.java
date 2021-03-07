@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.Getter;
 import restApi.model.entity.Category;
 import restApi.model.entity.Product;
+import restApi.model.entity.ProductImage;
 import restApi.model.entity.QProduct;
 
 import javax.ejb.Stateless;
@@ -54,6 +55,11 @@ public class ProductDAO extends AbstractDAO<Product> {
 
     public void updateProductCategory(Product product, Category category) {
         product.setCategory(category);
+        entityManager.merge(product);
+    }
+
+    public void updateProductImage(Product product, ProductImage productImage) {
+        product.setProductImage(productImage);
         entityManager.merge(product);
     }
 }

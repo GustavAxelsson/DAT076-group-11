@@ -25,4 +25,8 @@ public class ProductImageDAO extends AbstractDAO<ProductImage> {
                 .from(productImage)
                 .where(productImage.id.eq(id)).fetchOne();
     }
+
+    public void addProductImage(ProductImage productImage) {
+        entityManager.merge(productImage);
+    }
 }

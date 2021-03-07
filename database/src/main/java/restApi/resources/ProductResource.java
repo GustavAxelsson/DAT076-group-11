@@ -1,4 +1,5 @@
 package restApi.resources;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import restApi.model.dao.CategoryDAO;
 import restApi.model.dao.ProductDAO;
@@ -10,6 +11,7 @@ import javax.ejb.EJB;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -99,7 +101,8 @@ public class ProductResource {
     @POST
     @Path("/upload-image")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void uploadFile(@FormDataParam("file") InputStream inputStream) {
+    public void uploadFile(@FormDataParam("file") InputStream inputStream,
+                           @FormDataParam("file") FormDataContentDisposition fileDetail) {
 
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -110,10 +113,29 @@ public class ProductResource {
                 byteArrayOutputStream.write(buffer, 0, length);
             }
 
-            ProductImage upload = new ProductImage("filename",
+            ProductImage upload = new ProductImage(fileDetail.getName(),
                     byteArrayOutputStream.toByteArray());
             productImageDAO.create(upload);
         } catch (Exception e) {
+            System.out.println(e);
         }
+    }
+
+    @GET
+    @Path("download-image")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getProductImageById(@QueryParam("id") long id) {
+        try {
+            ProductImage randomFile = productImageDAO.getProductImageById(id);
+
+            return Response.ok(randomFile.getData(), MediaType.APPLICATION_OCTET_STREAM)
+                    .header("Content-Disposition",
+                            "attachment; filename=" + randomFile.getFileName()).build();
+        } catch (Exception e) {
+            System.out.println("error: downloading image");
+            return null;
+        }
+
     }
 }

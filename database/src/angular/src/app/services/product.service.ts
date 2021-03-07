@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Product } from '../models/product';
@@ -56,13 +56,19 @@ export class ProductService {
   }
 
   public uploadProductImage(img: FormData): Observable<any> {
-    return this.httpClient.post<any>(this.serviceUrl + '/upload-image', img, {
+    return this.httpClient.post<any>(this.serviceUrl + 'upload-image', img, {
       reportProgress: true,
       observe: 'events',
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/octet-stream',
-      },
     });
+  }
+
+  public downloadImage(id: number): Observable<HttpEvent<Blob>>{
+
+    return this.httpClient.get<Blob>(this.serviceUrl + 'download-image', {
+        observe: 'events',
+        responseType: 'blob' as 'json',
+        params: new HttpParams().set('id', id.toString())
+       },
+    );
   }
 }

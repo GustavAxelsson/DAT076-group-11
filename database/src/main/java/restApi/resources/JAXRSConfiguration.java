@@ -1,12 +1,18 @@
 package restApi.resources;
 
-import org.eclipse.microprofile.auth.LoginConfig;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import javax.xml.crypto.OctetStreamData;
 
-@LoginConfig(authMethod="MP-JWT")
 @ApplicationPath("api")
-public class JAXRSConfiguration extends Application {
+public class JAXRSConfiguration extends ResourceConfig {
+   public JAXRSConfiguration() {
+       packages("restApi.resources");
+       packages("restApi.resources").register(MultiPartFeature.class);
+       packages("restApi.resources").register(OctetStreamData.class);
+   }
+
     /* Intentionally left blank */
 }

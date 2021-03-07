@@ -1,16 +1,17 @@
 <div class="main-container">
   <div class="container">
     <mat-card class="photo-container">
-      <img alt="product picture" />
+      <img *ngIf="imageUrl" [src]="imageUrl" alt="product picture" />
       <div class="upload-photo-container">
         <button mat-raised-button (click)="fileInput.click()">
           Select image
         </button>
         <button mat-raised-button (click)="uploadImage()">Upload</button>
+        <button mat-raised-button (click)="downloadImage()">Download</button>
       </div>
     </mat-card>
 
-    <input hidden #fileInput type="file" id="file" accept="image/*" />
+    <input hidden #fileInput (change)="onFileSelected()" type="file" id="file" accept="image/*" />
 
     <mat-card class="product-form">
       <form [formGroup]="formGroup" class="form-container">

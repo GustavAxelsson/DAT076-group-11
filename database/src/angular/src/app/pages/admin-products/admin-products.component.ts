@@ -3,9 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Category } from '../../models/category';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
-import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-admin-products',
@@ -17,6 +18,7 @@ export class AdminProductsComponent implements OnInit {
   selectedFile: File | undefined;
   uploadInProgress = false;
   uploadProgress = 0;
+  imageUrl: SafeUrl | undefined;
 
   formGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
@@ -29,7 +31,8 @@ export class AdminProductsComponent implements OnInit {
     description: new FormControl('', [Validators.required]),
     category: new FormControl(''),
   });
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService,
+              private sanitizer:DomSanitizer) {}
 
   public categories: Category[] = [];
 
@@ -64,7 +67,22 @@ export class AdminProductsComponent implements OnInit {
       });
   }
 
+  downloadImage() {
+    this.productService.downloadImage(1).subscribe(
+      (response: HttpEvent<Blob>) => {
+
+        if (response.type ===HttpEventType.Response) {
+          let objectURL = URL.createObjectURL(response.body);
+          this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        }
+      },
+      error => console.log(error)
+    );
+
+  }
+
   onFileSelected() {
+    console.log(this.fileInput);
     if (this.fileInput?.nativeElement && this.fileInput.nativeElement.files) {
       this.selectedFile = this.fileInput.nativeElement.files[0];
     }

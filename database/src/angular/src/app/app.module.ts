@@ -22,6 +22,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { ShoppingCartTableComponent } from './components/shopping-cart-table/shopping-cart-table.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { ShoppingCartTableComponent } from './components/shopping-cart-table/sho
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    FormsModule
+    FormsModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -7,6 +7,7 @@ import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { catchError, map, take } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-products',
@@ -36,13 +37,36 @@ export class AdminProductsComponent implements OnInit {
   });
   constructor(
     private productService: ProductService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private _snackBar: MatSnackBar
   ) {}
 
   public categories: Category[] = [];
 
   ngOnInit(): void {
     this.refreshStreams();
+  }
+
+  public resetForms() {
+    this.name?.patchValue('');
+    this.price?.patchValue('');
+    this.category?.patchValue('');
+    this.description?.patchValue('');
+  }
+
+  public resetCategory() {
+    this.newCategory = undefined;
+  }
+
+  public resetImage() {
+    this.selectedProduct = undefined;
+    this.imageUrl = undefined;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
   public refreshStreams(): void {
@@ -80,12 +104,14 @@ export class AdminProductsComponent implements OnInit {
         }),
         catchError((error: HttpErrorResponse) => {
           this.uploadInProgress = false;
+          this.openSnackBar('Failed to add new category', 'close');
           return of('Upload failed');
         })
       )
       .subscribe((event: any) => {
         if (typeof event === 'object') {
-          console.log(event.body);
+          this.openSnackBar('Image successfully uploaded', 'close');
+          this.resetImage();
         }
       });
   }
@@ -97,9 +123,14 @@ export class AdminProductsComponent implements OnInit {
     this.productService
       .addNewCategory(this.newCategory)
       .pipe(take(1))
-      .subscribe(() => {
-        this.refreshStreams();
-      });
+      .subscribe(
+        () => {
+          this.refreshStreams();
+          this.openSnackBar('New category successfully added', 'close');
+          this.resetCategory();
+        },
+        (error) => this.openSnackBar('Failed to add new category', 'close')
+      );
   }
 
   onFileSelected() {
@@ -121,8 +152,12 @@ export class AdminProductsComponent implements OnInit {
     this.productService.addProduct(p).subscribe(
       () => {
         this.refreshStreams();
+        this.openSnackBar('Product successfully added', 'close');
+        this.resetForms();
       },
-      (error) => console.warn('error', error)
+      (error) => {
+        this.openSnackBar('Failed to upload product', 'close');
+      }
     );
   }
 

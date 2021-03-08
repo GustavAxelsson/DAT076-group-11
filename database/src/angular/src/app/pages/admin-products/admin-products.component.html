@@ -1,28 +1,6 @@
 <div class="main-container">
   <div class="container">
-    <mat-card class="photo-container">
-      <mat-form-field>
-        <mat-label>Select product</mat-label>
-        <mat-select [(ngModel)]="selectedProduct">
-          <mat-option *ngFor="let product of products" [value]="product">
-            {{ product.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div *ngIf='selectedProduct'>{{selectedProduct.name}}</div>
-      <img *ngIf="imageUrl" [src]="imageUrl" alt="product picture" />
-      <div class="upload-photo-container">
-        <button mat-raised-button (click)="fileInput.click()">
-          Select image
-        </button>
-        <button mat-raised-button (click)="uploadImage()">Upload</button>
-        <button mat-raised-button (click)="downloadImage()">Download</button>
-      </div>
-    </mat-card>
-
-    <input hidden #fileInput (change)="onFileSelected()" type="file" id="file" accept="image/*" />
-
-    <mat-card class="product-form">
+    <mat-card class="form-card">
       <form [formGroup]="formGroup" class="form-container">
         <mat-form-field color="primary">
           <mat-label>
@@ -122,14 +100,51 @@
       </button>
     </mat-card>
 
-    <mat-card>
-      <div>
-        <mat-form-field>
-          <mat-label>New category</mat-label>
-          <input matInput type="text" [(ngModel)]='newCategory'/>
-        </mat-form-field>
-        <button mat-raised-button (click)='addCategory()'>Add Category</button>
+    <mat-card class="photo-container">
+      <mat-form-field>
+        <mat-label>Select product</mat-label>
+        <mat-select [(ngModel)]="selectedProduct">
+          <mat-option *ngFor="let product of products" [value]="product">
+            {{ product.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <img *ngIf="imageUrl" [src]="imageUrl" alt="product picture" />
+      <div class="upload-photo-container">
+        <button
+          [disabled]="selectedProduct === undefined"
+          mat-raised-button
+          (click)="fileInput.click()"
+        >
+          Select image
+        </button>
+        <button
+          [disabled]="selectedProduct === undefined"
+          mat-raised-button
+          (click)="uploadImage()"
+        >
+          Upload
+        </button>
       </div>
     </mat-card>
+
+    <mat-card class="new-category-card">
+      <mat-form-field>
+        <mat-label>New category</mat-label>
+        <input matInput type="text" [(ngModel)]="newCategory" />
+      </mat-form-field>
+      <div>
+        <button mat-raised-button (click)="addCategory()">Add Category</button>
+      </div>
+    </mat-card>
+
+    <input
+      hidden
+      #fileInput
+      (change)="onFileSelected()"
+      type="file"
+      id="file"
+      accept="image/*"
+    />
   </div>
 </div>

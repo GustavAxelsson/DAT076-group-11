@@ -3,9 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Category } from '../../models/category';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
-import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { catchError, map, take } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
@@ -34,29 +34,35 @@ export class AdminProductsComponent implements OnInit {
     description: new FormControl('', [Validators.required]),
     category: new FormControl(''),
   });
-  constructor(private productService: ProductService,
-              private sanitizer:DomSanitizer) {}
+  constructor(
+    private productService: ProductService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   public categories: Category[] = [];
 
-  public uploadImage() {
+  ngOnInit(): void {
+    this.refreshStreams();
+  }
 
+  public refreshStreams(): void {
+    combineLatest([
+      this.productService.fetchCategories(),
+      this.productService.getAllProducts$(),
+    ])
+      .pipe(take(1))
+      .subscribe(([categories, products]) => {
+        this.products =
+          products !== undefined && products.length > 0 ? products : [];
+        this.categories =
+          categories !== undefined && categories.length > 0 ? categories : [];
+      });
+  }
+
+  public uploadImage() {
     const img = new FormData();
     const productId: string = this.selectedProduct?.id!;
     img.append('file', this.selectedFile!, productId);
-
-
-    // if (!this.selectedProduct?.id) {
-    //   console.log('no id set for product');
-    //   return;
-    // }
-
-    // console.log(this.selectedFile);
-    //
-    // const img = new FormData();
-    // img.append(this.selectedProduct?.id!.toString(), this.selectedFile!);
-    // console.log(img.get(this.selectedProduct?.id!.toString()));
-    // console.log(this.selectedProduct?.id!.toString());
     this.productService
       .uploadProductImage(img)
       .pipe(
@@ -84,46 +90,24 @@ export class AdminProductsComponent implements OnInit {
       });
   }
 
-  downloadImage() {
-    // this.productService.downloadImage(1).subscribe(
-    //   (response: HttpEvent<Blob>) => {
-    //
-    //     if (response.type === HttpEventType.Response) {
-    //       console.log(response.body);
-    //       let objectURL = URL.createObjectURL(response.body);
-    //       this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-    //     }
-    //   },
-    //   error => console.log(error)
-    // );
-  }
-
   addCategory() {
     if (this.newCategory === undefined) {
       return;
     }
-    this.productService.addNewCategory(this.newCategory).pipe(take(1))
-      .subscribe(response => {
-        console.log('res', response);
+    this.productService
+      .addNewCategory(this.newCategory)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.refreshStreams();
       });
   }
 
   onFileSelected() {
-    console.log(this.fileInput);
     if (this.fileInput?.nativeElement && this.fileInput.nativeElement.files) {
       this.selectedFile = this.fileInput.nativeElement.files[0];
+      let objectURL = URL.createObjectURL(this.selectedFile);
+      this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
     }
-  }
-
-  ngOnInit(): void {
-    this.productService.fetchCategories().subscribe((categories) => {
-      if (categories !== undefined && categories.length > 0) {
-        this.categories = categories;
-      }
-    });
-    this.productService.getAllProducts$().subscribe(res => {
-      this.products = res;
-    })
   }
 
   onSubmit() {
@@ -135,7 +119,9 @@ export class AdminProductsComponent implements OnInit {
     };
 
     this.productService.addProduct(p).subscribe(
-      (res) => console.log('res', res),
+      () => {
+        this.refreshStreams();
+      },
       (error) => console.warn('error', error)
     );
   }

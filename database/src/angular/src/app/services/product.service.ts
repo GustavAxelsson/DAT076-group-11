@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { forkJoin, Observable } from 'rxjs';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpEventType,
+  HttpHeaders,
+  HttpParams,
+  HttpResponse,
+} from '@angular/common/http';
+import { forkJoin, Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Product } from '../models/product';
 import { Category } from '../models/category';
@@ -17,7 +24,10 @@ export class ProductService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  constructor(private httpClient: HttpClient, private sanitizer:DomSanitizer) {}
+  constructor(
+    private httpClient: HttpClient,
+    private sanitizer: DomSanitizer
+  ) {}
 
   public getAllProducts$(): Observable<Product[]> {
     return this.httpClient.get<Product[]>(
@@ -26,23 +36,27 @@ export class ProductService {
     );
   }
 
-  public getProductWithImage(product: Product): Observable<Product | undefined> {
+  public getProductWithImage(
+    product: Product
+  ): Observable<Product | undefined> {
     return this.downloadImage(product.productImage?.id!).pipe(
-      map((response:Blob) => {
-
-          let objectURL = URL.createObjectURL(response);
-          product.url = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-          return product;
+      map((response: Blob | undefined) => {
+        if (response === undefined) {
+          return undefined;
+        }
+        let objectURL = URL.createObjectURL(response);
+        product.url = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        return product;
       })
-    )
+    );
   }
 
   public getAllProductsWithImage(): Observable<Product[]> {
     return this.getAllProducts$().pipe(
-      switchMap(products => {
+      switchMap((products) => {
         const observables: Array<Observable<Product | undefined>> = [];
-        products.forEach(product => {
-          observables.push(this.getProductWithImage(product).pipe(take(1)))
+        products.forEach((product) => {
+          observables.push(this.getProductWithImage(product).pipe(take(1)));
         });
         return forkJoin(...observables);
       }),
@@ -82,7 +96,6 @@ export class ProductService {
   }
 
   public uploadProductImage(img: FormData): Observable<any> {
-
     console.log(img);
     return this.httpClient.post<any>(this.serviceUrl + 'upload-image', img, {
       reportProgress: true,
@@ -90,19 +103,20 @@ export class ProductService {
     });
   }
 
-  public downloadImage(id: number): Observable<Blob>{
-
+  public downloadImage(id: number): Observable<Blob | undefined> {
+    if (id === undefined) {
+      return of(undefined);
+    }
     return this.httpClient.get<Blob>(this.serviceUrl + 'download-image', {
-        responseType: 'blob' as 'json',
-        params: new HttpParams().set('id', id.toString())
-       },
-    );
+      responseType: 'blob' as 'json',
+      params: new HttpParams().set('id', id.toString()),
+    });
   }
 
   public addNewCategory(name: string) {
-
     return this.httpClient.post(
-      environment.baseUrl + '/category/' + 'add-category', name,
+      environment.baseUrl + '/category/' + 'add-category',
+      name,
       this.httpOptions
     );
   }

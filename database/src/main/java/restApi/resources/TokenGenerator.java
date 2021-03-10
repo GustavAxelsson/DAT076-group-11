@@ -12,6 +12,7 @@ import com.nimbusds.jwt.SignedJWT;
 
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -63,7 +64,10 @@ public class TokenGenerator {
 
     public static PrivateKey getPrivateKey() throws Exception {
         JSONParser parser = new JSONParser();
-        Object obj = parser.parse(new FileReader(CONFIGURATION_FILE));
+        //CypherService.class.getResourceAsStream("/privateKey.pem");
+
+        InputStream stream = TokenGenerator.class.getResourceAsStream("/jwtenizr-config.json");
+        Object obj = parser.parse(stream);
         JSONObject jsonObject = (JSONObject) obj;
         return readPrivateKey((String) jsonObject.get("privateKey"));
     }

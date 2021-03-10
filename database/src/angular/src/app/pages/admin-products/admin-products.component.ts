@@ -8,6 +8,7 @@ import { catchError, map, take } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthServiceService } from '../../services/auth-service.service';
 
 @Component({
   selector: 'app-admin-products',
@@ -38,7 +39,8 @@ export class AdminProductsComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private sanitizer: DomSanitizer,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private authService: AuthServiceService
   ) {}
 
   public categories: Category[] = [];
@@ -72,12 +74,12 @@ export class AdminProductsComponent implements OnInit {
   public refreshStreams(): void {
     combineLatest([
       this.productService.fetchCategories(),
-      this.productService.getAllProducts$(),
+      // this.productService.getAllProducts$(),
     ])
       .pipe(take(1))
-      .subscribe(([categories, products]) => {
-        this.products =
-          products !== undefined && products.length > 0 ? products : [];
+      .subscribe(([categories]) => {
+        // this.products =
+        //   products !== undefined && products.length > 0 ? products : [];
         this.categories =
           categories !== undefined && categories.length > 0 ? categories : [];
       });
@@ -114,6 +116,14 @@ export class AdminProductsComponent implements OnInit {
           this.resetImage();
         }
       });
+  }
+
+  login() {
+    this.authService.login('linus', 'password');
+  }
+
+  fetchProducts() {
+    this.productService.getAllProducts$().subscribe((res) => console.log(res));
   }
 
   addCategory() {

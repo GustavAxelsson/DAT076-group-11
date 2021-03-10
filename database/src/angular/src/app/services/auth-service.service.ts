@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpEventType,
+  HttpHeaders,
+  HttpParams,
+  HttpResponse,
+} from '@angular/common/http';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -18,22 +26,51 @@ export class AuthServiceService {
   constructor(private httpClient: HttpClient) {}
 
   public login(username: string, password: string): void {
+    const payload = new HttpParams()
+      .set('username', username)
+      .set('password', password);
+
+    const url = environment.baseUrl + this.apiUrl + 'login';
     this.httpClient
-      .get<string>(environment.baseUrl + this.apiUrl + 'login', {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-        params: new HttpParams()
-          .set('username', username)
-          .set('password', password),
+      .post(url, payload, {
+        observe: 'events',
+        responseType: 'text',
       })
       .subscribe(
         (res) => {
-          if (res != null) {
-            this.authToken.next(res);
+          console.log(res);
+          if (res.type === HttpEventType.Response) {
+            console.log(res.body);
+            if (res.body != null) {
+              this.authToken.next(res.body);
+            }
+            // console.log(res.body);
+            // this.authToken.next(res?.body);
           }
         },
-        (error) => {
-          console.log('Error login');
-        }
+        (error) => console.warn(error)
       );
+
+    // this.httpClient
+    //   .post<any>(environment.baseUrl + this.apiUrl + 'login', {
+    //     headers: new HttpHeaders({
+    //       'Content-Type': 'application/x-www-form-urlencoded',
+    //     }),
+    //     params: new HttpParams()
+    //       .set('username', username)
+    //       .set('password', password),
+    //   })
+    //   .subscribe(
+    //     (res) => {
+    //       console.log(res);
+    //       if (res != null) {
+    //         console.log(res);
+    //         this.authToken.next(res);
+    //       }
+    //     },
+    //     (error) => {
+    //       console.log('Error login');
+    //     }
+    //   );
   }
 }

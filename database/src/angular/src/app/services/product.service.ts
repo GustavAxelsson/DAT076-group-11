@@ -38,9 +38,15 @@ export class ProductService {
   }
 
   public getAllProducts$(): Observable<Product[]> {
+    console.log(this.apiToken);
     return this.httpClient.get<Product[]>(
       this.serviceUrl + 'list-all-products',
-      this.httpOptions
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.apiToken,
+        }),
+      }
     );
   }
 

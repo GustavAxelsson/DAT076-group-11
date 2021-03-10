@@ -1,4 +1,5 @@
 package restApi.resources;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import restApi.model.dao.CategoryDAO;
@@ -7,7 +8,9 @@ import restApi.model.dao.ProductImageDAO;
 import restApi.model.entity.Product;
 import restApi.model.entity.ProductImage;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -15,6 +18,7 @@ import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.security.Principal;
 import java.util.List;
 
 
@@ -34,6 +38,7 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("list-all-products")
+    @RolesAllowed("admin")
     public List<Product> list() throws FileNotFoundException {
         try {
             List<Product> products = productDAO.findAll();

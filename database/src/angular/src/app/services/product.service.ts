@@ -13,6 +13,7 @@ import { Product } from '../models/product';
 import { Category } from '../models/category';
 import { DomSanitizer } from '@angular/platform-browser';
 import { map, switchMap, take } from 'rxjs/operators';
+import { AuthServiceService } from './auth-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,14 +21,21 @@ import { map, switchMap, take } from 'rxjs/operators';
 export class ProductService {
   private serviceUrl: string = environment.baseUrl + '/products/';
 
+  apiToken: String = '';
+
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   constructor(
     private httpClient: HttpClient,
-    private sanitizer: DomSanitizer
-  ) {}
+    private sanitizer: DomSanitizer,
+    private authService: AuthServiceService
+  ) {
+    authService.authToken$.subscribe((res) => {
+      this.apiToken = res;
+    });
+  }
 
   public getAllProducts$(): Observable<Product[]> {
     return this.httpClient.get<Product[]>(

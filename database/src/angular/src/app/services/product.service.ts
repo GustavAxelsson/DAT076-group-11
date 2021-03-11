@@ -38,7 +38,6 @@ export class ProductService {
   }
 
   public getAllProducts$(): Observable<Product[]> {
-    console.log(this.apiToken);
     return this.httpClient.get<Product[]>(
       this.serviceUrl + 'list-all-products',
       {

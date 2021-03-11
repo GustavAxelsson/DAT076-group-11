@@ -1,6 +1,7 @@
 package restApi.resources;
 
 import restApi.model.dao.UserDao;
+import restApi.model.entity.WebshopUser;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,11 @@ public class AuthService {
         if (username == null || password == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
+//        WebshopUser user = userDao.getUserFromUsername(username);
+//        if (user != null) {
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+//                    .build();
+//        }
         try {
             userDao.registerUser(username, password);
             Set<String> roles = new HashSet<>();
@@ -51,7 +57,12 @@ public class AuthService {
     public Response login(@FormParam("username") String username, @FormParam("password")String password,
                           @Context HttpServletRequest request) {
         Set<String> roles = new HashSet<>();
-        String role = userDao.validate(username, password);
+        WebshopUser user = userDao.getUserFromUsername(username);
+        if (user == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .build();
+        }
+        String role = userDao.validate(user, password);
         roles.add(role);
         if (role == null) {
             return Response.status(Response.Status.UNAUTHORIZED)

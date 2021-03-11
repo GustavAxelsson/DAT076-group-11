@@ -20,7 +20,5 @@ public class WebshopUser implements Serializable {
 
     private String password;
 
-    private String salt;
-
     private String role;
 }

@@ -38,7 +38,7 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("list-all-products")
-    @RolesAllowed("admin")
+    @RolesAllowed("user")
     public List<Product> list() throws FileNotFoundException {
         try {
             List<Product> products = productDAO.findAll();

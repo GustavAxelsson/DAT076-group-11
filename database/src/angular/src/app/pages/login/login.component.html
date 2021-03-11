@@ -1,2 +1,30 @@
-<div>Register</div>
-<
+<div>
+  <div>Register</div>
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput [(ngModel)]="username" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput [(ngModel)]="password" />
+  </mat-form-field>
+  <button mat-raised-button (click)="register()">Register</button>
+</div>
+
+<div>
+  <div>Login</div>
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput [(ngModel)]="username" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput [(ngModel)]="password" />
+  </mat-form-field>
+  <button mat-raised-button (click)="login()">Login</button>
+</div>
+
+<div>
+  <div>Try to access authorized endpoint</div>
+  <button mat-raised-button (click)="fetchAllProducts()">Fetch</button>
+</div>

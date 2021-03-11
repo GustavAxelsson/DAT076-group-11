@@ -20,24 +20,18 @@ public class UserDao extends AbstractDAO<WebshopUser>{
     public UserDao() {super(WebshopUser.class);}
 
     public void registerUser(String username, String password) {
-        if (getUserFromUsername(username) != null) {
-            throw new IllegalArgumentException("User already exist");
-        }
-
         String salt = BCrypt.gensalt(10);
         String hashedPw = BCrypt.hashpw(password, salt);
         WebshopUser user = new WebshopUser();
         user.setUsername(username);
         user.setPassword(hashedPw);
-        user.setSalt(salt);
         user.setRole("user");
         entityManager.persist(user);
     }
 
-    public String validate(String username, String password) {
-        WebshopUser user = getUserFromUsername(username);
+    public String validate(WebshopUser user, String password) {
         if (user != null) {
-            if(BCrypt.checkpw(password, user.getSalt())) {
+            if(BCrypt.checkpw(password, user.getPassword())) {
                return user.getRole();
             } else {
                 return null;
@@ -50,7 +44,8 @@ public class UserDao extends AbstractDAO<WebshopUser>{
     public WebshopUser getUserFromUsername(String username) {
         QWebshopUser user = QWebshopUser.webshopUser;
         JPAQuery<WebshopUser> query = new JPAQuery<>(entityManager);
-       return query.select(user).where(user.username.eq(username)).fetchOne();
+        return query.select(user).from(user).where(user.username.eq(username))
+                .fetchOne();
     }
 
 

@@ -74,12 +74,12 @@ export class AdminProductsComponent implements OnInit {
   public refreshStreams(): void {
     combineLatest([
       this.productService.fetchCategories(),
-      // this.productService.getAllProducts$(),
+      this.productService.getAllProducts$(),
     ])
       .pipe(take(1))
-      .subscribe(([categories]) => {
-        // this.products =
-        //   products !== undefined && products.length > 0 ? products : [];
+      .subscribe(([categories, products]) => {
+        this.products =
+          products !== undefined && products.length > 0 ? products : [];
         this.categories =
           categories !== undefined && categories.length > 0 ? categories : [];
       });
@@ -116,10 +116,6 @@ export class AdminProductsComponent implements OnInit {
           this.resetImage();
         }
       });
-  }
-
-  login() {
-    this.authService.login('linus', 'password');
   }
 
   fetchProducts() {

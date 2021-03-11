@@ -8,8 +8,10 @@ import { ProductService } from '../../services/product.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  username: string = '';
-  password: string = '';
+  usernameRegister: string = '';
+  passwordRegister: string = '';
+  usernameLogin: string = '';
+  passwordLogin: string = '';
 
   constructor(
     private authService: AuthServiceService,
@@ -19,16 +21,16 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   public login() {
-    this.authService.login(this.username, this.password);
+    this.authService.login(this.usernameLogin, this.passwordLogin);
   }
 
   public register() {
-    this.authService.register(this.username, this.password);
+    this.authService.register(this.usernameRegister, this.passwordRegister);
   }
 
   public fetchAllProducts() {
     this.productService.getAllProducts$().subscribe(
-      (res) => console.log('Successful'),
+      (res) => console.log('Successful', res),
       (error) => console.warn('Failed', error)
     );
   }

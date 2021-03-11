@@ -24,6 +24,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { ShoppingCartTableComponent } from './components/shopping-cart-table/shopping-cart-table.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { LoginComponent } from './pages/login/login.component';
     ProductComponent,
     ShoppingCartTableComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,8 @@
 <header>
   <div class="navigation-bar">
+    <button mat-raised-button [routerLink]="'login'">Go to login</button>
+    <button mat-raised-button [routerLink]="'register'">Register</button>
+
     <div class="products">
       <div class="products-link" [routerLink]="'products'">Products</div>
       <div class="categories-menu">
@@ -8,8 +11,6 @@
         <div class="cat">T-shirts</div>
       </div>
     </div>
-
-    <button mat-raised-button [routerLink]="'login'">Go to login</button>
 
     <div class="right-aligned">
       <div class="shopping-cart" [routerLink]="'shopping-cart'">

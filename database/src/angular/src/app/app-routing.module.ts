@@ -7,6 +7,7 @@ import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.compo
 import { AdminProductsComponent } from './pages/admin-products/admin-products.component';
 import { ProductComponent } from './pages/products/id/product/product.component';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
   },
 ];
 

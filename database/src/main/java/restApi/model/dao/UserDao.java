@@ -1,5 +1,6 @@
 package restApi.model.dao;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.Getter;
 import org.mindrot.jbcrypt.BCrypt;
@@ -27,6 +28,12 @@ public class UserDao extends AbstractDAO<WebshopUser>{
         user.setPassword(hashedPw);
         user.setRole("user");
         entityManager.persist(user);
+    }
+
+    public boolean userAlreadyExist(String username) {
+        QWebshopUser user = QWebshopUser.webshopUser;
+        JPAQuery<WebshopUser> query = new JPAQuery<>(entityManager);
+        return query.select(user).from(user).where(user.username.eq(username)) != null;
     }
 
     public String validate(WebshopUser user, String password) {

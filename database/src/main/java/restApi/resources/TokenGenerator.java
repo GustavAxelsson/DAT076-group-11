@@ -21,13 +21,16 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 // cred to  adam bien http://jwtenizr.sh/ for insperation.
+// https://connect2id.com/products/nimbus-jose-jwt/examples/jwt-with-rsa-signature
+// https://github.com/tuxtor/microjwt-provider/blob/ea29528dc0eb607c021f12601f91a5293690ac63/src/main/java/com/nabenik/jwt/controller/TokenProviderResource.java
 import static com.nimbusds.jose.JOSEObjectType.JWT;
 
 public class TokenGenerator {
 
-    private final static String CONFIGURATION_FILE = "jwtenizr-config.json";
-
-    public static String generateToken(String username, Set<String> roles) throws Exception { ;
+    public static String generateToken(
+            String username,
+            Set<String> roles,
+            long userId) throws Exception { ;
         JSONArray jsonRoles = new JSONArray();
         jsonRoles.addAll(roles);
         JWSSigner signer = new RSASSASigner(getPrivateKey());
@@ -36,6 +39,7 @@ public class TokenGenerator {
                 .subject(username)
                 .issuer("webshop-company")
                 .claim("groups", jsonRoles)
+                .claim("userId", userId)
                 .jwtID("42")
                 .issueTime(new Date())
                 .expirationTime(new Date(new Date().getTime() + 60 * 10000))
@@ -50,39 +54,18 @@ public class TokenGenerator {
         return signedJWT.serialize();
     }
 
-    static String readToken(String token) throws ParseException {
-        SignedJWT signedJWT = SignedJWT.parse(token);
-        return signedJWT.getJWTClaimsSet().toString();
-    }
-
-    public static PrivateKey readPrivateKey(String privateKey) throws Exception {
-        byte[] decodedKey = Base64.getDecoder().decode(privateKey);
-        return KeyFactory.getInstance("RSA")
-                .generatePrivate(new PKCS8EncodedKeySpec(decodedKey));
-    }
-
     public static PrivateKey getPrivateKey() throws Exception {
         JSONParser parser = new JSONParser();
-        //CypherService.class.getResourceAsStream("/privateKey.pem");
-
         InputStream stream = TokenGenerator.class.getResourceAsStream("/jwtenizr-config.json");
         Object obj = parser.parse(stream);
         JSONObject jsonObject = (JSONObject) obj;
         return readPrivateKey((String) jsonObject.get("privateKey"));
     }
 
-
-    public static void main(String[] args) throws Exception {
-        Set<String> roles = new HashSet<>();
-        roles.add("admin");
-        String token = generateToken("linus", roles);
-        String command = "curl -i -H'Authorization: Bearer "+ token + "' http://localhost:8080/database-2.0/api/products/list-all-products";
-        FileWriter fileWriter = new FileWriter("test-token.jwt");
-        fileWriter.write(command);
-        fileWriter.close();
-
-        System.out.println(readToken(token));
-
+    public static PrivateKey readPrivateKey(String privateKey) throws Exception {
+        byte[] decodedKey = Base64.getDecoder().decode(privateKey);
+        return KeyFactory.getInstance("RSA")
+                .generatePrivate(new PKCS8EncodedKeySpec(decodedKey));
     }
 }
 

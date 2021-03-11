@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Serializable {
+public class WebshopUser implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
@@ -19,4 +19,8 @@ public class User implements Serializable {
     private String username;
 
     private String password;
+
+    private String salt;
+
+    private String role;
 }

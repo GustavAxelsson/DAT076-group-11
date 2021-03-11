@@ -9,6 +9,8 @@
       </div>
     </div>
 
+    <button mat-raised-button [routerLink]="'login'">Go to login</button>
+
     <div class="right-aligned">
       <div class="shopping-cart" [routerLink]="'shopping-cart'">
         <div class="number">{{ itemsInShoppingCart$ | async }}</div>

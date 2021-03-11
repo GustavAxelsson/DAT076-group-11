@@ -10,7 +10,6 @@ import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.security.KeyFactory;
@@ -21,7 +20,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
+// cred to  adam bien http://jwtenizr.sh/ for insperation.
 import static com.nimbusds.jose.JOSEObjectType.JWT;
 
 public class TokenGenerator {

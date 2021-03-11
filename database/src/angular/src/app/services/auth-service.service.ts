@@ -25,6 +25,31 @@ export class AuthServiceService {
 
   constructor(private httpClient: HttpClient) {}
 
+  public register(username: string, password: string): void {
+    const payload = new HttpParams()
+      .set('username', username)
+      .set('password', password);
+
+    const url = environment.baseUrl + this.apiUrl + 'register';
+    this.httpClient
+      .post(url, payload, {
+        observe: 'events',
+        responseType: 'text',
+      })
+      .subscribe(
+        (res) => {
+          console.log(res);
+          if (res.type === HttpEventType.Response) {
+            console.log(res.body);
+            if (res.body != null) {
+              this.authToken.next(res.body);
+            }
+          }
+        },
+        (error) => console.warn(error)
+      );
+  }
+
   public login(username: string, password: string): void {
     const payload = new HttpParams()
       .set('username', username)
@@ -44,33 +69,9 @@ export class AuthServiceService {
             if (res.body != null) {
               this.authToken.next(res.body);
             }
-            // console.log(res.body);
-            // this.authToken.next(res?.body);
           }
         },
         (error) => console.warn(error)
       );
-
-    // this.httpClient
-    //   .post<any>(environment.baseUrl + this.apiUrl + 'login', {
-    //     headers: new HttpHeaders({
-    //       'Content-Type': 'application/x-www-form-urlencoded',
-    //     }),
-    //     params: new HttpParams()
-    //       .set('username', username)
-    //       .set('password', password),
-    //   })
-    //   .subscribe(
-    //     (res) => {
-    //       console.log(res);
-    //       if (res != null) {
-    //         console.log(res);
-    //         this.authToken.next(res);
-    //       }
-    //     },
-    //     (error) => {
-    //       console.log('Error login');
-    //     }
-    //   );
   }
 }

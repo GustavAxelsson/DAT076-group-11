@@ -13,3 +13,5 @@
 /database/src/main/webapp/frontend/node
 /database/src/main/webapp/node_modules
 /database/src/main/webapp/dist
+/database/src/angular/dist
+/database/src/angular/node_modules

@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import restApi.model.dao.CategoryDAO;
 import restApi.model.dao.ProductDAO;
+import restApi.model.dao.UserDao;
 import restApi.model.entity.Category;
 import restApi.model.entity.Product;
 

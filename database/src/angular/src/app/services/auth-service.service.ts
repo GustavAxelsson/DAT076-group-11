@@ -80,22 +80,40 @@ export class AuthServiceService {
   }
 
   decodeToken(token: string) {
-    const tmp = atob(token.split('.')[1]);
-    const json: JsonObject = (tmp as unknown) as JsonObject;
-    console.log(json);
+    const tmp = JSON.parse(atob(token.split('.')[1]));
+    const role: UserType = tmp['groups'][0].toUpperCase();
+    const username = tmp['sub'];
+    const userId = tmp['userId'];
+
+    const authUser: AuthUser = {
+      username: username,
+      userId: userId,
+      userType: role,
+    };
+
+    this.authUser.next(authUser);
+  }
+  parseUserType(jsonObject: JsonObject): UserType {
+    if (jsonObject !== undefined && jsonObject['groups'] !== undefined) {
+      const tmp: string[] = (jsonObject['groups'] as unknown) as string[];
+      if (tmp !== undefined && tmp.length > 0) {
+        switch (tmp[0]) {
+          case 'user':
+            return 'USER';
+          case 'admin':
+            return 'ADMIN';
+          default:
+            return undefined;
+        }
+      }
+    }
+    return undefined;
   }
 }
+
 export type UserType = 'USER' | 'ADMIN' | undefined;
 export interface AuthUser {
-  userType: UserType;
-  userId: string;
-  username: string;
+  userType: UserType | undefined;
+  userId: string | undefined;
+  username: string | undefined;
 }
-
-//{
-// "sub":"g",
-// "iss":"webshop-company",
-// "groups":["user"],
-// "exp":1615491182,
-// "iat":1615490582,
-// "jti":"42"}

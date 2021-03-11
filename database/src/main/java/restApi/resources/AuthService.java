@@ -34,7 +34,7 @@ public class AuthService {
             userDao.registerUser(username, password);
             Set<String> roles = new HashSet<>();
             roles.add("user");
-            String token = TokenGenerator.generateToken(username, roles, user.getId());
+            String token = TokenGenerator.generateToken(username, roles, 0L);
 
             return Response.status(Response.Status.CREATED)
                     .header(AUTHORIZATION, "Bearer ".concat(token))

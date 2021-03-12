@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ShoppingCartService } from './services/shopping-cart.service';
+import { ShoppingCartService } from './services/shopping-service/shopping-cart.service';
 import { Observable } from 'rxjs';
 
 @Component({

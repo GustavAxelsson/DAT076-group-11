@@ -4,10 +4,12 @@ import { ProductsComponent } from './pages/products/products.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
-import { AdminProductsComponent } from './pages/admin-products/admin-products.component';
+import { AdminProductsComponent } from './pages/logged-on-pages/admin/admin-products/admin-products.component';
 import { ProductComponent } from './pages/products/id/product/product.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { UserHomeComponent } from './pages/logged-on-pages/user/user-home/user-home.component';
+import { AdminHomeComponent } from './pages/logged-on-pages/admin/admin-home/admin-home.component';
 
 const routes: Routes = [
   {
@@ -31,10 +33,6 @@ const routes: Routes = [
     component: ShoppingCartComponent,
   },
   {
-    path: 'admin-products',
-    component: AdminProductsComponent,
-  },
-  {
     path: 'product/:id',
     component: ProductComponent,
   },
@@ -45,6 +43,21 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'user/:id',
+    component: UserHomeComponent,
+    loadChildren: () =>
+      import('./pages/logged-on-pages/user/user.module').then(
+        (mod) => mod.UserModule
+      ),
+  },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./pages/logged-on-pages/admin/admin.module').then(
+        (mod) => mod.AdminModule
+      ),
   },
 ];
 

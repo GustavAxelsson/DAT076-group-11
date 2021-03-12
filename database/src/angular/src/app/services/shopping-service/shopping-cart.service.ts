@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Product } from '../models/product';
+import { Product } from '../../models/product';
 import { map } from 'rxjs/operators';
-import { Category } from '../models/category';
-import { environment } from '../../environments/environment';
+import { Category } from '../../models/category';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',

@@ -2,18 +2,16 @@ import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpEvent,
-  HttpEventType,
   HttpHeaders,
   HttpParams,
-  HttpResponse,
 } from '@angular/common/http';
 import { forkJoin, Observable, of } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { Product } from '../models/product';
-import { Category } from '../models/category';
+import { environment } from '../../../environments/environment';
+import { Product } from '../../models/product';
+import { Category } from '../../models/category';
 import { DomSanitizer } from '@angular/platform-browser';
 import { map, switchMap, take } from 'rxjs/operators';
-import { AuthServiceService } from './auth-service.service';
+import { AuthServiceService } from '../auth-service/auth-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +19,9 @@ import { AuthServiceService } from './auth-service.service';
 export class ProductService {
   private serviceUrl: string = environment.baseUrl + '/products/';
 
-  apiToken: String = '';
-
+  header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    headers: this.header,
   };
 
   constructor(
@@ -32,20 +29,20 @@ export class ProductService {
     private sanitizer: DomSanitizer,
     private authService: AuthServiceService
   ) {
-    authService.authToken$.subscribe((res) => {
-      this.apiToken = res;
+    authService.authToken$.subscribe((token) => {
+      if (token !== undefined) {
+        this.header = new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        });
+      }
     });
   }
 
   public getAllProducts$(): Observable<Product[]> {
     return this.httpClient.get<Product[]>(
       this.serviceUrl + 'list-all-products',
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + this.apiToken,
-        }),
-      }
+      this.httpOptions
     );
   }
 
@@ -57,7 +54,7 @@ export class ProductService {
         if (response === undefined) {
           return undefined;
         }
-        let objectURL = URL.createObjectURL(response);
+        const objectURL = URL.createObjectURL(response);
         product.url = this.sanitizer.bypassSecurityTrustUrl(objectURL);
         return product;
       })
@@ -78,39 +75,36 @@ export class ProductService {
   }
 
   public getAllProductsForCategory$(name: string): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(
-      this.serviceUrl + 'list-category-products',
-      {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-        params: new HttpParams().set('name', name),
-      }
-    );
-  }
-
-  public getProductById(id: number): Observable<Product | undefined> {
-    return this.httpClient.get<Product>(this.serviceUrl + 'product-id', {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      params: new HttpParams().set('id', id.toString()),
+    const queryParams: HttpParams = new HttpParams().set('name', name);
+    const url = this.serviceUrl + 'list-category-products';
+    return this.httpClient.get<Product[]>(url, {
+      headers: this.header,
+      params: queryParams,
     });
   }
 
-  public addProduct(product: Product): Observable<Object> {
-    return this.httpClient.post(
-      this.serviceUrl + 'add-product',
-      product,
-      this.httpOptions
-    );
+  public getProductById(id: number): Observable<Product | undefined> {
+    const url = this.serviceUrl + 'product-id';
+    const queryParams: HttpParams = new HttpParams().set('id', id.toString());
+    return this.httpClient.get<Product>(url, {
+      headers: this.header,
+      params: queryParams,
+    });
   }
 
-  public fetchCategories(): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(
-      environment.baseUrl + '/category/' + 'list-all-categories'
-    );
+  public addProduct(product: Product): Observable<void> {
+    const url = this.serviceUrl + 'add-product';
+    return this.httpClient.post<void>(url, product, this.httpOptions);
   }
 
-  public uploadProductImage(img: FormData): Observable<any> {
-    console.log(img);
-    return this.httpClient.post<any>(this.serviceUrl + 'upload-image', img, {
+  public fetchCategories$(): Observable<Category[]> {
+    const url = environment.baseUrl + '/category/' + 'list-all-categories';
+    return this.httpClient.get<Category[]>(url, this.httpOptions);
+  }
+
+  public uploadProductImage(img: FormData): Observable<HttpEvent<any>> {
+    const url = this.serviceUrl + 'upload-image';
+    return this.httpClient.post<any>(url, img, {
       reportProgress: true,
       observe: 'events',
     });
@@ -126,11 +120,8 @@ export class ProductService {
     });
   }
 
-  public addNewCategory(name: string) {
-    return this.httpClient.post(
-      environment.baseUrl + '/category/' + 'add-category',
-      name,
-      this.httpOptions
-    );
+  public addNewCategory(name: string): Observable<void> {
+    const url = environment.baseUrl + '/category/' + 'add-category';
+    return this.httpClient.post<void>(url, name, this.httpOptions);
   }
 }

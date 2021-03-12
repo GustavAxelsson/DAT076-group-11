@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ShoppingCartService } from '../../services/shopping-cart.service';
-import { ProductService } from '../../services/product.service';
+import { ShoppingCartService } from '../../services/shopping-service/shopping-cart.service';
+import { ProductService } from '../../services/product-service/product.service';
 import { Product } from '../../models/product';
 import { Router } from '@angular/router';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -18,17 +18,14 @@ export class ProductsComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private shoppingCartService: ShoppingCartService,
-    private router: Router,
-
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.productService.getAllProductsWithImage().subscribe(
-      res => {
-        console.log(res);
-        this.products = res;
-      }
-    );
+    this.productService.getAllProductsWithImage().subscribe((res) => {
+      console.log(res);
+      this.products = res;
+    });
     // let prod: Product[] = [];
     // this.productService.getAllProducts$().pipe(
     //   switchMap((products: Product[]) => {

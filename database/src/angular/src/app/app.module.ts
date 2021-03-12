@@ -8,7 +8,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
 import { HttpClientModule } from '@angular/common/http';
-import { AdminProductsComponent } from './pages/admin-products/admin-products.component';
+import { AdminProductsComponent } from './pages/logged-on-pages/admin/admin-products/admin-products.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -25,6 +25,7 @@ import { ShoppingCartTableComponent } from './components/shopping-cart-table/sho
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { UserHomeComponent } from './pages/logged-on-pages/user/user-home/user-home.component';
 
 @NgModule({
   declarations: [
@@ -33,11 +34,11 @@ import { RegisterComponent } from './pages/register/register.component';
     HomeComponent,
     AboutComponent,
     ShoppingCartComponent,
-    AdminProductsComponent,
     ProductComponent,
     ShoppingCartTableComponent,
     LoginComponent,
     RegisterComponent,
+    UserHomeComponent,
   ],
   imports: [
     BrowserModule,

@@ -7,8 +7,8 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import { map, tap } from 'rxjs/operators';
 import { JsonObject } from '@angular/compiler-cli/ngcc/src/packages/entry_point';
 
 @Injectable({
@@ -24,6 +24,7 @@ export class AuthServiceService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
+  authUser$: Observable<AuthUser | undefined> = this.authUser.asObservable();
   authToken$: Observable<string> = this.authToken.asObservable();
   private apiUrl = '/auth/';
 
@@ -42,9 +43,7 @@ export class AuthServiceService {
       })
       .subscribe(
         (res) => {
-          console.log(res);
           if (res.type === HttpEventType.Response) {
-            console.log(res.body);
             if (res.body != null) {
               this.authToken.next(res.body);
             }
@@ -57,7 +56,7 @@ export class AuthServiceService {
   public login(
     username: string,
     password: string
-  ): Observable<HttpEvent<string>> {
+  ): Observable<AuthUser | undefined> {
     const payload = new HttpParams()
       .set('username', username)
       .set('password', password);
@@ -70,16 +69,17 @@ export class AuthServiceService {
         responseType: 'text',
       })
       .pipe(
-        tap((response) => {
+        map((response) => {
           if (response.type === HttpEventType.Response && response.body) {
             this.authToken.next(response.body);
-            this.decodeToken(response.body);
+            return this.decodeToken(response.body);
           }
+          return undefined;
         })
       );
   }
 
-  decodeToken(token: string) {
+  decodeToken(token: string): AuthUser {
     const tmp = JSON.parse(atob(token.split('.')[1]));
     const role: UserType = tmp['groups'][0].toUpperCase();
     const username = tmp['sub'];
@@ -90,9 +90,10 @@ export class AuthServiceService {
       userId: userId,
       userType: role,
     };
-
     this.authUser.next(authUser);
+    return authUser;
   }
+
   parseUserType(jsonObject: JsonObject): UserType {
     if (jsonObject !== undefined && jsonObject['groups'] !== undefined) {
       const tmp: string[] = (jsonObject['groups'] as unknown) as string[];

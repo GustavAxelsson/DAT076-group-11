@@ -1,14 +1,19 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Category } from '../../models/category';
-import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Category } from '../../../../models/category';
+import { ProductService } from '../../../../services/product-service/product.service';
+import { Product } from '../../../../models/product';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { catchError, map, take } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthServiceService } from '../../services/auth-service.service';
+import { AuthServiceService } from '../../../../services/auth-service/auth-service.service';
 
 @Component({
   selector: 'app-admin-products',
@@ -39,7 +44,7 @@ export class AdminProductsComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private sanitizer: DomSanitizer,
-    private _snackBar: MatSnackBar,
+    private snackBar: MatSnackBar,
     private authService: AuthServiceService
   ) {}
 
@@ -49,31 +54,31 @@ export class AdminProductsComponent implements OnInit {
     this.refreshStreams();
   }
 
-  public resetForms() {
+  public resetForms(): void {
     this.name?.patchValue('');
     this.price?.patchValue('');
     this.category?.patchValue('');
     this.description?.patchValue('');
   }
 
-  public resetCategory() {
+  public resetCategory(): void {
     this.newCategory = undefined;
   }
 
-  public resetImage() {
+  public resetImage(): void {
     this.selectedProduct = undefined;
     this.imageUrl = undefined;
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
+  openSnackBar(message: string, action: string): void {
+    this.snackBar.open(message, action, {
       duration: 2000,
     });
   }
 
   public refreshStreams(): void {
     combineLatest([
-      this.productService.fetchCategories(),
+      this.productService.fetchCategories$(),
       this.productService.getAllProducts$(),
     ])
       .pipe(take(1))
@@ -85,9 +90,11 @@ export class AdminProductsComponent implements OnInit {
       });
   }
 
-  public uploadImage() {
+  public uploadImage(): void {
     const img = new FormData();
+    // tslint:disable-next-line:no-non-null-assertion
     const productId: string = this.selectedProduct?.id!;
+    // tslint:disable-next-line:no-non-null-assertion
     img.append('file', this.selectedFile!, productId);
     this.productService
       .uploadProductImage(img)
@@ -97,12 +104,13 @@ export class AdminProductsComponent implements OnInit {
             case HttpEventType.UploadProgress:
               this.uploadInProgress = true;
               this.uploadProgress = Math.round(
-                (event.loaded * 100) / event.total
+                (event.loaded * 100) / event.total!
               );
               break;
             case HttpEventType.Response:
               return event;
           }
+          return event;
         }),
         catchError((error: HttpErrorResponse) => {
           this.uploadInProgress = false;
@@ -118,11 +126,7 @@ export class AdminProductsComponent implements OnInit {
       });
   }
 
-  fetchProducts() {
-    this.productService.getAllProducts$().subscribe((res) => console.log(res));
-  }
-
-  addCategory() {
+  addCategory(): void {
     if (this.newCategory === undefined) {
       return;
     }
@@ -139,15 +143,15 @@ export class AdminProductsComponent implements OnInit {
       );
   }
 
-  onFileSelected() {
+  onFileSelected(): void {
     if (this.fileInput?.nativeElement && this.fileInput.nativeElement.files) {
       this.selectedFile = this.fileInput.nativeElement.files[0];
-      let objectURL = URL.createObjectURL(this.selectedFile);
+      const objectURL = URL.createObjectURL(this.selectedFile);
       this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     const p: Product = {
       name: this.formGroup.get('name')?.value,
       price: this.formGroup.get('price')?.value,
@@ -167,16 +171,16 @@ export class AdminProductsComponent implements OnInit {
     );
   }
 
-  get name() {
+  get name(): AbstractControl | null {
     return this.formGroup.get('name');
   }
-  get price() {
+  get price(): AbstractControl | null {
     return this.formGroup.get('price');
   }
-  get description() {
+  get description(): AbstractControl | null {
     return this.formGroup.get('description');
   }
-  get category() {
+  get category(): AbstractControl | null {
     return this.formGroup.get('category');
   }
 }

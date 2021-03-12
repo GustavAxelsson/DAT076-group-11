@@ -7,6 +7,7 @@ import javax.ejb.EJB;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -17,31 +18,20 @@ public class CategoryResource {
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("list-all-categories")
-    public List<Category> list() throws FileNotFoundException{
-        try {
+    public Response list() {
             List<Category> categories = categoryDAO.findAll();
             if (categories == null) {
-                throw new FileNotFoundException();
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
-
-            return categories;
-        } catch (Exception e) {
-
-            throw new FileNotFoundException();
-        }
+            return Response.ok(categories).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("add-category")
     public void addCategory(@NotNull String categoryName) throws InternalServerErrorException {
-        try {
             Category cat = new Category(categoryName);
             categoryDAO.create(cat);
-        } catch (Exception e) {
-            throw new InternalServerErrorException();
-        }
     }
 }

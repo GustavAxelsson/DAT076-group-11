@@ -55,5 +55,10 @@ public class UserDao extends AbstractDAO<WebshopUser>{
                 .fetchOne();
     }
 
+    public void updateRoleOnUser(WebshopUser user, String role) {
+        user.setRole(role);
+        entityManager.merge(user);
+    }
+
 
 }

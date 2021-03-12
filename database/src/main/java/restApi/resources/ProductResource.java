@@ -1,5 +1,5 @@
 package restApi.resources;
-import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import restApi.model.dao.CategoryDAO;
@@ -8,9 +8,7 @@ import restApi.model.dao.ProductImageDAO;
 import restApi.model.entity.Product;
 import restApi.model.entity.ProductImage;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
-import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,7 +16,7 @@ import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,67 +36,49 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("list-all-products")
-    @RolesAllowed("user")
-    public List<Product> list() throws FileNotFoundException {
-        try {
-            List<Product> products = productDAO.findAll();
-            if (products == null) {
-                throw new FileNotFoundException();
-            }
-            return products;
-
-        } catch (Exception e) {
-            throw new InternalServerErrorException();
-        }
-
-    }
-
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("list-category-products")
-    public List<Product> allProductsByCategory(@NotNull String name) throws FileNotFoundException {
-        List<Product> products = categoryDAO.getAllProductsForCategory(name);
+    public List<Product> list() {
+        List<Product> products = productDAO.findAll();
         if (products == null) {
-            throw new FileNotFoundException();
+            return new ArrayList<>();
         }
         return products;
     }
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Path("list-category-products")
+    public Response allProductsByCategory(@NotNull String name) throws FileNotFoundException {
+        List<Product> products = categoryDAO.getAllProductsForCategory(name);
+        if (products == null || products.size() < 1) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(products).build();
+    }
+
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("product-id")
-    public Product getProductById(@QueryParam("id")@NotNull Long id) throws FileNotFoundException{
+    public Response getProductById(@QueryParam("id")@NotNull Long id) throws FileNotFoundException{
         Product product = productDAO.getProductById(id);
         if (product == null) {
-            throw new FileNotFoundException();
-        } else {
-            return product;
+            Response.status(Response.Status.NOT_FOUND).build();
         }
+        return Response.ok(product).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("add-product")
-    public void addNewProduct(@NotNull Product product) throws IllegalArgumentException{
-        if (product == null) {
-            throw new IllegalArgumentException();
-        }
-        try {
+    public void addNewProduct(@NotNull Product product) {
             productDAO.addNewProduct(product);
-
-        } catch (Exception e) {
-            throw new InternalServerErrorException();
-        }
     }
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("purchase")
-    public boolean purchase(@QueryParam("products")@NotNull List<Product> products) throws FileNotFoundException {
+    public boolean purchase(@QueryParam("products")@NotNull List<Product> products) {
         return false;
     }
 
@@ -107,9 +87,8 @@ public class ProductResource {
 
     @Path("/upload-image")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void uploadFile(@FormDataParam("file") InputStream inputStream,
+    public Response uploadFile(@FormDataParam("file") InputStream inputStream,
                            @FormDataParam("file") FormDataContentDisposition fileDetail) {
-
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
@@ -127,12 +106,14 @@ public class ProductResource {
             Product product = productDAO.getProductById(id);
 
             if (product == null) {
-                return;
+                Response.status(Response.Status.NOT_FOUND);
             }
 
             productDAO.updateProductImage(product, upload);
+
+            return Response.ok().build();
         } catch (Exception e) {
-            System.out.println(e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -141,16 +122,13 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getProductImageById(@QueryParam("id") long id) {
-        try {
             ProductImage randomFile = productImageDAO.getProductImageById(id);
-
+            if (randomFile == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
             return Response.ok(randomFile.getData(), MediaType.APPLICATION_OCTET_STREAM)
                     .header("Content-Disposition",
                             "attachment; filename=" + randomFile.getFileName()).build();
-        } catch (Exception e) {
-            System.out.println("error: downloading image");
-            return null;
-        }
 
     }
 }

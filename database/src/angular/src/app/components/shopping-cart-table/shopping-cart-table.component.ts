@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { ShoppingCartTableDataSource } from './shopping-cart-table-datasource';
 import { Product } from '../../models/product';
-import { ShoppingCartService } from '../../services/shopping-cart.service';
+import { ShoppingCartService } from '../../services/shopping-service/shopping-cart.service';
 
 @Component({
   selector: 'app-shopping-cart-table',

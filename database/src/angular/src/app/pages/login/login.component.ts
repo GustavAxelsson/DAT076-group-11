@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthServiceService } from '../../services/auth-service.service';
-import { ProductService } from '../../services/product.service';
+import {
+  AuthServiceService,
+  AuthUser,
+} from '../../services/auth-service/auth-service.service';
+import { ProductService } from '../../services/product-service/product.service';
 import { HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,10 +27,17 @@ export class LoginComponent implements OnInit {
 
   public login() {
     this.authService.login(this.usernameLogin, this.passwordLogin).subscribe(
-      (response) => {
-        if (response.type === HttpEventType.Response) {
-          // this.router.navigate(['home']);
+      (authUser: AuthUser | undefined) => {
+        if (authUser === undefined) {
+          return;
         }
+        if (authUser.userType === 'ADMIN') {
+          return this.router.navigate(['admin']);
+        }
+        if (authUser.userType === 'USER') {
+          this.router.navigate(['user', authUser.userId]);
+        }
+        return;
       },
       (error) => {
         this._snackBar.open('Login failed', 'Close', {

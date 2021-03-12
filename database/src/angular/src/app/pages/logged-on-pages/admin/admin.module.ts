@@ -22,6 +22,11 @@ const routes: Routes = [
         path: 'add-product',
         component: AdminProductsComponent,
       },
+
+      {
+        path: 'edit-users',
+        component: EditUserComponent,
+      },
     ],
   },
 ];

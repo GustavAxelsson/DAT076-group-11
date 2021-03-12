@@ -22,6 +22,7 @@ public class Sale implements Serializable {
     private List<Product> productList;
 
     private double percentage;
+    private boolean currentSale;
 
     public Sale(String name, double percentage) {
         this.setName(name);

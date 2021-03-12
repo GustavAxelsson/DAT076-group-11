@@ -22,12 +22,7 @@ public class ProductDAO extends AbstractDAO<Product> {
     }
 
     public void addNewProduct(Product product) {
-        Product p = new Product();
-        p.setName(product.getName());
-        p.setPrice(product.getPrice());
-        p.setDescription(product.getDescription());
-        p.setCategory(product.getCategory());
-        entityManager.persist(p);
+        entityManager.merge(product);
     }
 
     public Product getProductById(long id) {

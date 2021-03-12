@@ -29,4 +29,48 @@ public class SaleDAO extends AbstractDAO<Sale> {
     public void addNewSale(Sale sale) {
         entityManager.persist(sale);
     }
+
+    public void addProductToSale(Product product, Sale sale) {
+        product.setSale(sale);
+        entityManager.merge(product);
+    }
+
+    public void setCurrentSale (Sale currentSale) {
+        QSale sale = QSale.sale;
+        JPAQuery<Product> query = new JPAQuery<>(entityManager);
+        List <Sale> saleList = query.select(sale)
+                .from(sale)
+                .fetch();
+        for(Sale s : saleList) {
+            s.setCurrentSale(false);
+            entityManager.merge(s);
+        }
+        currentSale.setCurrentSale(true);
+        entityManager.merge(currentSale);
+    }
+
+    public Sale getCurrentSale () {
+        QSale sale = QSale.sale;
+        JPAQuery<Product> query = new JPAQuery<>(entityManager);
+        List <Sale> saleList = query.select(sale)
+                .from(sale)
+                .fetch();
+        Sale currSale = new Sale();
+        for(Sale s : saleList) {
+            if(s.isCurrentSale()) {
+                currSale = s;
+                break;
+            }
+        }
+    return currSale;
+    }
+
+    public Sale getSaleById(long id) {
+        QSale sale = QSale.sale;
+        JPAQuery<Sale> query = new JPAQuery<>(entityManager);
+        return query.select(sale)
+                .from(sale)
+                .where(sale.id.eq(id))
+                .fetchOne();
+    }
 }

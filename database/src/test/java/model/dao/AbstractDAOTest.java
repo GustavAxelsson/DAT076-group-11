@@ -36,8 +36,8 @@ abstract class AbstractDAOTest {
 
     @Before
     public void preparePersistenceTest() throws Exception {
-        clearData();
-        startTransaction();
+ /*       clearData();
+        startTransaction();*/
     }
 
     private void clearData() throws Exception {
@@ -47,6 +47,7 @@ abstract class AbstractDAOTest {
         em.createQuery("delete from ProductOrder ").executeUpdate();
         em.createQuery("delete from Product ").executeUpdate();
         em.createQuery("delete from Category ").executeUpdate();
+        em.createQuery("delete from Sale ").executeUpdate();
         utx.commit();
     }
 

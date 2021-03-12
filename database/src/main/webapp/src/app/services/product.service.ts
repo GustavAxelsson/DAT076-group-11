@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { Product } from '../models/product';
 import { Category } from '../models/category';
 import { Sale } from '../models/sale';
+import {SaleProduct} from "../models/SaleProduct";
 
 @Injectable({
   providedIn: 'root',
@@ -61,6 +62,40 @@ export class ProductService {
       environment.baseUrl + '/sale/' + 'add-sale',
       sale,
       this.httpOptions
+    );
+  }
+
+  public fetchSales(): Observable<Sale[]> {
+    return this.httpClient.get<Sale[]>(
+      environment.baseUrl + '/sale/' + 'list-all-sales'
+    );
+  }
+
+  public addProductToSale(productId: string, saleId: number): Observable<void> {
+    return this.httpClient.post<void>(environment.baseUrl + '/sale/' + 'add-product-sale',
+      {productId: productId, saleId: saleId})
+  }
+
+  public getAllProductsForSale$(sale: Sale): Observable<Product[]> {
+    return this.httpClient.get<Product[]>(
+      environment.baseUrl + '/sale/' + 'list-sale-products',
+      {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      }
+    );
+  }
+
+  public setCurrentSale(sale: Sale): Observable<Object> {
+    return this.httpClient.post(
+      environment.baseUrl + '/sale/' + 'set-current-sale',
+      sale,
+      this.httpOptions
+    );
+  }
+
+  public getCurrentSale(): Observable<Sale> {
+    return this.httpClient.get<Sale>(
+      environment.baseUrl + '/sale/' + 'get-current-sale',
     );
   }
 }

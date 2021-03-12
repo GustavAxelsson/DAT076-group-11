@@ -1,1 +1,20 @@
-<div>HomeComponent works</div>
+<h1 class="welcome-heading">WELCOME TO THE SHOP</h1>
+<div class="container">
+  <div class="sales-layout">
+    <div
+      class="card"
+      (click)="navigateToProducts()"
+      *ngFor="let sale of sales"
+    >
+      <h2>{{sale.name}}</h2>
+      <div
+        class="card"
+        (click)="navigateToProductDetail()"
+        *ngFor="let saleProduct of saleProducts"
+      >
+        <h1>{{saleProduct.name}}</h1>
+        <p class="price">${{ saleProduct.price*sale.percentage }}</p>
+      </div>
+    </div>
+  </div>
+</div>

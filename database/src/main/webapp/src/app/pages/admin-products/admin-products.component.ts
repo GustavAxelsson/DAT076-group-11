@@ -4,6 +4,7 @@ import { Category } from '../../models/category';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
 import {Sale} from "../../models/sale";
+import {SaleProduct} from "../../models/SaleProduct";
 
 @Component({
   selector: 'app-admin-products',
@@ -27,9 +28,16 @@ export class AdminProductsComponent implements OnInit {
     name: new FormControl(''),
     percentage: new FormControl(''),
   })
+
+  formGroupAddProductSale = new FormGroup({
+    sale: new FormControl(''),
+    product: new FormControl(''),
+  })
   constructor(private productService: ProductService) {}
 
   public categories: Category[] = [];
+  public saleProducts: Product[] = [];
+  public sales: Sale[] = [];
 
   ngOnInit(): void {
     this.productService.fetchCategories().subscribe((categories) => {
@@ -37,6 +45,17 @@ export class AdminProductsComponent implements OnInit {
         this.categories = categories;
       }
     });
+    this.productService.getAllProducts$().subscribe((saleProducts) => {
+      if (saleProducts !== undefined && saleProducts.length > 0) {
+        this.saleProducts = saleProducts;
+      }
+    });
+    this.productService.fetchSales().subscribe((sales) => {
+      if (sales !== undefined && sales.length > 0) {
+        this.sales = sales;
+      }
+    });
+
   }
 
   onSubmitProduct() {
@@ -63,6 +82,23 @@ export class AdminProductsComponent implements OnInit {
       (res) => console.log('res', res),
       (error) => console.warn('error', error)
     );
+  }
+
+  onSubmitProductToSale() {
+    const sp: SaleProduct = {
+      sale: this.formGroupAddProductSale.get('sale')?.value,
+      product: this.formGroupAddProductSale.get('product')?.value,
+    };
+
+    console.log(sp)
+    if(sp && sp.product && sp.product.id && sp.sale && sp.sale.id) {
+      console.log("productId: ", sp.product.id)
+      console.log("saleId: ", sp.sale.id)
+      this.productService.addProductToSale(sp.product.id, sp.sale.id).subscribe(
+        (res) => console.log('res', res),
+        (error) => console.warn('error', error)
+      );
+    }
   }
 
   get name() {

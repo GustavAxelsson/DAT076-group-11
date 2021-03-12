@@ -62,12 +62,12 @@
         <mat-label>
           Category
         </mat-label>
-        <mat-select>
-          <mat-option *ngFor="let category of categories" [value]="category.name">
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let category of categories" [value]="category">
             {{category.name}}
           </mat-option>
         </mat-select>
-        <input id="category" class="input-field" matInput type="text" formControlName="name">
+        <input id="category" class="input-field" matInput type="text">
       </mat-form-field>
 
     </form>
@@ -90,6 +90,34 @@
       </mat-form-field>
     </form>
     <button mat-raised-button (click)="onSubmitSale()">Add</button>
+  </div>
+  <div>
+    <h1>Add product to sale</h1>
+    <form [formGroup]="formGroupAddProductSale" class="form-container">
+      <mat-form-field color="primary">
+        <mat-label>
+          Product
+        </mat-label>
+        <mat-select formControlName="product">
+          <mat-option *ngFor="let saleProduct of saleProducts " [value]="saleProduct">
+            {{saleProduct.name}}
+          </mat-option>
+        </mat-select>
+        <input id="saleProduct" class="input-field" matInput type="text">
+      </mat-form-field>
+      <mat-form-field color="primary">
+        <mat-label>
+          Sale
+        </mat-label>
+        <mat-select formControlName="sale">
+          <mat-option *ngFor="let sale of sales " [value]="sale">
+            {{sale.name}}
+          </mat-option>
+        </mat-select>
+        <input id="sale" class="input-field" matInput type="text">
+      </mat-form-field>
+    </form>
+    <button mat-raised-button (click)="onSubmitProductToSale()">Add</button>
   </div>
 </div>
 

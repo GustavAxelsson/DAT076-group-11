@@ -6,9 +6,7 @@ import { AppComponent } from './app.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
-import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
 import { HttpClientModule } from '@angular/common/http';
-import { AdminProductsComponent } from './pages/logged-on-pages/admin/admin-products/admin-products.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -26,6 +24,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { UserHomeComponent } from './pages/logged-on-pages/user/user-home/user-home.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,6 @@ import { UserHomeComponent } from './pages/logged-on-pages/user/user-home/user-h
     ProductsComponent,
     HomeComponent,
     AboutComponent,
-    ShoppingCartComponent,
     ProductComponent,
     ShoppingCartTableComponent,
     LoginComponent,
@@ -57,6 +56,8 @@ import { UserHomeComponent } from './pages/logged-on-pages/user/user-home/user-h
     MatSortModule,
     FormsModule,
     MatSnackBarModule,
+    MatIconModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent],

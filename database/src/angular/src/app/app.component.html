@@ -1,34 +1,31 @@
 <header>
   <div class="navigation-bar">
-    <button mat-raised-button [routerLink]="'login'">Go to login</button>
-    <button mat-raised-button [routerLink]="'register'">Register</button>
+    <button mat-button [routerLink]="'products'">Products</button>
 
-    <div class="products">
-      <div class="products-link" [routerLink]="'products'">Products</div>
-      <div class="categories-menu">
-        <div class="cat">Shirts</div>
-        <div class="cat">Shoes</div>
-        <div class="cat">T-shirts</div>
-      </div>
+    <div class="login-register-buttons">
+      <ng-container *ngIf="authUser !== undefined; else login">
+        <div>Logged in as : {{authUser.username}}</div>
+      </ng-container>
+
+      <ng-template #login>
+        <button mat-button (click)='openDialog()'>Login</button>
+      </ng-template>
+      <button mat-button [routerLink]="'register'">Register</button>
     </div>
-
-    <div class="right-aligned">
-      <div class="shopping-cart" [routerLink]="'shopping-cart'">
+    <div class="icon-buttons">
+      <div class="cart-button">
+        <button mat-icon-button [routerLink]="'shopping-cart'">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
         <div class="number">{{ itemsInShoppingCart$ | async }}</div>
-        <div class="icon-buttons">
-          <i class="bi bi-basket2"></i>
-        </div>
       </div>
 
-      <div class="icon-buttons home-button" [routerLink]="'home'">
-        <i class="bi bi-house-door"></i>
-      </div>
-
-      <div class="icon-buttons">
-        <i class="bi bi-person"></i>
-      </div>
+      <button mat-icon-button [routerLink]="'home'">
+        <mat-icon>home</mat-icon>
+      </button>
     </div>
   </div>
+
 </header>
 
 <router-outlet></router-outlet>

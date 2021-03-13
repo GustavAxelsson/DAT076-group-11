@@ -1,7 +1,13 @@
-<div>
-  <div>Users</div>
+<mat-card class="card-container">
   <div *ngFor="let user of users">
-    <span>{{ user.username }}</span>
-    <span>{{ user.role }}</span>
+    <mat-form-field>
+      <mat-label>{{user.username}}</mat-label>
+      <mat-select (selectionChange)="userChanged(user, $event.value)"
+                  [value]="user.role">
+        <mat-option [value]="'user'">user</mat-option>
+        <mat-option [value]="'admin'">admin</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button (click)='updateUser(user)'>Update</button>
   </div>
-</div>
+</mat-card>

@@ -3,9 +3,6 @@ import { ShoppingCartService } from '../../services/shopping-service/shopping-ca
 import { ProductService } from '../../services/product-service/product.service';
 import { Product } from '../../models/product';
 import { Router } from '@angular/router';
-import { map, switchMap, take } from 'rxjs/operators';
-import { DomSanitizer } from '@angular/platform-browser';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-products',
@@ -26,25 +23,6 @@ export class ProductsComponent implements OnInit {
       console.log(res);
       this.products = res;
     });
-    // let prod: Product[] = [];
-    // this.productService.getAllProducts$().pipe(
-    //   switchMap((products: Product[]) => {
-    //     prod = products;
-    //     // @ts-ignore
-    //     const productID= products[0].productImage.id!
-    //     return this.productService.downloadImage(productID);
-    //   })
-    // ).subscribe((response: HttpEvent<Blob>) => {
-    //
-    //     if (response.type ===HttpEventType.Response) {
-    //       console.log(response.body);
-    //       let objectURL = URL.createObjectURL(response.body);
-    //       prod[0].url = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-    //       this.products = prod;
-    //     }
-    //   },
-    //     error => console.log(error)
-    //   );
   }
 
   public addToCart(product: Product, event: Event): void {

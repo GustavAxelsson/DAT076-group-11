@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class ProductOrder implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

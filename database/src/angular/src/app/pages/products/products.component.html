@@ -1,16 +1,21 @@
-<h1 class="productHeader">Products</h1>
-<div class="container" *ngIf="products">
-  <div class="product-layout">
-    <div
-      class="card"
-      (click)="navigateToProduct(product)"
-      *ngFor="let product of products"
-    >
-      <img *ngIf="product && product.url" [src]="product.url" alt="cat food" />
-      <h1>{{ product.name }}</h1>
-      <p class="price">${{ product.price }}</p>
-      <p>{{ product.description }}</p>
-      <p><button (click)="addToCart(product, $event)">Add to Cart</button></p>
-    </div>
-  </div>
+<div class="product-list">
+  <mat-card *ngFor="let product of products">
+    <mat-card-header>
+      <div class="product-header">
+        <h3 >{{product.name}}</h3>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="image-container">
+        <img [src]="product.url" [alt]="product.name"/>
+      </div>
+      <div class="rating-and-price">
+        <div>5/5 (100)</div>
+        <div class="price">{{product.price}} SEK</div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions id="actions">
+      <button (click)="addToCart(product, $event)" mat-button>Add to cart</button>
+    </mat-card-actions>
+  </mat-card>
 </div>

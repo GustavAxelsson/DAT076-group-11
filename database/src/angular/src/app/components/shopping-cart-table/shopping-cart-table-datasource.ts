@@ -6,16 +6,7 @@ import { ShoppingCartService } from '../../services/shopping-service/shopping-ca
 import { Product } from '../../models/product';
 
 export class ShoppingCartTableDataSource extends DataSource<Product> {
-  data: Product[] = [
-    {
-      name: 'Cool product',
-      price: 100,
-      description: 'description',
-      category: {
-        name: 'shoe',
-      },
-    },
-  ];
+  data: Product[] = [];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
@@ -24,15 +15,9 @@ export class ShoppingCartTableDataSource extends DataSource<Product> {
   }
 
   connect(): Observable<Product[]> {
-    // Combine everything that affects the rendered data into one update
-    // stream for the data-table to consume.
-    return this.shoppingCartService.itemsInShoppingCart$;
+    return this.shoppingCartService.getStoredItems$();
   }
 
-  /**
-   *  Called when the table is being destroyed. Use this function, to clean up
-   * any open connections or free any held resources that were set up during connect.
-   */
   disconnect() {}
 
   /**

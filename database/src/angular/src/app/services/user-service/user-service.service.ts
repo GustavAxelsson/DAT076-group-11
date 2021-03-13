@@ -35,12 +35,12 @@ export class UserServiceService {
     return this.httpClient.get<ExternalUser[]>(url, this.httpOptions);
   }
 
-  public updateRoleOnUser(username: string, role: string) {
+  public updateRoleOnUser(username: string, role: string): Observable<void> {
     const url = this.serviceUrl + 'update-user-role';
     const queryParams: HttpParams = new HttpParams()
       .set('username', username)
       .set('role', role);
-    this.httpClient.post(url, null, {
+    return this.httpClient.post<void>(url, null, {
       headers: this.header,
       params: queryParams,
     });

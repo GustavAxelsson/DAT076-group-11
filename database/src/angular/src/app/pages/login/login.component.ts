@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   AuthServiceService,
   AuthUser,
@@ -7,9 +7,9 @@ import { ProductService } from '../../services/product-service/product.service';
 import { HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -20,7 +20,9 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthServiceService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialogRef: MatDialogRef<LoginComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {data: undefined}
   ) {}
 
   ngOnInit(): void {}
@@ -32,11 +34,12 @@ export class LoginComponent implements OnInit {
           return;
         }
         if (authUser.userType === 'ADMIN') {
-          return this.router.navigate(['admin']);
+          this.router.navigate(['admin']);
         }
         if (authUser.userType === 'USER') {
           this.router.navigate(['user', authUser.userId]);
         }
+        this.dialogRef.close();
         return;
       },
       (error) => {

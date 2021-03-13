@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 import { Product } from '../../models/product';
 import { Category } from '../../models/category';
 import { DomSanitizer } from '@angular/platform-browser';
-import { map, switchMap, take } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 import { AuthServiceService } from '../auth-service/auth-service.service';
 
 @Injectable({
@@ -70,9 +70,11 @@ export class ProductService {
         });
         return forkJoin(...observables);
       }),
-      map((batch) => [].concat(...batch))
+      map((batch) => [].concat(...batch)),
+      map(products => products.filter(product => product !== undefined))
     );
   }
+
 
   public getAllProductsForCategory$(name: string): Observable<Product[]> {
     const queryParams: HttpParams = new HttpParams().set('name', name);

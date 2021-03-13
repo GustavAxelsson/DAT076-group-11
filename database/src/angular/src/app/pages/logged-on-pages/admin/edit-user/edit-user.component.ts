@@ -14,6 +14,9 @@ export class EditUserComponent implements OnInit {
 
   constructor(private userService: UserServiceService) {}
 
+  selectedUsername = '';
+  selectedRole = '';
+
   ngOnInit(): void {
     this.userService.getAllUsers().subscribe((users) => {
       if (users && users.length > 0) {
@@ -21,4 +24,17 @@ export class EditUserComponent implements OnInit {
       }
     });
   }
+
+  userChanged(user: ExternalUser, role: string) {
+    user.role = role;
+  }
+
+  updateUser(user: ExternalUser) {
+    if (user && user.username && user.role) {
+      this.userService.updateRoleOnUser(user.username, user.role).subscribe(result => {
+          console.log('Successful');
+        },
+        error => console.log('Error'));
+    }
+    }
 }

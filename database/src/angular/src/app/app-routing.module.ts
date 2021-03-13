@@ -3,13 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductsComponent } from './pages/products/products.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
-import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
-import { AdminProductsComponent } from './pages/logged-on-pages/admin/admin-products/admin-products.component';
 import { ProductComponent } from './pages/products/id/product/product.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { UserHomeComponent } from './pages/logged-on-pages/user/user-home/user-home.component';
-import { AdminHomeComponent } from './pages/logged-on-pages/admin/admin-home/admin-home.component';
+import { ShoppingCartTableComponent } from './components/shopping-cart-table/shopping-cart-table.component';
 
 const routes: Routes = [
   {
@@ -30,7 +28,7 @@ const routes: Routes = [
   },
   {
     path: 'shopping-cart',
-    component: ShoppingCartComponent,
+    component: ShoppingCartTableComponent,
   },
   {
     path: 'product/:id',

@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ProductImage implements Serializable {
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
 
     private String fileName;

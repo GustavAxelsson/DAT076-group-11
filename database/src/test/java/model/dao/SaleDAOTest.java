@@ -37,9 +37,11 @@ public class SaleDAOTest extends AbstractDAOTest {
     @Test
     public void getProductsBySaleTest() {
         p1.setSale(s1);
+        p2.setSale(s1);
         List<Product> expectedList = new ArrayList<>();
         expectedList.add(p1);
-        productDAO.create(p1);
+        expectedList.add(p2);
+        productDAO.createAll(Arrays.asList(p1, p2));
         Assert.assertEquals(expectedList, saleDAO.getProductsFromSale(s1));
     }
 
@@ -55,6 +57,13 @@ public class SaleDAOTest extends AbstractDAOTest {
         productDAO.create(p1);
         saleDAO.addNewSale(s1);
         saleDAO.addProductToSale(p1, s1);
+        List<Product> expectedList = new ArrayList<>();
+        expectedList.add(p1);
+        Assert.assertEquals(expectedList, saleDAO.getProductsFromSale(s1));
+        productDAO.create(p2);
+        saleDAO.addProductToSale(p2, s1);
+        expectedList.add(p2);
+        Assert.assertEquals(expectedList, saleDAO.getProductsFromSale(s1));
     }
 
     @Test

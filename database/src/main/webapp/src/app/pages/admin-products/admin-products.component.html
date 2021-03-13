@@ -119,5 +119,22 @@
     </form>
     <button mat-raised-button (click)="onSubmitProductToSale()">Add</button>
   </div>
+  <div>
+    <h1>Set current sale</h1>
+    <form [formGroup]="formGroupSetCurrentSale" class="form-container">
+      <mat-form-field color="primary">
+        <mat-label>
+          Sale
+        </mat-label>
+        <mat-select formControlName="currentSale">
+          <mat-option *ngFor="let sale of sales " [value]="sale">
+            {{sale.name}}
+          </mat-option>
+        </mat-select>
+        <input id="currentSale" class="input-field" matInput type="text">
+      </mat-form-field>
+    </form>
+    <button mat-raised-button (click)="onSubmitCurrentSale()">Set</button>
+  </div>
 </div>
 

@@ -33,6 +33,10 @@ export class AdminProductsComponent implements OnInit {
     sale: new FormControl(''),
     product: new FormControl(''),
   })
+
+  formGroupSetCurrentSale = new FormGroup({
+    currentSale: new FormControl(''),
+  })
   constructor(private productService: ProductService) {}
 
   public categories: Category[] = [];
@@ -90,15 +94,20 @@ export class AdminProductsComponent implements OnInit {
       product: this.formGroupAddProductSale.get('product')?.value,
     };
 
-    console.log(sp)
     if(sp && sp.product && sp.product.id && sp.sale && sp.sale.id) {
-      console.log("productId: ", sp.product.id)
-      console.log("saleId: ", sp.sale.id)
       this.productService.addProductToSale(sp.product.id, sp.sale.id).subscribe(
         (res) => console.log('res', res),
         (error) => console.warn('error', error)
       );
     }
+  }
+
+  onSubmitCurrentSale() {
+    const cs: Sale = this.formGroupSetCurrentSale.get('currentSale')?.value
+    this.productService.setCurrentSale(cs).subscribe(
+      (res) => console.log('res', res),
+      (error) => console.warn('error', error)
+    );
   }
 
   get name() {

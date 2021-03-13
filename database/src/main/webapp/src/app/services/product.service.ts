@@ -76,11 +76,11 @@ export class ProductService {
       {productId: productId, saleId: saleId})
   }
 
-  public getAllProductsForSale$(sale: Sale): Observable<Product[]> {
+  public getAllProductsForSale(id: number): Observable<Product[]> {
     return this.httpClient.get<Product[]>(
-      environment.baseUrl + '/sale/' + 'list-sale-products',
-      {
+      environment.baseUrl + '/sale/' + 'list-sale-products', {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        params: new HttpParams().set('id', id.toString())
       }
     );
   }

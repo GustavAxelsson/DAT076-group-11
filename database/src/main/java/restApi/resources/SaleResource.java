@@ -51,7 +51,8 @@ public class SaleResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("list-sale-products")
-    public List<Product> allProductsBySale(@NotNull Sale sale) throws FileNotFoundException {
+    public List<Product> getAllProductsForSale(@QueryParam("id") long id) throws FileNotFoundException {
+        Sale sale = saleDAO.getSaleById(id);
         List<Product> products = saleDAO.getProductsFromSale(sale);
         if (products == null) {
             throw new FileNotFoundException();

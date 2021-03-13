@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.productService.getCurrentSale().pipe(
       switchMap(currentSale => {
-        if(currentSale !== undefined && currentSale.id !== undefined) {
+        if(currentSale !== undefined && currentSale.id !== undefined && currentSale.id !== 0) {
           this.currentSale = currentSale;
           return this.productService.getAllProductsForSale(currentSale.id);
         }

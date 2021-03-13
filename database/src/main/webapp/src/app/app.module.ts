@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { ProductComponent } from './pages/products/id/product/product.component';
+import {MatCarouselModule} from "@ngmodule/material-carousel";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ProductComponent } from './pages/products/id/product/product.component'
     MatButtonModule,
     ReactiveFormsModule,
     MatSelectModule,
+    MatCarouselModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

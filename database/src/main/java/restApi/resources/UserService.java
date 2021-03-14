@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ public class UserService {
     public Response getAllUsers() {
         List<WebshopUser> users = userDao.findAll();
         if (users == null || users.size() < 1) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.ok(new ArrayList<>()).build();
         }
         List<ExternalUser> externalUsers = users.stream()
                 .map(user -> {

@@ -1,0 +1,7 @@
+.sidenav {
+  max-width: 150px;
+}
+
+.sidenav-container {
+  height: calc(100vh - 52px);
+}

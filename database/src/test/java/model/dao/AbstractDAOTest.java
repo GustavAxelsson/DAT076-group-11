@@ -23,6 +23,7 @@ abstract class AbstractDAOTest {
                 .addClasses(CustomerDAO.class, Customer.class)
                 .addClasses(ProductDAO.class, Product.class)
                 .addClasses(CategoryDAO.class, Category.class)
+                .addClasses(ProductImageDAO.class, ProductImage.class)
                 .addClasses(SaleDAO.class, Sale.class)
                 .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
@@ -36,8 +37,8 @@ abstract class AbstractDAOTest {
 
     @Before
     public void preparePersistenceTest() throws Exception {
- /*       clearData();
-        startTransaction();*/
+        clearData();
+        startTransaction();
     }
 
     private void clearData() throws Exception {

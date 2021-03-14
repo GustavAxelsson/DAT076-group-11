@@ -1,0 +1,35 @@
+header {
+  background-color: #a4a2a2;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+.navigation-bar {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.login-register-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-button {
+  position: relative;
+}
+
+.icon-buttons {
+  display: flex;
+}
+
+.number {
+  position: absolute;
+  top: 0;
+  background: red;
+  right: 6px;
+  border-radius: 28px;
+  font-size: 13px;
+  padding: 2px;
+}

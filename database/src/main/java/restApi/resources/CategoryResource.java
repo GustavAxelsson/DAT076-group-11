@@ -9,6 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("category")
@@ -20,11 +21,11 @@ public class CategoryResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("list-all-categories")
     public Response list() {
-            List<Category> categories = categoryDAO.findAll();
-            if (categories == null) {
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return Response.ok(categories).build();
+        List<Category> categories = categoryDAO.findAll();
+        if (categories == null) {
+            return Response.ok(new ArrayList<>()).build();
+        }
+        return Response.ok(categories).build();
     }
 
     @POST

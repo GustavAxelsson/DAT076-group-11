@@ -20,6 +20,7 @@ public class JAXRSConfiguration extends Application {
         classes.add(CorsFilter.class);
         classes.add(AuthService.class);
         classes.add(UserService.class);
+        classes.add(SaleResource.class);
         return classes;
     }
 }

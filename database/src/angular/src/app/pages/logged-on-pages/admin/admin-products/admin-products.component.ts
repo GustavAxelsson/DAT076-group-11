@@ -100,20 +100,19 @@ export class AdminProductsComponent implements OnInit {
     combineLatest([
       this.productService.fetchCategories$(),
       this.productService.getAllProducts$(),
+      this.productService.fetchSales()
     ])
       .pipe(take(1))
-      .subscribe(([categories, products]) => {
+      .subscribe(([categories, products, sales]) => {
         this.products =
           products !== undefined && products.length > 0 ? products : [];
         this.categories =
           categories !== undefined && categories.length > 0 ? categories : [];
-      });
 
-    this.productService.fetchSales().subscribe((sales) => {
-      if (sales !== undefined && sales.length > 0) {
-        this.sales = sales;
-      }
-    });
+        if (sales !== undefined && sales.length > 0) {
+          this.sales = sales;
+        }
+      });
   }
 
   public uploadImage(): void {

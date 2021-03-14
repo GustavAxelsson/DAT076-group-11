@@ -11,7 +11,9 @@ import javax.ejb.EJB;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("sale")
@@ -25,39 +27,33 @@ public class SaleResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("add-sale")
-    public void addNewSale(@NotNull Sale sale) throws IllegalArgumentException{
-        if (sale == null) {
-            throw new IllegalArgumentException();
-        }
-        try {
-            saleDAO.addNewSale(sale);
-        } catch (Exception e) {
-        }
+    public void addNewSale(@NotNull Sale sale) {
+        saleDAO.addNewSale(sale);
     }
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("list-all-sales")
-    public List<Sale> getAllSales() throws FileNotFoundException {
+    public Response getAllSales() throws FileNotFoundException {
         List<Sale> sales = saleDAO.findAll();
         if (sales == null) {
-            throw new FileNotFoundException();
+            return Response.ok(new ArrayList<>(), MediaType.APPLICATION_JSON).build();
         }
-        return sales;
+        return Response.ok(sales, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("list-sale-products")
-    public List<Product> getAllProductsForSale(@QueryParam("id") long id) throws FileNotFoundException {
+    public Response getAllProductsForSale(@QueryParam("id") long id) {
         Sale sale = saleDAO.getSaleById(id);
         List<Product> products = saleDAO.getProductsFromSale(sale);
         if (products == null) {
-            throw new FileNotFoundException();
+            return Response.ok(new ArrayList<>(), MediaType.APPLICATION_JSON).build();
         }
-        return products;
+        return Response.ok(products, MediaType.APPLICATION_JSON).build();
     }
 
     @POST
@@ -74,25 +70,19 @@ public class SaleResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("set-current-sale")
-    public void setCurrentSale(@NotNull Sale sale) throws IllegalArgumentException{
-        if (sale == null) {
-            throw new IllegalArgumentException();
-        }
-        try {
-            saleDAO.setCurrentSale(sale);
-        } catch (Exception e) {
-        }
+    public void setCurrentSale(@NotNull Sale sale) {
+        saleDAO.setCurrentSale(sale);
     }
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("get-current-sale")
-    public Sale getCurrentSale() throws FileNotFoundException {
+    public Response getCurrentSale() {
         Sale sale = saleDAO.getCurrentSale();
         if (sale == null) {
-            throw new FileNotFoundException();
+           return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return sale;
+        return Response.ok(sale, MediaType.APPLICATION_JSON).build();
     }
 }

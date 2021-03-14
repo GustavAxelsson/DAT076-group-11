@@ -129,8 +129,8 @@ export class ProductService {
   }
 
 
-  public addSale(sale: Sale): Observable<Object> {
-    return this.httpClient.post(
+  public addSale(sale: Sale): Observable<void> {
+    return this.httpClient.post<void>(
       environment.baseUrl + '/sale/' + 'add-sale',
       sale,
       this.httpOptions

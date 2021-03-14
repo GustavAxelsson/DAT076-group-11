@@ -146,74 +146,75 @@
       id="file"
       accept="image/*"
     />
+
+
+    <mat-card>
+      <h1>Add sale</h1>
+      <form [formGroup]="formGroupSale" class="form-container">
+        <mat-form-field color="primary">
+          <mat-label>
+            Sale name
+          </mat-label>
+          <input class="input-field" matInput type="text" formControlName="name">
+        </mat-form-field>
+        <mat-form-field color="primary">
+          <mat-label>
+            Sale percentage
+          </mat-label>
+          <input class="input-field" matInput type="text" formControlName="percentage">
+        </mat-form-field>
+      </form>
+      <button mat-raised-button (click)="onSubmitSale()">Add</button>
+    </mat-card>
+
+
+    <mat-card>
+      <h1>Add product to sale</h1>
+      <form [formGroup]="formGroupAddProductSale" class="form-container">
+        <mat-form-field color="primary">
+          <mat-label>
+            Product
+          </mat-label>
+          <mat-select formControlName="product">
+            <mat-option *ngFor="let saleProduct of products " [value]="saleProduct">
+              {{saleProduct.name}}
+            </mat-option>
+          </mat-select>
+          <input id="saleProduct" class="input-field" matInput type="text">
+        </mat-form-field>
+        <mat-form-field color="primary">
+          <mat-label>
+            Sale
+          </mat-label>
+          <mat-select formControlName="sale">
+            <mat-option *ngFor="let sale of sales " [value]="sale">
+              {{sale.name}}
+            </mat-option>
+          </mat-select>
+          <input id="sale" class="input-field" matInput type="text">
+        </mat-form-field>
+      </form>
+      <button mat-raised-button (click)="onSubmitProductToSale()">Add</button>
+    </mat-card>
+
+
+    <mat-card>
+      <h1>Set current sale</h1>
+      <form [formGroup]="formGroupSetCurrentSale" class="form-container">
+        <mat-form-field color="primary">
+          <mat-label>
+            Sale
+          </mat-label>
+          <mat-select formControlName="currentSale">
+            <mat-option *ngFor="let sale of sales " [value]="sale">
+              {{sale.name}}
+            </mat-option>
+          </mat-select>
+          <input id="currentSale" class="input-field" matInput type="text">
+        </mat-form-field>
+      </form>
+      <button mat-raised-button (click)="onSubmitCurrentSale()">Set</button>
+    </mat-card>
+
   </div>
-
-
-
-
-  <div>
-    <h1>Add sale</h1>
-    <form [formGroup]="formGroupSale" class="form-container">
-      <mat-form-field color="primary">
-        <mat-label>
-          Sale name
-        </mat-label>
-        <input class="input-field" matInput type="text" formControlName="name">
-      </mat-form-field>
-      <mat-form-field color="primary">
-        <mat-label>
-          Sale percentage
-        </mat-label>
-        <input class="input-field" matInput type="text" formControlName="percentage">
-      </mat-form-field>
-    </form>
-    <button mat-raised-button (click)="onSubmitSale()">Add</button>
-  </div>
-  <div>
-    <h1>Add product to sale</h1>
-    <form [formGroup]="formGroupAddProductSale" class="form-container">
-      <mat-form-field color="primary">
-        <mat-label>
-          Product
-        </mat-label>
-        <mat-select formControlName="product">
-          <mat-option *ngFor="let saleProduct of saleProducts " [value]="saleProduct">
-            {{saleProduct.name}}
-          </mat-option>
-        </mat-select>
-        <input id="saleProduct" class="input-field" matInput type="text">
-      </mat-form-field>
-      <mat-form-field color="primary">
-        <mat-label>
-          Sale
-        </mat-label>
-        <mat-select formControlName="sale">
-          <mat-option *ngFor="let sale of sales " [value]="sale">
-            {{sale.name}}
-          </mat-option>
-        </mat-select>
-        <input id="sale" class="input-field" matInput type="text">
-      </mat-form-field>
-    </form>
-    <button mat-raised-button (click)="onSubmitProductToSale()">Add</button>
-  </div>
-  <div>
-    <h1>Set current sale</h1>
-    <form [formGroup]="formGroupSetCurrentSale" class="form-container">
-      <mat-form-field color="primary">
-        <mat-label>
-          Sale
-        </mat-label>
-        <mat-select formControlName="currentSale">
-          <mat-option *ngFor="let sale of sales " [value]="sale">
-            {{sale.name}}
-          </mat-option>
-        </mat-select>
-        <input id="currentSale" class="input-field" matInput type="text">
-      </mat-form-field>
-    </form>
-    <button mat-raised-button (click)="onSubmitCurrentSale()">Set</button>
-  </div>
-
-
 </div>

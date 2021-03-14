@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthServiceService, AuthUser } from './services/auth-service/auth-service.service';
+import { RegisterComponent } from './pages/register/register.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +23,7 @@ export class AppComponent {
   constructor(
     private shoppingCartService: ShoppingCartService,
     private dialog: MatDialog,
+    private router: Router,
     private authService: AuthServiceService) {
 
     this.authUser$.subscribe(
@@ -28,14 +31,20 @@ export class AppComponent {
     );
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(LoginComponent, {
-      width: '250px',
-    });
+  openDialog(action: string): void {
+    if (action === 'login') {
+      const dialogRef = this.dialog.open(LoginComponent, {
+        width: '250px',
+      });
+    } else if (action === 'register') {
+      const dialogRef = this.dialog.open(RegisterComponent, {
+        width: '250px',
+      });
+    }
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // this.animal = result;
-    });
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['home']);
   }
 }

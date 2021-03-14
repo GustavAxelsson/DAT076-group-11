@@ -20,6 +20,9 @@ public class Customer implements Serializable {
     private String personalNumber;
     private String billingAddress;
 
+    @OneToOne
+    private WebshopUser user;
+
     public Customer(String email, String firstName,
                     String lastName) {
         this.setFirstName(firstName);

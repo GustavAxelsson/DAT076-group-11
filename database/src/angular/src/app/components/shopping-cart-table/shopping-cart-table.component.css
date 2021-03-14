@@ -1,3 +1,18 @@
+.table-container {
+  display: flex;
+  justify-content: center;
+}
+
 .full-width-table {
   width: 100%;
+  padding: 16px;
+  min-width: 600px;
+}
+
+.mat-icon {
+  font-size: 12px;
+}
+
+.total-field {
+  padding: 16px;
 }

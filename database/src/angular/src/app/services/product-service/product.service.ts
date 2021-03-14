@@ -5,12 +5,12 @@ import {
   HttpHeaders,
   HttpParams,
 } from '@angular/common/http';
-import { forkJoin, Observable, of } from 'rxjs';
+import { combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Product } from '../../models/product';
 import { Category } from '../../models/category';
-import { DomSanitizer } from '@angular/platform-browser';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { AuthServiceService } from '../auth-service/auth-service.service';
 import { Sale } from '../../models/sale';
 
@@ -44,27 +44,62 @@ export class ProductService {
     return this.httpClient.get<Product[]>(
       this.serviceUrl + 'list-all-products',
       this.httpOptions
+    ).pipe(
+      map(products => {
+        return products.map(product => {
+          if (product.productImage && product.productImage.data) {
+            product.productImage.data = undefined;
+          }
+          return product;
+        })
+      })
     );
   }
 
   public getProductWithImage(
     product: Product
-  ): Observable<Product | undefined> {
-    return this.downloadImage(product.productImage?.id!).pipe(
-      map((response: Blob | undefined) => {
-        if (response === undefined) {
-          return undefined;
-        }
+  ): Observable<Product> {
+    let productId = 0;
+
+    if (!product.productImage || !product.productImage.id) {
+      return of(product);
+    }
+    productId = product.productImage.id ? product.productImage.id : 0;
+
+    return combineLatest([ of(product), this.downloadSingleImage(productId)])
+      .pipe(
+        map(([product, imageURL]) => {
+          product.url = imageURL;
+          return product;
+        }),
+      );
+  }
+  public downloadSingleImage(imageId: number): Observable<SafeUrl> {
+    return this.downloadImage(imageId).pipe(
+      map((response: Blob) => {
         const objectURL = URL.createObjectURL(response);
-        product.url = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-        return product;
-      })
+        return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      }));
+  }
+
+  public getProductsWithImages(products: Product[]): Observable<Product[]>{
+    return of(products).pipe(
+      switchMap((products) => {
+        const observables: Array<Observable<Product | undefined>> = [];
+        products.forEach((product) => {
+          observables.push(this.getProductWithImage(product).pipe(take(1)));
+        });
+        return forkJoin(...observables);
+      }),
+      map((batch) => [].concat(...batch)),
+      map(products => products.filter(product => product !== undefined))
     );
   }
 
   public getAllProductsWithImage(): Observable<Product[]> {
     return this.getAllProducts$().pipe(
       switchMap((products) => {
+
         const observables: Array<Observable<Product | undefined>> = [];
         products.forEach((product) => {
           observables.push(this.getProductWithImage(product).pipe(take(1)));
@@ -113,10 +148,7 @@ export class ProductService {
     });
   }
 
-  public downloadImage(id: number): Observable<Blob | undefined> {
-    if (id === undefined) {
-      return of(undefined);
-    }
+  public downloadImage(id: number): Observable<Blob> {
     return this.httpClient.get<Blob>(this.serviceUrl + 'download-image', {
       responseType: 'blob' as 'json',
       params: new HttpParams().set('id', id.toString()),

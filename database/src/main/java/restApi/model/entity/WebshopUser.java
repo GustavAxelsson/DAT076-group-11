@@ -21,4 +21,8 @@ public class WebshopUser implements Serializable {
     private String password;
 
     private String role;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "customer_id", referencedColumnName = "email")
+    private Customer customer;
 }

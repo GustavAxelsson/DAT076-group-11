@@ -1,3 +1,6 @@
+<div class="table-container">
+
+
 <div class="mat-elevation-z8">
   <table mat-table class="full-width-table" matSort aria-label="Elements">
     <!-- Id Column -->
@@ -17,11 +20,11 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
       <td mat-cell *matCellDef="let row">
         <div>
-          <button mat-icon-button>
+          <button mat-icon-button (click)="addProduct(row)">
             <mat-icon>add</mat-icon>
           </button>
           <span>{{ row.amount }}</span>
-          <button mat-icon-button>
+          <button mat-icon-button (click)="removeProduct(row)">
             <mat-icon>horizontal_rule</mat-icon>
           </button>
         </div>
@@ -39,12 +42,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
-  <mat-paginator
-    #paginator
-    [length]="dataSource?.data?.length"
-    [pageIndex]="0"
-    [pageSize]="50"
-    [pageSizeOptions]="[25, 50, 100, 250]"
-  >
-  </mat-paginator>
+  <div class="total-field">Sum: {{totalSum | async}} SEK</div>
+  <div>
+    <button mat-raised-button (click)='purchase()'>Purchase</button>
+  </div>
+</div>
 </div>

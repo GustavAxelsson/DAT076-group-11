@@ -16,6 +16,7 @@ export class ShoppingCartTableComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort: MatSort | undefined;
   @ViewChild(MatTable) table: MatTable<Product> | undefined;
   dataSource: ShoppingCartTableDataSource | undefined;
+  totalSum = this.shoppingCartService.sumOfAllProducts;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['name', 'amount', 'price'];
@@ -24,6 +25,20 @@ export class ShoppingCartTableComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.dataSource = new ShoppingCartTableDataSource(this.shoppingCartService);
+  }
+
+  removeProduct(product: Product) {
+    this.shoppingCartService.removeProductFromCart(product);
+  }
+
+  addProduct(product: Product) {
+    this.shoppingCartService.addProductToShoppingCart(product);
+  }
+
+  purchase() {
+    this.shoppingCartService.purchase().subscribe(res => {
+
+    })
   }
 
   ngAfterViewInit() {

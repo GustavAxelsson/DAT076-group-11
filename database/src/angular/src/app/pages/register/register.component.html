@@ -1,15 +1,47 @@
 <div class="card-container">
-  <mat-card>
-    <div class="login-form">
+
+  <div class="login-form" *ngIf="showRegister">
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input matInput [(ngModel)]="usernameRegister" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput type="password" [(ngModel)]="passwordRegister" />
+    </mat-form-field>
+    <button mat-raised-button (click)="register()">Register</button>
+  </div>
+
+  <div *ngIf="!showRegister">
+    <form [formGroup]="formGroup">
       <mat-form-field>
-        <mat-label>Username</mat-label>
-        <input matInput [(ngModel)]="usernameRegister" />
+        <mat-label>E-mail</mat-label>
+        <input matInput type="text" formControlName="email">
       </mat-form-field>
+
       <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input matInput type="password" [(ngModel)]="passwordRegister" />
+        <mat-label>Firstname</mat-label>
+        <input matInput type="text" formControlName="firstName">
       </mat-form-field>
-      <button mat-raised-button (click)="register()">Register</button>
-    </div>
-  </mat-card>
+
+      <mat-form-field>
+        <mat-label>Lastname</mat-label>
+        <input matInput type="text" formControlName="lastName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Personal number</mat-label>
+        <input matInput type="text" formControlName="pid">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Billing address</mat-label>
+        <input matInput type="text" formControlName="address">
+      </mat-form-field>
+
+      <button mat-raised-button (click)="onSubmitCustomer()">Submit</button>
+    </form>
+  </div>
+
+
 </div>

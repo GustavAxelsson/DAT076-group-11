@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.Getter;
 import org.mindrot.jbcrypt.BCrypt;
+import restApi.model.entity.Customer;
 import restApi.model.entity.QWebshopUser;
 import restApi.model.entity.WebshopUser;
 
@@ -60,5 +61,8 @@ public class UserDao extends AbstractDAO<WebshopUser>{
         entityManager.merge(user);
     }
 
-
+    public void updateCustomer(WebshopUser user, Customer customer) {
+        user.setCustomer(customer);
+        entityManager.merge(user);
+    }
 }

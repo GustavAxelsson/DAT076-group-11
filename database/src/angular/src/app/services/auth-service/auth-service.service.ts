@@ -33,26 +33,26 @@ export class AuthServiceService {
     }
   }
 
-  public register(username: string, password: string): void {
+  public register(username: string, password: string): Observable<boolean> {
     const payload = new HttpParams()
       .set('username', username)
       .set('password', password);
 
     const url = environment.baseUrl + this.apiUrl + 'register';
-    this.httpClient
+    return this.httpClient
       .post(url, payload, {
         observe: 'events',
         responseType: 'text',
-      })
-      .subscribe(
-        (res) => {
-          if (res.type === HttpEventType.Response) {
-            if (res.body != null) {
-              this.authToken.next(res.body);
-            }
+      }).pipe(
+        map((response) => {
+          if (response.type === HttpEventType.Response && response.body) {
+            this.authToken.next(response.body);
+            return true;
+            // return this.decodeToken(response.body);
           }
-        },
-        (error) => console.warn(error)
+          return undefined;
+        }),
+      map(response => response !== undefined)
       );
   }
 
@@ -80,6 +80,11 @@ export class AuthServiceService {
           return undefined;
         })
       );
+  }
+
+  public logout() {
+    this.cookieService.delete(this.COOKIE_TOKEN_ID);
+    this.authUser.next(undefined);
   }
 
   decodeToken(token: string): AuthUser | undefined {

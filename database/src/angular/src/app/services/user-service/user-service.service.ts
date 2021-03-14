@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { DomSanitizer } from '@angular/platform-browser';
 import { AuthServiceService } from '../auth-service/auth-service.service';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
+import { Customer } from '../../models/customer';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +43,13 @@ export class UserServiceService {
     return this.httpClient.post<void>(url, null, {
       headers: this.header,
       params: queryParams,
+    });
+  }
+
+  public updateCustomerOnUser(customer: Customer): Observable<void> {
+    const url = this.serviceUrl + 'set-customer';
+    return this.httpClient.post<void>(url, customer, {
+      headers: this.header,
     });
   }
 }

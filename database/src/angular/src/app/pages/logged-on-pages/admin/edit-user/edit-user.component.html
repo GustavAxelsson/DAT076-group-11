@@ -1,5 +1,8 @@
 <mat-card class="card-container">
-  <div *ngFor="let user of users">
+  <div *ngIf="users.length < 1;">
+    No users found
+  </div>
+  <div #showUser *ngFor="let user of users">
     <mat-form-field>
       <mat-label>{{user.username}}</mat-label>
       <mat-select (selectionChange)="userChanged(user, $event.value)"

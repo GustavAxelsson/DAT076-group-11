@@ -32,9 +32,10 @@ public class AuthService {
             }
 
             userDao.registerUser(username, password);
+            WebshopUser webshopUser = userDao.getUserFromUsername(username);
             Set<String> roles = new HashSet<>();
             roles.add("user");
-            String token = TokenGenerator.generateToken(username, roles, 0L);
+            String token = TokenGenerator.generateToken(username, roles, webshopUser.getId());
 
             return Response.status(Response.Status.CREATED)
                     .header(AUTHORIZATION, "Bearer ".concat(token))

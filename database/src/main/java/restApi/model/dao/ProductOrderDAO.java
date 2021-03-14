@@ -57,4 +57,8 @@ public class ProductOrderDAO extends AbstractDAO<ProductOrder> {
         entityManager.merge(productOrder);
     }
 
+    public void updateProductOrder(ProductOrder productOrder) {
+        entityManager.merge(productOrder);
+    }
+
 }

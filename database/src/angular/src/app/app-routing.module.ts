@@ -6,6 +6,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { ProductComponent } from './pages/products/id/product/product.component';
 import { UserHomeComponent } from './pages/logged-on-pages/user/user-home/user-home.component';
 import { ShoppingCartTableComponent } from './components/shopping-cart-table/shopping-cart-table.component';
+import { AdminGuard } from './pages/logged-on-pages/admin/guard/admin.guard';
 
 const routes: Routes = [
   {
@@ -42,6 +43,7 @@ const routes: Routes = [
   },
   {
     path: 'admin',
+    canActivate: [AdminGuard],
     loadChildren: () =>
       import('./pages/logged-on-pages/admin/admin.module').then(
         (mod) => mod.AdminModule

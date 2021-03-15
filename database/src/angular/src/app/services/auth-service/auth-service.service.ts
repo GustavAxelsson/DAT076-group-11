@@ -4,13 +4,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { JsonObject } from '@angular/compiler-cli/ngcc/src/packages/entry_point';
-import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthServiceService {
-  private COOKIE_TOKEN_ID = 'webshop-access-token';
+  private ACCESS_TOKEN = 'webshop-access-token';
   private authToken: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private authUser: BehaviorSubject<AuthUser | undefined> = new BehaviorSubject<
     AuthUser | undefined
@@ -26,8 +25,8 @@ export class AuthServiceService {
   authToken$: Observable<string> = this.authToken.asObservable();
   private apiUrl = '/auth/';
 
-  constructor(private httpClient: HttpClient, private cookieService: CookieService) {
-    const token = this.cookieService.get(this.COOKIE_TOKEN_ID);
+  constructor(private httpClient: HttpClient) {
+    const token = localStorage.getItem(this.ACCESS_TOKEN);
     if (token) {
       this.decodeToken(token);
     }
@@ -83,12 +82,12 @@ export class AuthServiceService {
   }
 
   public logout() {
-    this.cookieService.delete(this.COOKIE_TOKEN_ID);
+    localStorage.removeItem(this.ACCESS_TOKEN);
     this.authUser.next(undefined);
   }
 
   decodeToken(token: string): AuthUser | undefined {
-    this.cookieService.set(this.COOKIE_TOKEN_ID, token);
+    localStorage.setItem(this.ACCESS_TOKEN, token);
     const tmp = JSON.parse(atob(token.split('.')[1]));
     const role: UserType = tmp['groups'][0].toUpperCase();
     const username = tmp['sub'];
@@ -96,7 +95,8 @@ export class AuthServiceService {
     const expiration = tmp['exp'];
 
     if((new Date(expiration * 1000)) < new Date()) {
-      this.cookieService.delete(this.COOKIE_TOKEN_ID);
+
+      localStorage.removeItem(this.ACCESS_TOKEN);
       this.authUser.next(undefined);
       return undefined;
     }

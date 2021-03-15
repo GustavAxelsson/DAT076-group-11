@@ -24,7 +24,6 @@ import { ShoppingCartTableComponent } from './components/shopping-cart-table/sho
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { UserHomeComponent } from './pages/logged-on-pages/user/user-home/user-home.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TokenInjector } from './services/token-injector';

@@ -11,28 +11,36 @@ import { ProductService } from '../../services/product-service/product.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-
   public sales: Sale[] = [];
   public saleProducts: Product[] = [];
   currentSale: Sale | undefined = undefined;
 
-  constructor(
-    private productService: ProductService,
-  ) {}
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.productService.getCurrentSale().pipe(
-      switchMap(currentSale => {
-        if(currentSale !== undefined && currentSale.id !== undefined && currentSale.id !== 0) {
-          this.currentSale = currentSale;
-          return this.productService.getAllProductsForSale(currentSale.id);
+    this.productService
+      .getCurrentSale()
+      .pipe(
+        switchMap((currentSale) => {
+          if (
+            currentSale !== undefined &&
+            currentSale.id !== undefined &&
+            currentSale.id !== 0
+          ) {
+            this.currentSale = currentSale;
+            return this.productService.getAllProductsForSale(currentSale.id);
+          }
+          return of([]);
+        }),
+        switchMap((products) =>
+          this.productService.getProductsWithImages(products)
+        )
+      )
+      .subscribe((saleProducts) => {
+        console.log(saleProducts);
+        if (saleProducts !== undefined) {
+          this.saleProducts = saleProducts;
         }
-        return of(undefined);
-      })
-    ).subscribe((saleProducts) => {
-      if(saleProducts !== undefined) {
-        this.saleProducts = saleProducts;
-      }
       });
   }
 }

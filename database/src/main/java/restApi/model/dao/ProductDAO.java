@@ -57,6 +57,4 @@ public class ProductDAO extends AbstractDAO<Product> {
         product.setCategory(category);
         entityManager.merge(product);
     }
-
-    }
 }

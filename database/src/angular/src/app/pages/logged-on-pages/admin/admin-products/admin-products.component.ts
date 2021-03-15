@@ -13,10 +13,8 @@ import { catchError, map, take } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthServiceService } from '../../../../services/auth-service/auth-service.service';
 import { Sale } from '../../../../models/sale';
 import { SaleProduct } from '../../../../models/SaleProduct';
-
 
 @Component({
   selector: 'app-admin-products',
@@ -32,14 +30,10 @@ export class AdminProductsComponent implements OnInit {
   products: Product[] | undefined;
   newCategory: string | undefined;
   selectedProduct: Product | undefined;
-  public saleProducts: Product[] = [];
   public sales: Sale[] = [];
 
   formGroup = new FormGroup({
-    name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(4)
-    ]),
+    name: new FormControl('', [Validators.required, Validators.minLength(4)]),
     price: new FormControl('', [
       Validators.required,
       Validators.min(1),
@@ -50,32 +44,27 @@ export class AdminProductsComponent implements OnInit {
     category: new FormControl('', [Validators.required]),
   });
 
-
   formGroupSale = new FormGroup({
-    name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(4)
-    ]),
+    name: new FormControl('', [Validators.required, Validators.minLength(4)]),
     percentage: new FormControl('', [
       Validators.required,
       Validators.min(0.1),
-      Validators.max(0.9)
+      Validators.max(0.9),
     ]),
-  })
+  });
 
   formGroupAddProductSale = new FormGroup({
-    sale: new FormControl('',[Validators.required]),
+    sale: new FormControl('', [Validators.required]),
     product: new FormControl('', [Validators.required]),
-  })
+  });
 
   formGroupSetCurrentSale = new FormGroup({
     currentSale: new FormControl('', [Validators.required]),
-  })
+  });
   constructor(
     private productService: ProductService,
     private sanitizer: DomSanitizer,
-    private snackBar: MatSnackBar,
-    private authService: AuthServiceService
+    private snackBar: MatSnackBar
   ) {}
 
   public categories: Category[] = [];
@@ -110,7 +99,7 @@ export class AdminProductsComponent implements OnInit {
     combineLatest([
       this.productService.fetchCategories$(),
       this.productService.getAllProducts$(),
-      this.productService.fetchSales()
+      this.productService.fetchSales(),
     ])
       .pipe(take(1))
       .subscribe(([categories, products, sales]) => {
@@ -213,7 +202,9 @@ export class AdminProductsComponent implements OnInit {
     };
 
     this.productService.addSale(s).subscribe(
-      (res) => console.log('res', res),
+      () => {
+        this.refreshStreams();
+      },
       (error) => console.warn('error', error)
     );
   }
@@ -224,18 +215,18 @@ export class AdminProductsComponent implements OnInit {
       product: this.formGroupAddProductSale.get('product')?.value,
     };
 
-    if(sp && sp.product && sp.product.id && sp.sale && sp.sale.id) {
+    if (sp && sp.product && sp.product.id && sp.sale && sp.sale.id) {
       this.productService.addProductToSale(sp.product.id, sp.sale.id).subscribe(
-        (res) => console.log('res', res),
+        (res) => this.refreshStreams(),
         (error) => console.warn('error', error)
       );
     }
   }
 
   onSubmitCurrentSale() {
-    const cs: Sale = this.formGroupSetCurrentSale.get('currentSale')?.value
+    const cs: Sale = this.formGroupSetCurrentSale.get('currentSale')?.value;
     this.productService.setCurrentSale(cs).subscribe(
-      (res) => console.log('res', res),
+      () => this.refreshStreams(),
       (error) => console.warn('error', error)
     );
   }

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { AuthServiceService } from '../auth-service/auth-service.service';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Customer } from '../../models/customer';
@@ -16,19 +15,7 @@ export class UserServiceService {
     headers: this.header,
   };
 
-  constructor(
-    private httpClient: HttpClient,
-    private authService: AuthServiceService
-  ) {
-    authService.authToken$.subscribe((token) => {
-      if (token !== undefined) {
-        this.header = new HttpHeaders({
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        });
-      }
-    });
-  }
+  constructor(private httpClient: HttpClient) {}
 
   public getAllUsers(): Observable<ExternalUser[]> {
     const url = this.serviceUrl + 'get-all-users';

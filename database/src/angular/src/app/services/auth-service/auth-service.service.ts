@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEventType, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
@@ -9,11 +9,11 @@ import { JsonObject } from '@angular/compiler-cli/ngcc/src/packages/entry_point'
   providedIn: 'root',
 })
 export class AuthServiceService {
-  private ACCESS_TOKEN = 'webshop-access-token';
-  private authToken: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private authUser: BehaviorSubject<AuthUser | undefined> = new BehaviorSubject<
     AuthUser | undefined
   >(undefined);
+
+  private ACCESS_TOKEN = 'webshop-access-token';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -22,7 +22,7 @@ export class AuthServiceService {
   get authUser$(): Observable<AuthUser | undefined> {
     return this.authUser.asObservable();
   }
-  authToken$: Observable<string> = this.authToken.asObservable();
+
   private apiUrl = '/auth/';
 
   constructor(private httpClient: HttpClient) {
@@ -40,18 +40,18 @@ export class AuthServiceService {
     const url = environment.baseUrl + this.apiUrl + 'register';
     return this.httpClient
       .post(url, payload, {
-        observe: 'events',
+        observe: 'response',
         responseType: 'text',
-      }).pipe(
+      })
+      .pipe(
         map((response) => {
-          if (response.type === HttpEventType.Response && response.body) {
-            this.authToken.next(response.body);
+          if (response.body) {
+            this.decodeToken(response.body);
             return true;
-            // return this.decodeToken(response.body);
           }
           return undefined;
         }),
-      map(response => response !== undefined)
+        map((response) => response !== undefined)
       );
   }
 
@@ -67,13 +67,12 @@ export class AuthServiceService {
 
     return this.httpClient
       .post(url, payload, {
-        observe: 'events',
+        observe: 'response',
         responseType: 'text',
       })
       .pipe(
         map((response) => {
-          if (response.type === HttpEventType.Response && response.body) {
-            this.authToken.next(response.body);
+          if (response.body) {
             return this.decodeToken(response.body);
           }
           return undefined;
@@ -94,8 +93,7 @@ export class AuthServiceService {
     const userId = tmp['userId'];
     const expiration = tmp['exp'];
 
-    if((new Date(expiration * 1000)) < new Date()) {
-
+    if (new Date(expiration * 1000) < new Date()) {
       localStorage.removeItem(this.ACCESS_TOKEN);
       this.authUser.next(undefined);
       return undefined;

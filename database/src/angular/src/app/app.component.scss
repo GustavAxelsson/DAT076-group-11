@@ -33,3 +33,9 @@ header {
   font-size: 13px;
   padding: 2px;
 }
+
+.auth-user {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

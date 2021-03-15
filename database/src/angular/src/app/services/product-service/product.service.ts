@@ -27,38 +27,25 @@ export class ProductService {
 
   constructor(
     private httpClient: HttpClient,
-    private sanitizer: DomSanitizer,
-    private authService: AuthServiceService
-  ) {
-    authService.authToken$.subscribe((token) => {
-      if (token !== undefined) {
-        this.header = new HttpHeaders({
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        });
-      }
-    });
-  }
+    private sanitizer: DomSanitizer
+  ) {}
 
   public getAllProducts$(): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(
-      this.serviceUrl + 'list-all-products',
-      this.httpOptions
-    ).pipe(
-      map(products => {
-        return products.map(product => {
-          if (product.productImage && product.productImage.data) {
-            product.productImage.data = undefined;
-          }
-          return product;
+    return this.httpClient
+      .get<Product[]>(this.serviceUrl + 'list-all-products', this.httpOptions)
+      .pipe(
+        map((products) => {
+          return products.map((product) => {
+            if (product.productImage && product.productImage.data) {
+              product.productImage.data = undefined;
+            }
+            return product;
+          });
         })
-      })
-    );
+      );
   }
 
-  public getProductWithImage(
-    product: Product
-  ): Observable<Product> {
+  public getProductWithImage(product: Product): Observable<Product> {
     let productId = 0;
 
     if (!product.id) {
@@ -66,23 +53,26 @@ export class ProductService {
     }
     productId = product.id ? product.id : 0;
 
-    return combineLatest([ of(product), this.downloadSingleImage(productId)])
-      .pipe(
-        map(([product, imageURL]) => {
-          product.url = imageURL;
-          return product;
-        }),
-      );
+    return combineLatest([
+      of(product),
+      this.downloadSingleImage(productId),
+    ]).pipe(
+      map(([product, imageURL]) => {
+        product.url = imageURL;
+        return product;
+      })
+    );
   }
   public downloadSingleImage(productId: number): Observable<SafeUrl> {
     return this.downloadImage(productId).pipe(
       map((response: Blob) => {
         const objectURL = URL.createObjectURL(response);
         return this.sanitizer.bypassSecurityTrustUrl(objectURL);
-      }));
+      })
+    );
   }
 
-  public getProductsWithImages(products: Product[]): Observable<Product[]>{
+  public getProductsWithImages(products: Product[]): Observable<Product[]> {
     return of(products).pipe(
       switchMap((products) => {
         const observables: Array<Observable<Product | undefined>> = [];
@@ -92,14 +82,13 @@ export class ProductService {
         return forkJoin(...observables);
       }),
       map((batch) => [].concat(...batch)),
-      map(products => products.filter(product => product !== undefined))
+      map((products) => products.filter((product) => product !== undefined))
     );
   }
 
   public getAllProductsWithImage(): Observable<Product[]> {
     return this.getAllProducts$().pipe(
       switchMap((products) => {
-
         const observables: Array<Observable<Product | undefined>> = [];
         products.forEach((product) => {
           observables.push(this.getProductWithImage(product).pipe(take(1)));
@@ -107,10 +96,9 @@ export class ProductService {
         return forkJoin(...observables);
       }),
       map((batch) => [].concat(...batch)),
-      map(products => products.filter(product => product !== undefined))
+      map((products) => products.filter((product) => product !== undefined))
     );
   }
-
 
   public getAllProductsForCategory$(name: string): Observable<Product[]> {
     const queryParams: HttpParams = new HttpParams().set('name', name);
@@ -160,7 +148,6 @@ export class ProductService {
     return this.httpClient.post<void>(url, name, this.httpOptions);
   }
 
-
   public addSale(sale: Sale): Observable<void> {
     return this.httpClient.post<void>(
       environment.baseUrl + '/sale/' + 'add-sale',
@@ -176,15 +163,18 @@ export class ProductService {
   }
 
   public addProductToSale(productId: number, saleId: number): Observable<void> {
-    return this.httpClient.post<void>(environment.baseUrl + '/sale/' + 'add-product-sale',
-      {productId: productId, saleId: saleId})
+    return this.httpClient.post<void>(
+      environment.baseUrl + '/sale/' + 'add-product-sale',
+      { productId: productId, saleId: saleId }
+    );
   }
 
   public getAllProductsForSale(id: number): Observable<Product[]> {
     return this.httpClient.get<Product[]>(
-      environment.baseUrl + '/sale/' + 'list-sale-products', {
+      environment.baseUrl + '/sale/' + 'list-sale-products',
+      {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-        params: new HttpParams().set('id', id.toString())
+        params: new HttpParams().set('id', id.toString()),
       }
     );
   }
@@ -199,7 +189,7 @@ export class ProductService {
 
   public getCurrentSale(): Observable<Sale> {
     return this.httpClient.get<Sale>(
-      environment.baseUrl + '/sale/' + 'get-current-sale',
+      environment.baseUrl + '/sale/' + 'get-current-sale'
     );
   }
 }

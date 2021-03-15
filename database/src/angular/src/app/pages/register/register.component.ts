@@ -3,7 +3,12 @@ import { AuthServiceService } from '../../services/auth-service/auth-service.ser
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Customer } from '../../models/customer';
 import { UserServiceService } from '../../services/user-service/user-service.service';
 
@@ -18,12 +23,11 @@ export class RegisterComponent implements OnInit {
   showRegister = true;
 
   formGroup = new FormGroup({
-    email: new FormControl('',
-      [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required, Validators.email]),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
-    pid: new FormControl('',[Validators.required]),
-    address: new FormControl('',[Validators.required]),
+    pid: new FormControl('', [Validators.required]),
+    address: new FormControl('', [Validators.required]),
   });
 
   constructor(
@@ -32,8 +36,8 @@ export class RegisterComponent implements OnInit {
     private _snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<RegisterComponent>,
     private userService: UserServiceService,
-    @Inject(MAT_DIALOG_DATA) public data: {data: undefined}
-    ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { data: undefined }
+  ) {}
 
   ngOnInit(): void {}
 
@@ -44,15 +48,16 @@ export class RegisterComponent implements OnInit {
       lastName: this.lastName?.value ? this.lastName.value : undefined,
       personalNumber: this.pid?.value ? this.pid.value : undefined,
       billingAddress: this.address?.value ? this.address.value : undefined,
-    }
+    };
     this.userService.updateCustomerOnUser(customer).subscribe(
-      res => {
-        console.log(res);
+      () => {
+        this.showSnackBar('Register successful');
+        this.dialogRef.close();
       },
-      error => {
-        console.log(error);
-      });
-
+      () => {
+        this.showSnackBar('Register failed');
+      }
+    );
   }
 
   get email(): AbstractControl | null {
@@ -74,24 +79,22 @@ export class RegisterComponent implements OnInit {
   public register() {
     this.authService
       .register(this.usernameRegister, this.passwordRegister)
-      .subscribe(response => {
-        if (response) {
-          this._snackBar.open('Register successful', 'Close', {
-            duration: 2000,
-          });
-
-          this.showRegister = false;
-          // this.dialogRef.close();
-        } else {
-          this._snackBar.open('Register failed', 'Close', {
-            duration: 2000,
-          });
+      .subscribe(
+        (response) => {
+          if (response) {
+            this.showSnackBar('Register successful');
+            this.showRegister = false;
+          } else {
+            this.showSnackBar('Register failed');
+          }
+        },
+        () => {
+          this.showSnackBar('Register failed');
         }
-      },
-        error => {
-          this._snackBar.open('Register failed', 'Close', {
-            duration: 2000,
-          });
-        });
+      );
+  }
+
+  showSnackBar(text: string) {
+    this._snackBar.open(text, undefined, { duration: 2000 });
   }
 }

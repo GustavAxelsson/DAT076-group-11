@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { ProductComponent } from './pages/products/id/product/product.component';
-import {MatCarouselModule} from "@ngmodule/material-carousel";
+import { MatCarouselModule } from '@ngmodule/material-carousel';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
@@ -27,6 +27,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { UserHomeComponent } from './pages/logged-on-pages/user/user-home/user-home.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TokenInjector } from './services/token-injector';
 
 @NgModule({
   declarations: [
@@ -60,8 +61,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatIconModule,
     MatDialogModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInjector, multi: true },
+  ],
   bootstrap: [AppComponent],
-  entryComponents: [RegisterComponent, LoginComponent]
+  entryComponents: [RegisterComponent, LoginComponent],
 })
 export class AppModule {}

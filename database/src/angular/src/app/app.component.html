@@ -2,10 +2,7 @@
   <div class="navigation-bar">
     <button mat-button [routerLink]="'products'">Products</button>
 
-
-
     <div class="icon-buttons">
-
       <button mat-icon-button (click)="navigateToUserMyPages()">
         <mat-icon>person</mat-icon>
       </button>
@@ -22,20 +19,16 @@
       </button>
     </div>
 
-    <div class="login-register-buttons">
-      <ng-container *ngIf="authUser !== undefined; else login">
-        <div>{{authUser.username}}</div>
-        <button mat-button (click)="logout()">Logout</button>
-      </ng-container>
+    <ng-container *ngIf="authUser !== undefined; else login">
+      <div class="auth-user">Logged in: {{ authUser.username }}</div>
+      <button mat-button (click)="logout()">Logout</button>
+    </ng-container>
 
-      <ng-template #login>
-        <button mat-button (click)='openDialog("login")'>Login</button>
-        <button mat-button (click)='openDialog("register")'>Register</button>
-      </ng-template>
-    </div>
-
+    <ng-template #login>
+      <button mat-button (click)="openDialog('login')">Login</button>
+      <button mat-button (click)="openDialog('register')">Register</button>
+    </ng-template>
   </div>
-
 </header>
 
 <router-outlet></router-outlet>

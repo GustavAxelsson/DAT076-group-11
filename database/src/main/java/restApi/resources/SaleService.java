@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("sale")
-public class SaleResource {
+public class SaleService {
     @EJB
     SaleDAO saleDAO;
     @EJB

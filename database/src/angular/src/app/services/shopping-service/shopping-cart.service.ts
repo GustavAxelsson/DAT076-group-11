@@ -12,13 +12,13 @@ import { ProductOrder } from '../../models/ProductOrder';
   providedIn: 'root',
 })
 export class ShoppingCartService {
-  private storedItems: BehaviorSubject<Map<Product, number>> = new BehaviorSubject(new Map<Product, number>())
+  private storedItems: BehaviorSubject<
+    Map<Product, number>
+  > = new BehaviorSubject(new Map<Product, number>());
 
   private COOKIE_STORED_CART_ITEMS = 'webshop-access-stored-cart-items';
 
-  private serviceUrl: string = environment.baseUrl + '/products/';
-
-
+  private serviceUrl: string = environment.baseUrl + '/order/';
 
   header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
   httpOptions = {
@@ -29,56 +29,44 @@ export class ShoppingCartService {
     private httpClient: HttpClient,
     private cookieService: CookieService,
     private authService: AuthServiceService
-    ) {
+  ) {
     const itemsJson = this.cookieService.get(this.COOKIE_STORED_CART_ITEMS);
     if (itemsJson) {
-      const itemsMap: Map<Product, number> = JSON.parse(itemsJson, this.reviver)
+      const itemsMap: Map<Product, number> = JSON.parse(
+        itemsJson,
+        this.reviver
+      );
       this.storedItems.next(itemsMap);
     }
-
-    authService.authToken$.subscribe((token) => {
-      console.log('got token from authService', token);
-      if (token !== undefined) {
-        this.header = new HttpHeaders({
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        });
-      }
-    });
   }
 
   get sumOfAllProducts(): Observable<number> {
-    return this.storedItems
-      .asObservable()
-      .pipe(
-        map((products) => {
-          let totalPrice = 0;
-          for (let [key, value] of products) {
-            totalPrice = totalPrice +  (value * key.price);
-          }
-          return totalPrice;
-        })
-      );
+    return this.storedItems.asObservable().pipe(
+      map((products) => {
+        let totalPrice = 0;
+        for (let [key, value] of products) {
+          totalPrice = totalPrice + value * key.price;
+        }
+        return totalPrice;
+      })
+    );
   }
 
-
   get numberOfItemsInShoppingCart(): Observable<number> {
-    return this.storedItems
-      .asObservable()
-      .pipe(
-        map((products) => {
-          let numberOfItems = 0;
-          for(let value of Array.from( products.values()) ) {
-            numberOfItems = numberOfItems + value;
-          }
-          return numberOfItems;
-        })
-      );
+    return this.storedItems.asObservable().pipe(
+      map((products) => {
+        let numberOfItems = 0;
+        for (let value of Array.from(products.values())) {
+          numberOfItems = numberOfItems + value;
+        }
+        return numberOfItems;
+      })
+    );
   }
 
   getStoredItems$(): Observable<Product[]> {
     return this.storedItems.asObservable().pipe(
-      map(products => {
+      map((products) => {
         const list: Product[] = [];
         for (let [key, value] of products) {
           const product = key;
@@ -89,7 +77,6 @@ export class ShoppingCartService {
       })
     );
   }
-
 
   public addProductToShoppingCart(product: Product): void {
     if (product === undefined) {
@@ -128,7 +115,7 @@ export class ShoppingCartService {
   }
 
   replacer(key: any, value: any) {
-    if(value instanceof Map) {
+    if (value instanceof Map) {
       return {
         dataType: 'Map',
         value: Array.from(value.entries()),
@@ -138,8 +125,8 @@ export class ShoppingCartService {
     }
   }
 
- reviver(key: any, value: any) {
-    if(typeof value === 'object' && value !== null) {
+  reviver(key: any, value: any) {
+    if (typeof value === 'object' && value !== null) {
       if (value.dataType === 'Map') {
         return new Map(value.value);
       }
@@ -148,22 +135,20 @@ export class ShoppingCartService {
   }
 
   purchase(): Observable<void> {
-
     const products = Array.from(this.storedItems.value.keys());
 
     console.log(products, this.httpOptions);
     const url = this.serviceUrl + 'purchase';
 
     return this.httpClient.post<void>(url, products, {
-      headers: this.header
+      headers: this.header,
     });
   }
 
   getMyOrders(): Observable<ProductOrder[]> {
     const url = this.serviceUrl + 'my-orders';
     return this.httpClient.get<ProductOrder[]>(url, {
-      headers: this.header
+      headers: this.header,
     });
   }
-
 }

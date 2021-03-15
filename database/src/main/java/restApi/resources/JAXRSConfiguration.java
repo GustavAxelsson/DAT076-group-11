@@ -15,12 +15,13 @@ public class JAXRSConfiguration extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> classes = new HashSet<>();
         classes.add(MultiPartFeature.class);
-        classes.add(ProductResource.class);
-        classes.add(CategoryResource.class);
+        classes.add(ProductService.class);
+        classes.add(CategoryService.class);
         classes.add(CorsFilter.class);
         classes.add(AuthService.class);
         classes.add(UserService.class);
-        classes.add(SaleResource.class);
+        classes.add(SaleService.class);
+        classes.add(OrderService.class);
         return classes;
     }
 }

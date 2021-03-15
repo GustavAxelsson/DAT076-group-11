@@ -6,7 +6,7 @@ export interface Product {
   url?: SafeUrl;
   price: number;
   description: string;
-  id?: string;
+  id?: number;
   category?: Category;
   amount?: number;
   productImage?: ProductImage;

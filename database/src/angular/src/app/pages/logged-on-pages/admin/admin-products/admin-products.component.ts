@@ -118,9 +118,9 @@ export class AdminProductsComponent implements OnInit {
   public uploadImage(): void {
     const img = new FormData();
     // tslint:disable-next-line:no-non-null-assertion
-    const productId: string = this.selectedProduct?.id!;
+    const productId: number = this.selectedProduct?.id!;
     // tslint:disable-next-line:no-non-null-assertion
-    img.append('file', this.selectedFile!, productId);
+    img.append('file', this.selectedFile!, productId.toString());
     this.productService
       .uploadProductImage(img)
       .pipe(

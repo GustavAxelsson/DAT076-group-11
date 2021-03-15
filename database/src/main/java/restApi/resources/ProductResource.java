@@ -34,8 +34,6 @@ public class ProductResource {
     @EJB
     ProductImageDAO productImageDAO;
 
-    @EJB
-    CustomerDAO customerDAO;
 
     @EJB
     ProductOrderDAO productOrderDAO;
@@ -45,9 +43,6 @@ public class ProductResource {
 
     @Inject
     JsonWebToken token;
-
-    @Inject
-    Principal principal;
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
@@ -87,6 +82,7 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("add-product")
+//    @RolesAllowed("admin")
     public void addNewProduct(@NotNull Product product) {
             productDAO.addNewProduct(product);
     }
@@ -179,7 +175,7 @@ public class ProductResource {
                 Response.status(Response.Status.NOT_FOUND);
             }
 
-            productDAO.updateProductImage(product, upload);
+            productImageDAO.updateProductImage(product, upload);
 
             return Response.ok().build();
         } catch (Exception e) {
@@ -191,14 +187,18 @@ public class ProductResource {
     @Path("download-image")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getProductImageById(@QueryParam("id") long id) {
-            ProductImage randomFile = productImageDAO.getProductImageById(id);
-            if (randomFile == null) {
+    public Response getProductImageById(@NotNull @QueryParam("id") long id) {
+        try {
+            ProductImage image = productImageDAO.getProductImageByProductId(id);
+            if (image == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
-            return Response.ok(randomFile.getData(), MediaType.APPLICATION_OCTET_STREAM)
+            return Response.ok(image.getData(), MediaType.APPLICATION_OCTET_STREAM)
                     .header("Content-Disposition",
-                            "attachment; filename=" + randomFile.getFileName()).build();
-
+                            "attachment; filename=" + image.getFileName()).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
+
 }

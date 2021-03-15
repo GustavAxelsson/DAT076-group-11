@@ -1,6 +1,7 @@
 package model.dao;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import restApi.model.dao.ProductDAO;
@@ -32,11 +33,23 @@ public class ProductImageDAOTest extends AbstractDAOTest{
         productDAO.create(p1);
         byte[] array = new byte[0];
         ProductImage productImage = new ProductImage("NEW file", array);
-        long id = productDAO.findAll().get(0).getId();
-        Product product = productDAO.getProductById(id);
+        productImageDAO.updateProductImage(p1, productImage);
+        Assert.assertEquals(1,productImageDAO.findAll().size());
+    }
 
-//        productDAO.updateProductImage(product.getId(), productImage);
+    @Test
+    public void getProductImageFromProductId() {
+        final Product p1 =  new Product("Nike", "https://nike.com", 1200, "Very nice shirt");
+        productDAO.create(p1);
+        byte[] array = new byte[0];
+        ProductImage productImage = new ProductImage("NEW file", array);
+        productImageDAO.updateProductImage(p1, productImage);
 
-        System.out.println(productImageDAO.findAll());
+        Product product = productDAO.getProductByName("Nike");
+
+        ProductImage productImage1 = productImageDAO.getProductImageByProductId(product.getId());
+
+        Assert.assertNotNull(productImage1);
+        Assert.assertEquals(product, productImage1.getProduct());
     }
 }

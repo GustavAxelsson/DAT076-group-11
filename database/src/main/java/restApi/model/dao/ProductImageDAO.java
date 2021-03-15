@@ -29,4 +29,17 @@ public class ProductImageDAO extends AbstractDAO<ProductImage> {
     public void addProductImage(ProductImage productImage) {
         entityManager.merge(productImage);
     }
+
+    public void updateProductImage(Product product, ProductImage productImage) {
+        productImage.setProduct(product);
+        entityManager.merge(productImage);
+    }
+
+    public ProductImage getProductImageByProductId(long productId) {
+        QProductImage productImage = QProductImage.productImage;
+        JPAQuery<ProductImage> query = new JPAQuery<>(entityManager);
+        return query.select(productImage).from(productImage)
+                .from(productImage)
+                .where(productImage.product.id.eq(productId)).fetchOne();
+    }
 }

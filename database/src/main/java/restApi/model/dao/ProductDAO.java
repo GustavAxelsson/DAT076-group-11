@@ -58,8 +58,5 @@ public class ProductDAO extends AbstractDAO<Product> {
         entityManager.merge(product);
     }
 
-    public void updateProductImage(Product product, ProductImage productImage) {
-        product.setProductImage(productImage);
-        entityManager.merge(product);
     }
 }

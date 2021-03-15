@@ -61,10 +61,10 @@ export class ProductService {
   ): Observable<Product> {
     let productId = 0;
 
-    if (!product.productImage || !product.productImage.id) {
+    if (!product.id) {
       return of(product);
     }
-    productId = product.productImage.id ? product.productImage.id : 0;
+    productId = product.id ? product.id : 0;
 
     return combineLatest([ of(product), this.downloadSingleImage(productId)])
       .pipe(
@@ -74,8 +74,8 @@ export class ProductService {
         }),
       );
   }
-  public downloadSingleImage(imageId: number): Observable<SafeUrl> {
-    return this.downloadImage(imageId).pipe(
+  public downloadSingleImage(productId: number): Observable<SafeUrl> {
+    return this.downloadImage(productId).pipe(
       map((response: Blob) => {
         const objectURL = URL.createObjectURL(response);
         return this.sanitizer.bypassSecurityTrustUrl(objectURL);
@@ -175,7 +175,7 @@ export class ProductService {
     );
   }
 
-  public addProductToSale(productId: string, saleId: number): Observable<void> {
+  public addProductToSale(productId: number, saleId: number): Observable<void> {
     return this.httpClient.post<void>(environment.baseUrl + '/sale/' + 'add-product-sale',
       {productId: productId, saleId: saleId})
   }

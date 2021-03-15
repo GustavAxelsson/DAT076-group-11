@@ -7,6 +7,7 @@ import restApi.model.entity.Product;
 import restApi.model.entity.Sale;
 import restApi.model.entity.SaleProduct;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -27,6 +28,7 @@ public class SaleService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("add-sale")
+    @RolesAllowed("admin")
     public void addNewSale(@NotNull Sale sale) {
         saleDAO.addNewSale(sale);
     }

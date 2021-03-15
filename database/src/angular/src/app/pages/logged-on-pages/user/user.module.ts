@@ -5,6 +5,11 @@ import { UserHomeComponent } from './user-home/user-home.component';
 import { OrdersComponent } from './orders/orders.component';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { OrderItemsComponent } from './orders/order-items/order-items.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { TestComponent } from './orders/test/test.component';
 
 const routes: Routes = [
   {
@@ -23,12 +28,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [OrdersComponent, OrdersComponent, UserHomeComponent],
+  declarations: [OrdersComponent, OrdersComponent, UserHomeComponent, OrderItemsComponent, TestComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     MatListModule,
     MatSidenavModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
 })
 export class UserModule {}

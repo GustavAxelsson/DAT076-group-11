@@ -5,6 +5,8 @@ import { MatTable } from '@angular/material/table';
 import { ShoppingCartTableDataSource } from './shopping-cart-table-datasource';
 import { Product } from '../../models/product';
 import { ShoppingCartService } from '../../services/shopping-service/shopping-cart.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shopping-cart-table',
@@ -21,7 +23,11 @@ export class ShoppingCartTableComponent implements AfterViewInit, OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['name', 'amount', 'price'];
 
-  constructor(private shoppingCartService: ShoppingCartService) {}
+  constructor(
+    private shoppingCartService: ShoppingCartService,
+    private _snackBar: MatSnackBar,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.dataSource = new ShoppingCartTableDataSource(this.shoppingCartService);
@@ -36,9 +42,12 @@ export class ShoppingCartTableComponent implements AfterViewInit, OnInit {
   }
 
   purchase() {
-    this.shoppingCartService.purchase().subscribe(res => {
-
-    })
+    this.shoppingCartService.purchase().subscribe(() => {
+      this._snackBar.open('Thank you for your purchase', undefined, {
+        duration: 2000,
+      });
+      this.router.navigate(['home']);
+    });
   }
 
   ngAfterViewInit() {

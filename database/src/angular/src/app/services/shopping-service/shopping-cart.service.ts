@@ -136,13 +136,17 @@ export class ShoppingCartService {
 
   purchase(): Observable<void> {
     const products = Array.from(this.storedItems.value.keys());
-
-    console.log(products, this.httpOptions);
     const url = this.serviceUrl + 'purchase';
-
-    return this.httpClient.post<void>(url, products, {
-      headers: this.header,
-    });
+    return this.httpClient
+      .post<void>(url, products, {
+        headers: this.header,
+      })
+      .pipe(
+        map(() => {
+          this.storedItems.next(new Map());
+          this.cookieService.delete(this.COOKIE_STORED_CART_ITEMS);
+        })
+      );
   }
 
   getMyOrders(): Observable<ProductOrder[]> {

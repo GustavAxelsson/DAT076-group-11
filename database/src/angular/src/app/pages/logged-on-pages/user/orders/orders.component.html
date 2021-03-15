@@ -1,11 +1,6 @@
-<div>
-  <div *ngIf="orderList && orderList.length > 0; else noOrders">
-    <div *ngFor="let order of orderList">
-      <div>Order Id: {{order.id}}</div>
-<!--      <div>Products: {{order.productList}}</div>-->
-    </div>
-  </div>
-  <ng-template #noOrders>
-    <div>No orders found</div>
-  </ng-template>
-</div>
+<ng-container *ngFor="let order of orderList">
+  <app-order-items
+    [items]="order.productList"
+    [orderId]="order.id"
+  ></app-order-items>
+</ng-container>

@@ -36,7 +36,10 @@ export class AdminProductsComponent implements OnInit {
   public sales: Sale[] = [];
 
   formGroup = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4)
+    ]),
     price: new FormControl('', [
       Validators.required,
       Validators.min(1),
@@ -44,22 +47,29 @@ export class AdminProductsComponent implements OnInit {
     ]),
     url: new FormControl(''),
     description: new FormControl('', [Validators.required]),
-    category: new FormControl(''),
+    category: new FormControl('', [Validators.required]),
   });
 
 
   formGroupSale = new FormGroup({
-    name: new FormControl(''),
-    percentage: new FormControl(''),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4)
+    ]),
+    percentage: new FormControl('', [
+      Validators.required,
+      Validators.min(0.1),
+      Validators.max(0.9)
+    ]),
   })
 
   formGroupAddProductSale = new FormGroup({
-    sale: new FormControl(''),
-    product: new FormControl(''),
+    sale: new FormControl('',[Validators.required]),
+    product: new FormControl('', [Validators.required]),
   })
 
   formGroupSetCurrentSale = new FormGroup({
-    currentSale: new FormControl(''),
+    currentSale: new FormControl('', [Validators.required]),
   })
   constructor(
     private productService: ProductService,
@@ -241,5 +251,11 @@ export class AdminProductsComponent implements OnInit {
   }
   get category(): AbstractControl | null {
     return this.formGroup.get('category');
+  }
+  get saleName(): AbstractControl | null {
+    return this.formGroupSale.get('name');
+  }
+  get percentage(): AbstractControl | null {
+    return this.formGroupSale.get('percentage');
   }
 }

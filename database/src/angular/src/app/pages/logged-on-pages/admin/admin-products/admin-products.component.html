@@ -1,6 +1,7 @@
 <div class="main-container">
   <div class="container">
     <mat-card class="form-card">
+      <h1>Add product</h1>
       <form [formGroup]="formGroup" class="form-container">
         <mat-form-field color="primary">
           <mat-label>
@@ -35,7 +36,7 @@
             Price
             <span
               class="text-danger"
-              *ngIf="name?.errors && name?.hasError('required')"
+              *ngIf="price?.errors && price?.hasError('required')"
               >*</span
             >
           </mat-label>
@@ -63,7 +64,7 @@
             Description
             <span
               class="text-danger"
-              *ngIf="name?.errors && name?.hasError('required')"
+              *ngIf="description?.errors && description?.hasError('required')"
               >*</span
             >
           </mat-label>
@@ -83,12 +84,26 @@
         </mat-form-field>
 
         <mat-form-field color="primary">
-          <mat-label> Category </mat-label>
+          <mat-label>
+            Category
+            <span
+              class="text-danger"
+              *ngIf="category?.errors && category?.hasError('required')"
+            >*</span
+            >
+          </mat-label>
           <mat-select formControlName="category">
             <mat-option *ngFor="let category of categories" [value]="category">
               {{ category.name }}
             </mat-option>
           </mat-select>
+          <mat-error
+            *ngIf="
+              category?.valid && (category?.dirty || category?.touched)
+            "
+            class="mat-error"
+          >
+          </mat-error>
         </mat-form-field>
       </form>
       <button
@@ -101,6 +116,7 @@
     </mat-card>
 
     <mat-card class="photo-container">
+      <h1>Add image to product</h1>
       <mat-form-field>
         <mat-label>Select product</mat-label>
         <mat-select [(ngModel)]="selectedProduct">
@@ -129,12 +145,19 @@
     </mat-card>
 
     <mat-card class="new-category-card">
+      <h1>Add new category</h1>
       <mat-form-field>
         <mat-label>New category</mat-label>
         <input matInput type="text" [(ngModel)]="newCategory" />
       </mat-form-field>
       <div>
-        <button mat-raised-button (click)="addCategory()">Add Category</button>
+        <button
+          mat-raised-button
+          (click)="addCategory()"
+          [disabled]="newCategory == undefined"
+        >
+          Add Category
+        </button>
       </div>
     </mat-card>
 
@@ -148,27 +171,66 @@
     />
 
 
-    <mat-card>
+    <mat-card class="add-new-sale-card">
       <h1>Add sale</h1>
       <form [formGroup]="formGroupSale" class="form-container">
         <mat-form-field color="primary">
           <mat-label>
             Sale name
+            <span
+              class="text-danger"
+              *ngIf="saleName?.errors && saleName?.hasError('required')"
+            >*</span
+            >
           </mat-label>
           <input class="input-field" matInput type="text" formControlName="name">
+          <mat-error
+            *ngIf="
+              saleName?.valid && (saleName?.dirty || saleName?.touched)
+            "
+            class="mat-error"
+          >
+          </mat-error>
+          <mat-error *ngIf="saleName?.hasError('minlength')">
+            Minimum length is 4 characters.
+          </mat-error>
         </mat-form-field>
         <mat-form-field color="primary">
           <mat-label>
             Sale percentage
+            <span
+              class="text-danger"
+              *ngIf="percentage?.errors && percentage?.hasError('required')"
+            >*</span
+            >
           </mat-label>
           <input class="input-field" matInput type="text" formControlName="percentage">
+          <mat-error
+            *ngIf="
+              percentage?.valid && (percentage?.dirty || percentage?.touched)
+            "
+            class="mat-error"
+          >
+          </mat-error>
+          <mat-error *ngIf="percentage?.hasError('min')">
+            0.1 is the minimum price reduction.
+          </mat-error>
+          <mat-error *ngIf="percentage?.hasError('max')">
+            0.9 is the minimum price reduction.
+          </mat-error>
         </mat-form-field>
       </form>
-      <button mat-raised-button (click)="onSubmitSale()">Add</button>
+      <button
+        mat-raised-button
+        [disabled]="!formGroupSale.valid"
+        (click)="onSubmitSale()"
+      >
+        Add
+      </button>
     </mat-card>
 
 
-    <mat-card>
+    <mat-card class="add-product-to-sale-card">
       <h1>Add product to sale</h1>
       <form [formGroup]="formGroupAddProductSale" class="form-container">
         <mat-form-field color="primary">
@@ -194,11 +256,17 @@
           <input id="sale" class="input-field" matInput type="text">
         </mat-form-field>
       </form>
-      <button mat-raised-button (click)="onSubmitProductToSale()">Add</button>
+      <button
+        [disabled]="!formGroupAddProductSale.valid"
+        mat-raised-button
+        (click)="onSubmitProductToSale()"
+      >
+        Add
+      </button>
     </mat-card>
 
 
-    <mat-card>
+    <mat-card class="set-current-sale-card">
       <h1>Set current sale</h1>
       <form [formGroup]="formGroupSetCurrentSale" class="form-container">
         <mat-form-field color="primary">
@@ -213,7 +281,13 @@
           <input id="currentSale" class="input-field" matInput type="text">
         </mat-form-field>
       </form>
-      <button mat-raised-button (click)="onSubmitCurrentSale()">Set</button>
+      <button
+        [disabled]="!formGroupSetCurrentSale.valid"
+        mat-raised-button
+        (click)="onSubmitCurrentSale()"
+      >
+        Set
+      </button>
     </mat-card>
 
   </div>

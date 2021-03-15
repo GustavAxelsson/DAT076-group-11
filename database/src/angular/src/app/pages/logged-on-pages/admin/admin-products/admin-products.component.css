@@ -61,3 +61,25 @@ img {
   flex-direction: column;
   align-items: center;
 }
+
+.add-new-sale-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add-product-to-sale-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.set-current-sale-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-danger {
+  color: red;
+}

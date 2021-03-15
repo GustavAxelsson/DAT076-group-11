@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthServiceService } from '../auth-service/auth-service.service';
 import { environment } from '../../../environments/environment';
+import { ProductOrder } from '../../models/ProductOrder';
 
 @Injectable({
   providedIn: 'root',
@@ -156,7 +157,13 @@ export class ShoppingCartService {
     return this.httpClient.post<void>(url, products, {
       headers: this.header
     });
+  }
 
+  getMyOrders(): Observable<ProductOrder[]> {
+    const url = this.serviceUrl + 'my-orders';
+    return this.httpClient.get<ProductOrder[]>(url, {
+      headers: this.header
+    });
   }
 
 }

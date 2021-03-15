@@ -35,7 +35,6 @@ const routes: Routes = [
   },
   {
     path: 'user/:id',
-    component: UserHomeComponent,
     loadChildren: () =>
       import('./pages/logged-on-pages/user/user.module').then(
         (mod) => mod.UserModule

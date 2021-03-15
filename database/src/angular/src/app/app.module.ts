@@ -38,7 +38,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     ShoppingCartTableComponent,
     LoginComponent,
     RegisterComponent,
-    UserHomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,7 +58,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     FormsModule,
     MatSnackBarModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

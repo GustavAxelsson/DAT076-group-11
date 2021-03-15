@@ -6,6 +6,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthServiceService, AuthUser } from './services/auth-service/auth-service.service';
 import { RegisterComponent } from './pages/register/register.component';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -41,6 +42,25 @@ export class AppComponent {
         width: '250px',
       });
     }
+  }
+
+  navigateToUserMyPages() {
+    this.authService.authUser$.pipe(take(1)).subscribe(
+      (authUser: AuthUser | undefined) => {
+        if (authUser === undefined) {
+          return;
+        }
+        if (authUser.userType === 'ADMIN') {
+          this.router.navigate(['admin']);
+        }
+        if (authUser.userType === 'USER') {
+          this.router.navigate(['user', authUser.userId]);
+        }
+        return;
+      },
+      error => {
+        console.warn('')
+      });
   }
 
   logout(): void {

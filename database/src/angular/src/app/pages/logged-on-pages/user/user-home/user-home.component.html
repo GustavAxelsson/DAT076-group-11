@@ -1,1 +1,10 @@
-<p>user-home works!</p>
+<mat-sidenav-container class="sidenav-container" [hasBackdrop]="false" autosize>
+  <mat-sidenav [opened]="true" [mode]="'side'" >
+    <mat-nav-list class="sidenav">
+      <a mat-list-item [routerLink]="'orders'">My Orders</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

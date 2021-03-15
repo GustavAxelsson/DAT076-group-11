@@ -1,10 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  AuthServiceService,
-  AuthUser,
-} from '../../services/auth-service/auth-service.service';
-import { ProductService } from '../../services/product-service/product.service';
-import { HttpEventType } from '@angular/common/http';
+import { AuthServiceService, AuthUser } from '../../services/auth-service/auth-service.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';

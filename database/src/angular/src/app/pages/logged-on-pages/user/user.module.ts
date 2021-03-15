@@ -1,22 +1,34 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes } from '@angular/router';
-import { AdminProductsComponent } from '../admin/admin-products/admin-products.component';
-import { AdminHomeComponent } from '../admin/admin-home/admin-home.component';
+import { RouterModule, Routes } from '@angular/router';
 import { UserHomeComponent } from './user-home/user-home.component';
+import { OrdersComponent } from './orders/orders.component';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 const routes: Routes = [
   {
     path: '',
+    component: UserHomeComponent,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'home' },
-      { path: 'home', component: UserHomeComponent },
+      { path: 'home',
+        component: UserHomeComponent
+      },
+      {
+        path: 'orders',
+        component: OrdersComponent
+      }
     ],
   },
 ];
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule],
+  declarations: [OrdersComponent, OrdersComponent, UserHomeComponent],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    MatListModule,
+    MatSidenavModule,
+  ],
 })
 export class UserModule {}

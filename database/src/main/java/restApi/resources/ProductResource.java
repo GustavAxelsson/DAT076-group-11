@@ -1,6 +1,5 @@
 package restApi.resources;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -92,25 +91,18 @@ public class ProductResource {
             productDAO.addNewProduct(product);
     }
 
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("user")
     @Path("purchase")
     public Response purchase(@NotNull List<Product> products) {
-
         Set<Product> productSet = new HashSet<>(products);
-
-        System.out.println(token.getName());
-        System.out.println(token.getAudience());
-        System.out.println(token.getIssuedAtTime());
-        System.out.println(token.getExpirationTime());
         String username = token.getSubject();
-
         if (username == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-
         WebshopUser user = userDao.getUserFromUsername(username);
 
         if (user == null) {
@@ -135,18 +127,30 @@ public class ProductResource {
      @GET
      @Consumes(MediaType.APPLICATION_JSON)
      @Produces(MediaType.APPLICATION_JSON)
-     @Path("list-my-orders")
+     @Path("my-orders")
+     @RolesAllowed("user")
      public Response getMyOrders() {
-       String username =  token.getSubject();
-       if (username == null) {
-           return Response.ok(new ArrayList<>()).build();
-       }
-      WebshopUser user = userDao.getUserFromUsername(username);
-       if (user == null) {
-           return Response.ok(new ArrayList<>()).build();
-       }
+        try {
+            String username =  token.getSubject();
+            if (username == null) {
+                return Response.ok(new ArrayList<>()).build();
+            }
+            WebshopUser user = userDao.getUserFromUsername(username);
+            if (user == null) {
+                return Response.ok(new ArrayList<>()).build();
+            }
 
-       return Response.ok(user.getCustomer().getProductOrderList()).build();
+            List<ProductOrder> productOrder = productOrderDAO.getProductOrdersByCustomerEmail(user.getCustomer().getEmail());
+
+            if (productOrder == null) {
+                return Response.ok(new ArrayList<>()).build();
+            }
+
+            return Response.ok(productOrder).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
      }
 
 

@@ -31,12 +31,6 @@ public class UserDao extends AbstractDAO<WebshopUser>{
         entityManager.persist(user);
     }
 
-    public boolean userAlreadyExist(String username) {
-        QWebshopUser user = QWebshopUser.webshopUser;
-        JPAQuery<WebshopUser> query = new JPAQuery<>(entityManager);
-        return query.select(user).from(user).where(user.username.eq(username)) != null;
-    }
-
     public String validate(WebshopUser user, String password) {
         if (user != null) {
             if(BCrypt.checkpw(password, user.getPassword())) {
@@ -52,8 +46,13 @@ public class UserDao extends AbstractDAO<WebshopUser>{
     public WebshopUser getUserFromUsername(String username) {
         QWebshopUser user = QWebshopUser.webshopUser;
         JPAQuery<WebshopUser> query = new JPAQuery<>(entityManager);
-        return query.select(user).from(user).where(user.username.eq(username))
+        WebshopUser responseUser = query.select(user).from(user).where(user.username.eq(username))
                 .fetchOne();
+        if (responseUser != null) {
+            entityManager.refresh(responseUser);
+            return responseUser;
+        }
+        return null;
     }
 
     public void updateRoleOnUser(WebshopUser user, String role) {

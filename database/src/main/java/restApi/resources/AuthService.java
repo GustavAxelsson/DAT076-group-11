@@ -1,20 +1,38 @@
 package restApi.resources;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import restApi.model.dao.UserDao;
 import restApi.model.entity.WebshopUser;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.security.PrivateKey;
 import java.util.HashSet;
 import java.util.Set;
+
 
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
 @Path("auth")
 public class AuthService {
+
+    PrivateKey pk;
+    String jti;
+
+    @PostConstruct
+    private void init() {
+        try {
+            pk = TokenGenerator.getPrivateKey();
+            jti = RandomStringUtils.random(10, true, true);
+        } catch (Exception e) {
+            System.out.println("Unable to fetch private key");
+        }
+    }
+
     @EJB
     UserDao userDao;
 
@@ -35,7 +53,11 @@ public class AuthService {
             WebshopUser webshopUser = userDao.getUserFromUsername(username);
             Set<String> roles = new HashSet<>();
             roles.add("user");
-            String token = TokenGenerator.generateToken(username, roles, webshopUser.getId());
+            String token = TokenGenerator.generateToken(username,
+                    roles,
+                    webshopUser.getId(),
+                    pk,
+                    jti);
 
             return Response.status(Response.Status.CREATED)
                     .header(AUTHORIZATION, "Bearer ".concat(token))
@@ -71,7 +93,11 @@ public class AuthService {
                     .build();
         }
         try {
-            String token = TokenGenerator.generateToken(username, roles, user.getId());
+            String token = TokenGenerator.generateToken(username,
+                    roles,
+                    user.getId(),
+                    pk,
+                    jti);
 
             return Response.status(Response.Status.OK)
                     .header(AUTHORIZATION, "Bearer ".concat(token))

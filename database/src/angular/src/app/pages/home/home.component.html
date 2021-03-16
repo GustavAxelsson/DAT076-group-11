@@ -1,5 +1,5 @@
 <h1 class="welcome-heading">WELCOME TO THE SHOP</h1>
-<h2 class="sale-heading">
+<h2 class="sale-heading" *ngIf="currentSale?.name">
   Check out the products of the {{ currentSale?.name }}
 </h2>
 <div class="product-list-sale">

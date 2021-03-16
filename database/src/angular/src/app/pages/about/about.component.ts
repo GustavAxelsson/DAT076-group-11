@@ -15,14 +15,14 @@ export class AboutComponent implements OnInit {
       {
         name: 'Gustav Axelsson',
         title: 'Angular Noob',
-        description: 'Does very importent stuff in the company',
+        description: 'Does very important stuff in the company',
         email: 'gusaxe@student.chalmers.se',
         url: 'assets/peasant.png',
       },
       {
         name: 'Linus Johansson',
         title: 'Angular Pro',
-        description: 'Does super importent stuff in the company',
+        description: 'Does super important stuff in the company',
         email: 'linjoh@student.chalmers.se',
         url: 'assets/kingen.png',
       },

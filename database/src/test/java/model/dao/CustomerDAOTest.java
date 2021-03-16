@@ -30,14 +30,14 @@ public class CustomerDAOTest extends AbstractDAOTest {
     private static final ProductOrder po2 = new ProductOrder(c1);
 
     @Test
-    public void createTwoCustomers() {
+    public void createTwoCustomersTest() {
         customerDAO.createAll(Arrays.asList(c1, c2));
         List<Customer> customers = customerDAO.findAll();
         Assert.assertEquals(2, customers.size());
     }
 
     @Test
-    public void getCustomerNamed() {
+    public void getCustomerNamedTest() {
         customerDAO.create(c1);
         Customer c = customerDAO.getCustomerNamed(c1.getFirstName());
         Assert.assertEquals(c.getLastName(), "Andersson");
@@ -45,7 +45,7 @@ public class CustomerDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void addAnOrderWithANewCustomerAndCheckThatCustomerIsPersisted() {
+    public void addAnOrderWithANewCustomerAndCheckThatCustomerIsPersistedTest() {
         ProductOrder o = new ProductOrder(c1);
         productOrderDAO.create(o);
         Customer persistedCustomer = customerDAO.getCustomerByEmail(c1.getEmail());
@@ -53,7 +53,7 @@ public class CustomerDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void createTwoCustomersRemoveOneByEmail() {
+    public void createTwoCustomersRemoveOneByEmailTest() {
         customerDAO.createAll(Arrays.asList(c1, c2));
         customerDAO.removeCustomerByEmail("anders.a@gmail.com");
         Assert.assertEquals(1, customerDAO.count());

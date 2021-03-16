@@ -11,6 +11,8 @@ import restApi.model.entity.Category;
 import restApi.model.entity.Product;
 
 import javax.ejb.EJB;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(Arquillian.class)
@@ -24,7 +26,7 @@ public class CategoryDAOTest extends AbstractDAOTest {
 
 
     @Test
-    public void createProductWithCategory() {
+    public void createProductWithCategoryTest() {
         Product product = new Product();
         product.setName("Nike");
         Category cat = new Category();
@@ -37,7 +39,7 @@ public class CategoryDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void createProductAndChangeCategory() {
+    public void createProductAndChangeCategoryTest() {
         Product product = new Product();
         product.setName("Nike");
         Category cat = new Category();
@@ -56,7 +58,7 @@ public class CategoryDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void changeNameOfCategory() {
+    public void changeNameOfCategoryTest() {
         Product product = new Product();
         product.setName("Nike");
         Category cat = new Category();

@@ -23,15 +23,4 @@ public class CategoryDAO extends AbstractDAO<Category>{
         category.setName(name);
         entityManager.merge(category);
     }
-
-    public List<Product> getAllProductsForCategory(String name) {
-        QCategory category = QCategory.category;
-        JPAQuery<Category> query = new JPAQuery<>(entityManager);
-        Category cat = query.select(category).from(category).where(category.name.eq(name)).fetchOne();
-        if (cat != null && cat.getProductList() != null) {
-            return cat.getProductList();
-        } else {
-            return  null;
-        }
-    }
 }

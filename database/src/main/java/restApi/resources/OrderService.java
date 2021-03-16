@@ -2,7 +2,7 @@ package restApi.resources;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import restApi.model.dao.ProductOrderDAO;
-import restApi.model.dao.UserDao;
+import restApi.model.dao.UserDAO;
 import restApi.model.entity.Customer;
 import restApi.model.entity.Product;
 import restApi.model.entity.ProductOrder;
@@ -26,7 +26,7 @@ public class OrderService {
     ProductOrderDAO productOrderDAO;
 
     @EJB
-    UserDao userDao;
+    UserDAO userDAO;
 
     @Inject
     JsonWebToken token;
@@ -42,7 +42,7 @@ public class OrderService {
         if (username == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        WebshopUser user = userDao.getUserFromUsername(username);
+        WebshopUser user = userDAO.getUserFromUsername(username);
 
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -75,7 +75,7 @@ public class OrderService {
             if (username == null) {
                 return Response.ok(new ArrayList<>()).build();
             }
-            WebshopUser user = userDao.getUserFromUsername(username);
+            WebshopUser user = userDAO.getUserFromUsername(username);
             if (user == null) {
                 return Response.ok(new ArrayList<>()).build();
             }

@@ -23,7 +23,8 @@ public class ProductImageDAO extends AbstractDAO<ProductImage> {
         JPAQuery<ProductImage> query = new JPAQuery<>(entityManager);
         return query.select(productImage).from(productImage)
                 .from(productImage)
-                .where(productImage.id.eq(id)).fetchOne();
+                .where(productImage.id.eq(id))
+                .fetchOne();
     }
 
     public void addProductImage(ProductImage productImage) {

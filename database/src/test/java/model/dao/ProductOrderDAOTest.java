@@ -34,7 +34,7 @@ public class ProductOrderDAOTest extends AbstractDAOTest{
     private static final Product p3 =  new Product("Gucci", "https://gucci.com", 10000, "Luxury bag");
 
     @Test
-    public void createProductOrder() {
+    public void createProductOrderTest() {
         productDAO.createAll(Arrays.asList(p1, p2, p3));
         ProductOrder productOrder = new ProductOrder(c1);
         Set<Product> products = new HashSet<>();
@@ -106,7 +106,7 @@ public class ProductOrderDAOTest extends AbstractDAOTest{
     }
 
     @Test
-    public void addItemsToProductOrder() {
+    public void addItemsToProductOrderTest() {
         productDAO.createAll(Arrays.asList(p1,p2,p3));
         ProductOrder productOrder = new ProductOrder(c1);
         productOrderDAO.create(productOrder);
@@ -116,5 +116,18 @@ public class ProductOrderDAOTest extends AbstractDAOTest{
         productOrderDAO.addItemsToProductOrder(po,Arrays.asList(p1,p2));
         Set<Product> newList = productOrderDAO.getProductListByProductOrderId(po.getId());
         Assert.assertEquals(2, newList.size());
+    }
+
+    @Test
+    public void updateProductOrderTest() {
+        productDAO.create(p1);
+        ProductOrder productOrder = new ProductOrder(c1);
+        productOrderDAO.create(productOrder);
+        ProductOrder po = productOrderDAO.findAll().get(0);
+        Assert.assertEquals(c1, po.getCustomer());
+        po.setCustomer(c2);
+        productOrderDAO.updateProductOrder(po);
+        ProductOrder po2 = productOrderDAO.findAll().get(0);
+        Assert.assertEquals(c2, po2.getCustomer());
     }
 }

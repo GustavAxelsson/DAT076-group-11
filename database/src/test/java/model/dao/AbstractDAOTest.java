@@ -25,7 +25,7 @@ abstract class AbstractDAOTest {
                 .addClasses(CategoryDAO.class, Category.class)
                 .addClasses(ProductImageDAO.class, ProductImage.class)
                 .addClasses(SaleDAO.class, Sale.class)
-                .addClasses(UserDao.class, WebshopUser.class)
+                .addClasses(UserDAO.class, WebshopUser.class)
                 .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
@@ -50,6 +50,8 @@ abstract class AbstractDAOTest {
         em.createQuery("delete from Product ").executeUpdate();
         em.createQuery("delete from Category ").executeUpdate();
         em.createQuery("delete from Sale ").executeUpdate();
+        em.createQuery("delete from ProductImage").executeUpdate();
+        em.createQuery("delete from WebshopUser ").executeUpdate();
         utx.commit();
     }
 

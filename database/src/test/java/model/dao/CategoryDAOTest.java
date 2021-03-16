@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import restApi.model.dao.CategoryDAO;
 import restApi.model.dao.ProductDAO;
-import restApi.model.dao.UserDao;
 import restApi.model.entity.Category;
 import restApi.model.entity.Product;
 
@@ -24,7 +23,7 @@ public class CategoryDAOTest extends AbstractDAOTest {
 
 
     @Test
-    public void createProductWithCategory() {
+    public void createProductWithCategoryTest() {
         Product product = new Product();
         product.setName("Nike");
         Category cat = new Category();
@@ -37,7 +36,7 @@ public class CategoryDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void createProductAndChangeCategory() {
+    public void createProductAndChangeCategoryTest() {
         Product product = new Product();
         product.setName("Nike");
         Category cat = new Category();
@@ -56,7 +55,7 @@ public class CategoryDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void changeNameOfCategory() {
+    public void changeNameOfCategoryTest() {
         Product product = new Product();
         product.setName("Nike");
         Category cat = new Category();

@@ -1,9 +1,13 @@
 package model.dao;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import restApi.model.dao.UserDao;
+import restApi.model.dao.CustomerDAO;
+import restApi.model.dao.UserDAO;
+import restApi.model.entity.Customer;
+import restApi.model.entity.WebshopUser;
 
 import javax.ejb.EJB;
 
@@ -11,9 +15,51 @@ import javax.ejb.EJB;
 public class UserDAOTest extends AbstractDAOTest {
 
     @EJB
-    UserDao userDao;
+    UserDAO userDAO;
+
+    @EJB
+    CustomerDAO customerDAO;
 
     @Test
-    public void createUser() {
+    public void registerUserTest() {
+        userDAO.registerUser("username", "password");
+        WebshopUser user = userDAO.findAll().get(0);
+        Assert.assertEquals("username", user.getUsername());
+        Assert.assertEquals("user", user.getRole());
+    }
+
+    @Test
+    public void validateUserTest() {
+        userDAO.registerUser("username", "password");
+        WebshopUser user = userDAO.findAll().get(0);
+        String role = userDAO.validate(user, "password");
+        Assert.assertEquals("user", role);
+    }
+
+    @Test
+    public void getUserFromUsernameTest() {
+        userDAO.registerUser("username", "password");
+        WebshopUser user = userDAO.findAll().get(0);
+        Assert.assertEquals(user, userDAO.getUserFromUsername("username"));
+    }
+
+    @Test
+    public void updateRoleOnUserTest() {
+        userDAO.registerUser("username", "password");
+        WebshopUser user = userDAO.findAll().get(0);
+        Assert.assertEquals("user", user.getRole());
+        userDAO.updateRoleOnUser(user, "admin");
+        Assert.assertEquals("admin", user.getRole());
+    }
+
+    @Test
+    public void updateCustomerTest() {
+        Customer c1 = new Customer("Anna.email.com");
+        customerDAO.create(c1);
+        userDAO.registerUser("username", "password");
+        WebshopUser user = userDAO.findAll().get(0);
+        userDAO.updateCustomer(user, c1);
+        user = userDAO.findAll().get(0);
+        Assert.assertEquals(c1, user.getCustomer());
     }
 }

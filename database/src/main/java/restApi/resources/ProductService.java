@@ -46,17 +46,6 @@ public class ProductService {
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("list-category-products")
-    public Response allProductsByCategory(@NotNull String name) throws FileNotFoundException {
-        List<Product> products = categoryDAO.getAllProductsForCategory(name);
-        if (products == null || products.size() < 1) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(products).build();
-    }
-
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
     @Path("product-id")
     public Response getProductById(@QueryParam("id")@NotNull Long id) throws FileNotFoundException{
         Product product = productDAO.getProductById(id);

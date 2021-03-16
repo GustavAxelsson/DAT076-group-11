@@ -42,7 +42,7 @@ public class SaleDAOTest extends AbstractDAOTest {
         expectedList.add(p1);
         expectedList.add(p2);
         productDAO.createAll(Arrays.asList(p1, p2));
-        Assert.assertEquals(expectedList, saleDAO.getProductsFromSale(s1));
+        Assert.assertTrue(listEqualsIgnoreOrder(expectedList, saleDAO.getProductsFromSale(s1)));
     }
 
     @Test
@@ -59,11 +59,11 @@ public class SaleDAOTest extends AbstractDAOTest {
         saleDAO.addProductToSale(p1, s1);
         List<Product> expectedList = new ArrayList<>();
         expectedList.add(p1);
-        Assert.assertEquals(expectedList, saleDAO.getProductsFromSale(s1));
+        Assert.assertTrue(listEqualsIgnoreOrder(expectedList, saleDAO.getProductsFromSale(s1)));
         productDAO.create(p2);
         saleDAO.addProductToSale(p2, s1);
         expectedList.add(p2);
-        Assert.assertEquals(expectedList, saleDAO.getProductsFromSale(s1));
+        Assert.assertTrue(listEqualsIgnoreOrder(expectedList, saleDAO.getProductsFromSale(s1)));
     }
 
     @Test

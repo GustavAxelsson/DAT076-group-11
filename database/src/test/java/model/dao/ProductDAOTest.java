@@ -34,20 +34,28 @@ public class ProductDAOTest  extends  AbstractDAOTest {
 
 
     @Test
-    public void createTwoProducts() {
+    public void addSameProductTest() {
+        productDAO.addNewProduct(p1);
+        productDAO.addNewProduct(p1);
+        List<Product> productList = productDAO.findAll();
+        Assert.assertEquals(1, productList.size());
+    }
+
+    @Test
+    public void createTwoProductsTest() {
         productDAO.createAll(Arrays.asList(p1,p2));
         List<Product> productList = productDAO.findAll();
         Assert.assertEquals(2, productList.size());
     }
 
     @Test
-    public void insertTwoProductsCheckCount() {
+    public void insertTwoProductsCheckCountTest() {
         productDAO.createAll(Arrays.asList(p1,p2));
         Assert.assertEquals(2, productDAO.count());
     }
 
     @Test
-    public void insertTwoProductsWithCategories() {
+    public void insertTwoProductsWithCategoriesTest() {
         p1.setCategory(c1);
         p2.setCategory(c2);
         productDAO.createAll(Arrays.asList(p1,p2));
@@ -71,4 +79,10 @@ public class ProductDAOTest  extends  AbstractDAOTest {
         Assert.assertEquals(expectedList, productDAO.getProductsByCategory(c1));
     }
 
+    @Test public void getProductByIdTest() {
+        productDAO.addNewProduct(p1);
+        List<Product> productList = productDAO.findAll();
+        Product p = productList.get(0);
+        Assert.assertEquals(p, productDAO.getProductById(p.getId()));
+    }
 }

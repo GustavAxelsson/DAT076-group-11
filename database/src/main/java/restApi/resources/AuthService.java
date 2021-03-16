@@ -1,7 +1,7 @@
 package restApi.resources;
 
+import restApi.model.dao.UserDAO;
 import org.apache.commons.lang3.RandomStringUtils;
-import restApi.model.dao.UserDao;
 import restApi.model.entity.WebshopUser;
 
 import javax.annotation.PostConstruct;
@@ -34,7 +34,7 @@ public class AuthService {
     }
 
     @EJB
-    UserDao userDao;
+    UserDAO userDao;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)

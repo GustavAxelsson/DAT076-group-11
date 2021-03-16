@@ -20,13 +20,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { ShoppingCartTableComponent } from './components/shopping-cart-table/shopping-cart-table.component';
+import { ShoppingCartTableComponent } from './pages/shopping-cart-table/shopping-cart-table.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TokenInjector } from './services/token-injector';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { TokenInjector } from './services/token-injector';
     MatSnackBarModule,
     MatIconModule,
     MatDialogModule,
+    MatTooltipModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInjector, multi: true },

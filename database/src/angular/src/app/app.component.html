@@ -1,21 +1,26 @@
 <header>
   <div class="navigation-bar">
-    <button mat-button [routerLink]="'products'">Products</button>
+    <button mat-button [routerLink]="'products'" matTooltip="Products">Products</button>
 
     <div class="icon-buttons">
-      <button mat-icon-button (click)="navigateToUserMyPages()">
+      <button mat-icon-button (click)="navigateToUserMyPages()" matTooltip="My pages">
         <mat-icon>person</mat-icon>
       </button>
 
       <div class="cart-button">
-        <button mat-icon-button [routerLink]="'shopping-cart'">
+        <button mat-icon-button [routerLink]="'shopping-cart'" matTooltip="Shopping cart">
           <mat-icon>shopping_cart</mat-icon>
         </button>
-        <div class="number">{{ itemsInShoppingCart$ | async }}</div>
+        <ng-container *ngIf="itemsInShoppingCart$ | async as numberOfItems">
+          <div class="number">{{ numberOfItems }}</div>
+        </ng-container>
       </div>
 
-      <button mat-icon-button [routerLink]="'home'">
+      <button mat-icon-button [routerLink]="'home'" matTooltip="Home">
         <mat-icon>home</mat-icon>
+      </button>
+      <button mat-button class="about-container" [routerLink]="'about'">
+       About
       </button>
     </div>
 
@@ -32,9 +37,3 @@
 </header>
 
 <router-outlet></router-outlet>
-
-<footer>
-  <div class="about-container">
-    <a [routerLink]="'about'">About</a>
-  </div>
-</footer>

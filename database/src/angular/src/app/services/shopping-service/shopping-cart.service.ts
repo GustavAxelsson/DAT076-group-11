@@ -11,9 +11,7 @@ import { ProductOrder } from '../../models/ProductOrder';
   providedIn: 'root',
 })
 export class ShoppingCartService {
-  private storedItems: BehaviorSubject<
-    Map<Product, number>
-  > = new BehaviorSubject(new Map<Product, number>());
+  private storedItems: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
   private COOKIE_STORED_CART_ITEMS = 'webshop-access-stored-cart-items';
   private serviceUrl: string = environment.baseUrl + '/order/';
   private header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -24,11 +22,8 @@ export class ShoppingCartService {
   ) {
     const itemsJson = this.cookieService.get(this.COOKIE_STORED_CART_ITEMS);
     if (itemsJson) {
-      const itemsMap: Map<Product, number> = JSON.parse(
-        itemsJson,
-        this.reviver
-      );
-      this.storedItems.next(itemsMap);
+      const items: Product[] = JSON.parse(itemsJson);
+      this.storedItems.next(items);
     }
   }
 
@@ -36,8 +31,10 @@ export class ShoppingCartService {
     return this.storedItems.asObservable().pipe(
       map((products) => {
         let totalPrice = 0;
-        for (let [key, value] of products) {
-          totalPrice = totalPrice + value * key.price;
+        if (products && products.length > 0) {
+          products.forEach(product => {
+            totalPrice = totalPrice + product.price;
+          })
         }
         return totalPrice;
       })
@@ -47,39 +44,27 @@ export class ShoppingCartService {
   get numberOfItemsInShoppingCart(): Observable<number> {
     return this.storedItems.asObservable().pipe(
       map((products) => {
-        let numberOfItems = 0;
-        for (let value of Array.from(products.values())) {
-          numberOfItems = numberOfItems + value;
+        if (!products) {
+          return 0;
         }
-        return numberOfItems;
+        return products.length;
       })
     );
   }
 
   getStoredItems$(): Observable<Product[]> {
-    return this.storedItems.asObservable().pipe(
-      map((products) => {
-        const list: Product[] = [];
-        for (let [key, value] of products) {
-          const product = key;
-          product.amount = value;
-          list.push(product);
-        }
-        return list;
-      })
-    );
+    return this.storedItems.asObservable();
   }
 
   public addProductToShoppingCart(product: Product): void {
     if (product === undefined) {
       return;
     }
-    const items = this.storedItems.value.get(product);
-    if (items === undefined) {
-      this.storedItems.value.set(product, 1);
-    } else {
-      this.storedItems.value.set(product, items + 1);
+    if (this.storedItems.value.length > 0 &&
+      this.storedItems.value.findIndex(item => item.id === product.id) >= 0) {
+      return;
     }
+    this.storedItems.value.push(product);
     this.storedItems.next(this.storedItems.value);
     this.storeItemsToCookie();
   }
@@ -88,46 +73,24 @@ export class ShoppingCartService {
     if (product === undefined) {
       return;
     }
-    const numberOfProducts = this.storedItems.value.get(product);
-    if (numberOfProducts === undefined) {
-      return;
-    } else if (numberOfProducts === 0 || numberOfProducts === 1) {
-      this.storedItems.value.delete(product);
-    } else {
-      this.storedItems.value.set(product, numberOfProducts - 1);
+
+    const productList: Product[] = this.storedItems.value;
+    const index = productList.findIndex(item => item.id === product.id);
+    if (index >= 0) {
+      productList.splice(index,1)
     }
     this.storedItems.next(this.storedItems.value);
     this.storeItemsToCookie();
   }
 
   storeItemsToCookie(): void {
-    const json = JSON.stringify(this.storedItems.value, this.replacer);
+    const json = JSON.stringify(this.storedItems.value);
     this.cookieService.delete(this.COOKIE_STORED_CART_ITEMS);
     this.cookieService.set(this.COOKIE_STORED_CART_ITEMS, json);
   }
 
-  replacer(key: any, value: any) {
-    if (value instanceof Map) {
-      return {
-        dataType: 'Map',
-        value: Array.from(value.entries()),
-      };
-    } else {
-      return value;
-    }
-  }
-
-  reviver(key: any, value: any) {
-    if (typeof value === 'object' && value !== null) {
-      if (value.dataType === 'Map') {
-        return new Map(value.value);
-      }
-    }
-    return value;
-  }
-
   purchase(): Observable<void> {
-    const products = Array.from(this.storedItems.value.keys());
+    const products = this.storedItems.value;
     if (!products) {
       return throwError('No products found');
     }
@@ -138,7 +101,7 @@ export class ShoppingCartService {
       })
       .pipe(
         map(() => {
-          this.storedItems.next(new Map());
+          this.storedItems.next([]);
           this.cookieService.delete(this.COOKIE_STORED_CART_ITEMS);
         })
       );

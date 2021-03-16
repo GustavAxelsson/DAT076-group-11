@@ -21,7 +21,7 @@ export class ShoppingCartTableComponent implements AfterViewInit, OnInit {
   totalSum = this.shoppingCartService.sumOfAllProducts;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['name', 'amount', 'price'];
+  displayedColumns = ['name', 'price', 'remove'];
 
   constructor(
     private shoppingCartService: ShoppingCartService,

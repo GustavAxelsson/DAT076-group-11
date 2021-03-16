@@ -15,12 +15,6 @@ h3 {
   text-transform:capitalize;
 }
 
-.rating-and-price {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px;
-}
-
 #actions {
   display: flex;
   justify-content: center;

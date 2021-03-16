@@ -3,15 +3,15 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Customer } from '../../models/customer';
+import { ExternalUser } from '../../models/external-user';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserServiceService {
+export class UserService {
   private serviceUrl: string = environment.baseUrl + '/user/';
-
-  header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
-  httpOptions = {
+  private header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private httpOptions = {
     headers: this.header,
   };
 
@@ -39,9 +39,4 @@ export class UserServiceService {
       headers: this.header,
     });
   }
-}
-
-export interface ExternalUser {
-  username: string | undefined;
-  role: string | undefined;
 }

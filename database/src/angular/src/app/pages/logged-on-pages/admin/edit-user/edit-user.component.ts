@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ExternalUser,
-  UserServiceService,
-} from '../../../../services/user-service/user-service.service';
+import { ExternalUser } from '../../../../models/external-user';
+import { UserService } from '../../../../services/user-service/user-service';
 
 @Component({
   selector: 'app-edit-user',
@@ -12,7 +10,7 @@ import {
 export class EditUserComponent implements OnInit {
   users: ExternalUser[] = [];
 
-  constructor(private userService: UserServiceService) {}
+  constructor(private userService: UserService) {}
 
   selectedUsername = '';
   selectedRole = '';
@@ -31,10 +29,9 @@ export class EditUserComponent implements OnInit {
 
   updateUser(user: ExternalUser) {
     if (user && user.username && user.role) {
-      this.userService.updateRoleOnUser(user.username, user.role).subscribe(result => {
-          console.log('Successful');
-        },
-        error => console.log('Error'));
+      this.userService.updateRoleOnUser(user.username, user.role).subscribe(
+        () => {},
+        () => console.log('Error'));
     }
     }
 }

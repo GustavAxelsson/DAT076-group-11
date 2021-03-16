@@ -20,7 +20,6 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.productService.getAllProductsWithImage().subscribe((res) => {
-      console.log(res);
       this.products = res;
     });
   }

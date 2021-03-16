@@ -3,10 +3,11 @@ import { ShoppingCartService } from './services/shopping-service/shopping-cart.s
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from './pages/login/login.component';
-import { AuthServiceService, AuthUser } from './services/auth-service/auth-service.service';
 import { RegisterComponent } from './pages/register/register.component';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { AuthUser } from './models/auth-user';
+import { AuthService } from './services/auth-service/auth-service';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,7 @@ export class AppComponent {
     private shoppingCartService: ShoppingCartService,
     private dialog: MatDialog,
     private router: Router,
-    private authService: AuthServiceService) {
+    private authService: AuthService) {
 
     this.authUser$.subscribe(
       res => this.authUser = res

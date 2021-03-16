@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AuthServiceService } from '../../services/auth-service/auth-service.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -10,7 +9,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Customer } from '../../models/customer';
-import { UserServiceService } from '../../services/user-service/user-service.service';
+import { AuthService } from '../../services/auth-service/auth-service';
+import { UserService } from '../../services/user-service/user-service';
 
 @Component({
   templateUrl: './register.component.html',
@@ -31,11 +31,11 @@ export class RegisterComponent implements OnInit {
   });
 
   constructor(
-    private authService: AuthServiceService,
+    private authService: AuthService,
     private router: Router,
     private _snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<RegisterComponent>,
-    private userService: UserServiceService,
+    private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: { data: undefined }
   ) {}
 

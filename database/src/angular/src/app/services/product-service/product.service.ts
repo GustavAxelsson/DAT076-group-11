@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpEvent,
-  HttpHeaders,
-  HttpParams,
-} from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams } from '@angular/common/http';
 import { combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Product } from '../../models/product';
 import { Category } from '../../models/category';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { AuthServiceService } from '../auth-service/auth-service.service';
+import { map, switchMap, take } from 'rxjs/operators';
 import { Sale } from '../../models/sale';
 
 @Injectable({
@@ -19,9 +13,8 @@ import { Sale } from '../../models/sale';
 })
 export class ProductService {
   private serviceUrl: string = environment.baseUrl + '/products/';
-
-  header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
-  httpOptions = {
+  private header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private httpOptions = {
     headers: this.header,
   };
 
@@ -32,36 +25,24 @@ export class ProductService {
 
   public getAllProducts$(): Observable<Product[]> {
     return this.httpClient
-      .get<Product[]>(this.serviceUrl + 'list-all-products', this.httpOptions)
-      .pipe(
-        map((products) => {
-          return products.map((product) => {
-            if (product.productImage && product.productImage.data) {
-              product.productImage.data = undefined;
-            }
-            return product;
-          });
-        })
-      );
+      .get<Product[]>(this.serviceUrl + 'list-all-products', this.httpOptions);
   }
 
   public getProductWithImage(product: Product): Observable<Product> {
-    let productId = 0;
 
-    if (!product.id) {
-      return of(product);
+    if (product !== undefined && product.id) {
+      return combineLatest([
+        of(product),
+        this.downloadSingleImage(product.id),
+      ]).pipe(
+        map(([product, imageURL]) => {
+          product.url = imageURL;
+          return product;
+        })
+      );
+    } else {
+      return of(product)
     }
-    productId = product.id ? product.id : 0;
-
-    return combineLatest([
-      of(product),
-      this.downloadSingleImage(productId),
-    ]).pipe(
-      map(([product, imageURL]) => {
-        product.url = imageURL;
-        return product;
-      })
-    );
   }
   public downloadSingleImage(productId: number): Observable<SafeUrl> {
     return this.downloadImage(productId).pipe(
@@ -132,7 +113,7 @@ export class ProductService {
     const url = this.serviceUrl + 'upload-image';
     return this.httpClient.post<any>(url, img, {
       reportProgress: true,
-      observe: 'events',
+      observe: 'response',
     });
   }
 

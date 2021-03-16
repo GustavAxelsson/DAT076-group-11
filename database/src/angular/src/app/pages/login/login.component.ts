@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AuthServiceService, AuthUser } from '../../services/auth-service/auth-service.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AuthUser } from '../../models/auth-user';
+import { AuthService } from '../../services/auth-service/auth-service';
 
 @Component({
   templateUrl: './login.component.html',
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
   passwordLogin: string = '';
 
   constructor(
-    private authService: AuthServiceService,
+    private authService: AuthService,
     private router: Router,
     private _snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<LoginComponent>,
@@ -37,7 +38,7 @@ export class LoginComponent implements OnInit {
         this.dialogRef.close();
         return;
       },
-      (error) => {
+      () => {
         this._snackBar.open('Login failed', 'Close', {
           duration: 2000,
         });

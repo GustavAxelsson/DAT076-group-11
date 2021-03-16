@@ -1,29 +1,26 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { JsonObject } from '@angular/compiler-cli/ngcc/src/packages/entry_point';
+import { AuthUser, UserType } from '../../models/auth-user';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthServiceService {
+export class AuthService {
   private authUser: BehaviorSubject<AuthUser | undefined> = new BehaviorSubject<
     AuthUser | undefined
   >(undefined);
 
   private ACCESS_TOKEN = 'webshop-access-token';
-
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
+  private apiUrl = '/auth/';
 
   get authUser$(): Observable<AuthUser | undefined> {
     return this.authUser.asObservable();
   }
 
-  private apiUrl = '/auth/';
 
   constructor(private httpClient: HttpClient) {
     const token = localStorage.getItem(this.ACCESS_TOKEN);
@@ -90,7 +87,7 @@ export class AuthServiceService {
     const tmp = JSON.parse(atob(token.split('.')[1]));
     const role: UserType = tmp['groups'][0].toUpperCase();
     const username = tmp['sub'];
-    const userId = tmp['userId'];
+    const userId = tmp['userId'].toString();
     const expiration = tmp['exp'];
 
     if (new Date(expiration * 1000) < new Date()) {
@@ -126,9 +123,3 @@ export class AuthServiceService {
   }
 }
 
-export type UserType = 'USER' | 'ADMIN' | undefined;
-export interface AuthUser {
-  userType: UserType | undefined;
-  userId: string | undefined;
-  username: string | undefined;
-}

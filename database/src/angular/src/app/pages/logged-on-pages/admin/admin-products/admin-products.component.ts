@@ -116,38 +116,37 @@ export class AdminProductsComponent implements OnInit {
 
   public uploadImage(): void {
     const img = new FormData();
-    // tslint:disable-next-line:no-non-null-assertion
-    const productId: number = this.selectedProduct?.id!;
-    // tslint:disable-next-line:no-non-null-assertion
-    img.append('file', this.selectedFile!, productId.toString());
-    this.productService
-      .uploadProductImage(img)
-      .pipe(
-        map((event) => {
-          switch (event.type) {
-            case HttpEventType.UploadProgress:
-              this.uploadInProgress = true;
-              this.uploadProgress = Math.round(
-                (event.loaded * 100) / event.total!
-              );
-              break;
-            case HttpEventType.Response:
-              return event;
+    if (this.selectedProduct && this.selectedProduct.id && this.selectedFile) {
+      img.append('file', this.selectedFile!,this.selectedProduct.id.toString());
+      this.productService
+        .uploadProductImage(img)
+        .pipe(
+          map((event) => {
+            switch (event.type) {
+              case HttpEventType.UploadProgress:
+                this.uploadInProgress = true;
+                this.uploadProgress = Math.round(
+                  (event.loaded * 100) / event.total!
+                );
+                break;
+              case HttpEventType.Response:
+                return event;
+            }
+            return event;
+          }),
+          catchError((error: HttpErrorResponse) => {
+            this.uploadInProgress = false;
+            this.openSnackBar('Failed to add new category', 'close');
+            return of('Upload failed');
+          })
+        )
+        .subscribe((event: any) => {
+          if (typeof event === 'object') {
+            this.openSnackBar('Image successfully uploaded', 'close');
+            this.resetImage();
           }
-          return event;
-        }),
-        catchError((error: HttpErrorResponse) => {
-          this.uploadInProgress = false;
-          this.openSnackBar('Failed to add new category', 'close');
-          return of('Upload failed');
-        })
-      )
-      .subscribe((event: any) => {
-        if (typeof event === 'object') {
-          this.openSnackBar('Image successfully uploaded', 'close');
-          this.resetImage();
-        }
-      });
+        });
+    }
   }
 
   addCategory(): void {
@@ -163,7 +162,7 @@ export class AdminProductsComponent implements OnInit {
           this.openSnackBar('New category successfully added', 'close');
           this.resetCategory();
         },
-        (error) => this.openSnackBar('Failed to add new category', 'close')
+        () => this.openSnackBar('Failed to add new category', 'close')
       );
   }
 

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Product } from '../../models/product';
 import { map } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
-import { AuthServiceService } from '../auth-service/auth-service.service';
 import { environment } from '../../../environments/environment';
 import { ProductOrder } from '../../models/ProductOrder';
 
@@ -15,20 +14,13 @@ export class ShoppingCartService {
   private storedItems: BehaviorSubject<
     Map<Product, number>
   > = new BehaviorSubject(new Map<Product, number>());
-
   private COOKIE_STORED_CART_ITEMS = 'webshop-access-stored-cart-items';
-
   private serviceUrl: string = environment.baseUrl + '/order/';
-
-  header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
-  httpOptions = {
-    headers: this.header,
-  };
+  private header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(
     private httpClient: HttpClient,
     private cookieService: CookieService,
-    private authService: AuthServiceService
   ) {
     const itemsJson = this.cookieService.get(this.COOKIE_STORED_CART_ITEMS);
     if (itemsJson) {
@@ -136,6 +128,9 @@ export class ShoppingCartService {
 
   purchase(): Observable<void> {
     const products = Array.from(this.storedItems.value.keys());
+    if (!products) {
+      return throwError('No products found');
+    }
     const url = this.serviceUrl + 'purchase';
     return this.httpClient
       .post<void>(url, products, {

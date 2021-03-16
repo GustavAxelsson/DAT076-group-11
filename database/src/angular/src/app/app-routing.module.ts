@@ -7,6 +7,7 @@ import { ProductComponent } from './pages/products/id/product/product.component'
 import { UserHomeComponent } from './pages/logged-on-pages/user/user-home/user-home.component';
 import { ShoppingCartTableComponent } from './components/shopping-cart-table/shopping-cart-table.component';
 import { AdminGuard } from './pages/logged-on-pages/admin/guard/admin.guard';
+import { UserGuard } from './pages/logged-on-pages/user/user.guard';
 
 const routes: Routes = [
   {
@@ -35,6 +36,7 @@ const routes: Routes = [
   },
   {
     path: 'user/:id',
+    canActivate: [UserGuard],
     loadChildren: () =>
       import('./pages/logged-on-pages/user/user.module').then(
         (mod) => mod.UserModule

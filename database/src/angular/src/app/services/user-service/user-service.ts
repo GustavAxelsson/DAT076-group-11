@@ -10,7 +10,9 @@ import { ExternalUser } from '../../models/external-user';
 })
 export class UserService {
   private serviceUrl: string = environment.baseUrl + '/user/';
-  private header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private header: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
   private httpOptions = {
     headers: this.header,
   };

@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private _snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<LoginComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {data: undefined}
+    @Inject(MAT_DIALOG_DATA) public data: { data: undefined }
   ) {}
 
   ngOnInit(): void {}

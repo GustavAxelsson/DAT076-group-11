@@ -21,7 +21,6 @@ export class AuthService {
     return this.authUser.asObservable();
   }
 
-
   constructor(private httpClient: HttpClient) {
     const token = localStorage.getItem(this.ACCESS_TOKEN);
     if (token) {
@@ -122,4 +121,3 @@ export class AuthService {
     return undefined;
   }
 }
-

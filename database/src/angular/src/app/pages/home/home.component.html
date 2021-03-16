@@ -1,12 +1,12 @@
 <h1 class="welcome-heading">WELCOME TO THE SHOP</h1>
 <h2 class="sale-heading">
-  Check out the products of the {{currentSale?.name}}
+  Check out the products of the {{ currentSale?.name }}
 </h2>
 <div class="product-list-sale">
   <mat-card *ngFor="let product of saleProducts">
     <mat-card-content>
       <div class="image-container">
-        <img [src]="product.url" [alt]="product.name"/>
+        <img [src]="product.url" [alt]="product.name" />
       </div>
     </mat-card-content>
   </mat-card>

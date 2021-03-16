@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Product } from '../../models/product';
@@ -13,7 +18,9 @@ import { Sale } from '../../models/sale';
 })
 export class ProductService {
   private serviceUrl: string = environment.baseUrl + '/products/';
-  private header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private header: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
   private httpOptions = {
     headers: this.header,
   };
@@ -24,12 +31,13 @@ export class ProductService {
   ) {}
 
   public getAllProducts$(): Observable<Product[]> {
-    return this.httpClient
-      .get<Product[]>(this.serviceUrl + 'list-all-products', this.httpOptions);
+    return this.httpClient.get<Product[]>(
+      this.serviceUrl + 'list-all-products',
+      this.httpOptions
+    );
   }
 
   public getProductWithImage(product: Product): Observable<Product> {
-
     if (product !== undefined && product.id) {
       return combineLatest([
         of(product),
@@ -41,7 +49,7 @@ export class ProductService {
         })
       );
     } else {
-      return of(product)
+      return of(product);
     }
   }
   public downloadSingleImage(productId: number): Observable<SafeUrl> {

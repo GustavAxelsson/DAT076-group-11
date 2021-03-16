@@ -117,7 +117,11 @@ export class AdminProductsComponent implements OnInit {
   public uploadImage(): void {
     const img = new FormData();
     if (this.selectedProduct && this.selectedProduct.id && this.selectedFile) {
-      img.append('file', this.selectedFile!,this.selectedProduct.id.toString());
+      img.append(
+        'file',
+        this.selectedFile!,
+        this.selectedProduct.id.toString()
+      );
       this.productService
         .uploadProductImage(img)
         .pipe(

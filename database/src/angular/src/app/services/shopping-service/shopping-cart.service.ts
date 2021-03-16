@@ -11,14 +11,18 @@ import { ProductOrder } from '../../models/ProductOrder';
   providedIn: 'root',
 })
 export class ShoppingCartService {
-  private storedItems: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
+  private storedItems: BehaviorSubject<Product[]> = new BehaviorSubject<
+    Product[]
+  >([]);
   private COOKIE_STORED_CART_ITEMS = 'webshop-access-stored-cart-items';
   private serviceUrl: string = environment.baseUrl + '/order/';
-  private header: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private header: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
 
   constructor(
     private httpClient: HttpClient,
-    private cookieService: CookieService,
+    private cookieService: CookieService
   ) {
     const itemsJson = this.cookieService.get(this.COOKIE_STORED_CART_ITEMS);
     if (itemsJson) {
@@ -32,9 +36,9 @@ export class ShoppingCartService {
       map((products) => {
         let totalPrice = 0;
         if (products && products.length > 0) {
-          products.forEach(product => {
+          products.forEach((product) => {
             totalPrice = totalPrice + product.price;
-          })
+          });
         }
         return totalPrice;
       })
@@ -60,8 +64,10 @@ export class ShoppingCartService {
     if (product === undefined) {
       return;
     }
-    if (this.storedItems.value.length > 0 &&
-      this.storedItems.value.findIndex(item => item.id === product.id) >= 0) {
+    if (
+      this.storedItems.value.length > 0 &&
+      this.storedItems.value.findIndex((item) => item.id === product.id) >= 0
+    ) {
       return;
     }
     this.storedItems.value.push(product);
@@ -75,9 +81,9 @@ export class ShoppingCartService {
     }
 
     const productList: Product[] = this.storedItems.value;
-    const index = productList.findIndex(item => item.id === product.id);
+    const index = productList.findIndex((item) => item.id === product.id);
     if (index >= 0) {
-      productList.splice(index,1)
+      productList.splice(index, 1);
     }
     this.storedItems.next(this.storedItems.value);
     this.storeItemsToCookie();

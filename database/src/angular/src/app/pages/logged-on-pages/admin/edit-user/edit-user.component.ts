@@ -31,7 +31,8 @@ export class EditUserComponent implements OnInit {
     if (user && user.username && user.role) {
       this.userService.updateRoleOnUser(user.username, user.role).subscribe(
         () => {},
-        () => console.log('Error'));
+        () => console.log('Error')
+      );
     }
-    }
+  }
 }

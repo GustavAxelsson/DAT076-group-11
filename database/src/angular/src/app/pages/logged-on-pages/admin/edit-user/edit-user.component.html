@@ -1,16 +1,16 @@
 <mat-card class="card-container">
-  <div *ngIf="users.length < 1;">
-    No users found
-  </div>
+  <div *ngIf="users.length < 1">No users found</div>
   <div #showUser *ngFor="let user of users">
     <mat-form-field>
-      <mat-label>{{user.username}}</mat-label>
-      <mat-select (selectionChange)="userChanged(user, $event.value)"
-                  [value]="user.role">
+      <mat-label>{{ user.username }}</mat-label>
+      <mat-select
+        (selectionChange)="userChanged(user, $event.value)"
+        [value]="user.role"
+      >
         <mat-option [value]="'user'">user</mat-option>
         <mat-option [value]="'admin'">admin</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button (click)='updateUser(user)'>Update</button>
+    <button mat-raised-button (click)="updateUser(user)">Update</button>
   </div>
 </mat-card>

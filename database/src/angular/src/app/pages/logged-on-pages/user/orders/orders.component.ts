@@ -6,23 +6,24 @@ import { take } from 'rxjs/operators';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.css']
+  styleUrls: ['./orders.component.css'],
 })
 export class OrdersComponent implements OnInit {
+  orderList: ProductOrder[] = [];
 
-  orderList:ProductOrder[] = [];
-
-  constructor(private shoppingCartService: ShoppingCartService) { }
+  constructor(private shoppingCartService: ShoppingCartService) {}
 
   ngOnInit(): void {
-    this.shoppingCartService.getMyOrders().pipe(take(1)).subscribe(
-      res => {
-        if (res && res.length > 0) {
-          this.orderList = res;
-        }
-      },
-      error => console.warn(error)
-    )
+    this.shoppingCartService
+      .getMyOrders()
+      .pipe(take(1))
+      .subscribe(
+        (res) => {
+          if (res && res.length > 0) {
+            this.orderList = res;
+          }
+        },
+        (error) => console.warn(error)
+      );
   }
-
 }

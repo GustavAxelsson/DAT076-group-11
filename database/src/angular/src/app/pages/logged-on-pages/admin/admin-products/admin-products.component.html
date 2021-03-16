@@ -89,7 +89,7 @@
             <span
               class="text-danger"
               *ngIf="category?.errors && category?.hasError('required')"
-            >*</span
+              >*</span
             >
           </mat-label>
           <mat-select formControlName="category">
@@ -98,9 +98,7 @@
             </mat-option>
           </mat-select>
           <mat-error
-            *ngIf="
-              category?.valid && (category?.dirty || category?.touched)
-            "
+            *ngIf="category?.valid && (category?.dirty || category?.touched)"
             class="mat-error"
           >
           </mat-error>
@@ -170,7 +168,6 @@
       accept="image/*"
     />
 
-
     <mat-card class="add-new-sale-card">
       <h1>Add sale</h1>
       <form [formGroup]="formGroupSale" class="form-container">
@@ -180,14 +177,17 @@
             <span
               class="text-danger"
               *ngIf="saleName?.errors && saleName?.hasError('required')"
-            >*</span
+              >*</span
             >
           </mat-label>
-          <input class="input-field" matInput type="text" formControlName="name">
+          <input
+            class="input-field"
+            matInput
+            type="text"
+            formControlName="name"
+          />
           <mat-error
-            *ngIf="
-              saleName?.valid && (saleName?.dirty || saleName?.touched)
-            "
+            *ngIf="saleName?.valid && (saleName?.dirty || saleName?.touched)"
             class="mat-error"
           >
           </mat-error>
@@ -201,10 +201,15 @@
             <span
               class="text-danger"
               *ngIf="percentage?.errors && percentage?.hasError('required')"
-            >*</span
+              >*</span
             >
           </mat-label>
-          <input class="input-field" matInput type="text" formControlName="percentage">
+          <input
+            class="input-field"
+            matInput
+            type="text"
+            formControlName="percentage"
+          />
           <mat-error
             *ngIf="
               percentage?.valid && (percentage?.dirty || percentage?.touched)
@@ -229,31 +234,29 @@
       </button>
     </mat-card>
 
-
     <mat-card class="add-product-to-sale-card">
       <h1>Add product to sale</h1>
       <form [formGroup]="formGroupAddProductSale" class="form-container">
         <mat-form-field color="primary">
-          <mat-label>
-            Product
-          </mat-label>
+          <mat-label> Product </mat-label>
           <mat-select formControlName="product">
-            <mat-option *ngFor="let saleProduct of products " [value]="saleProduct">
-              {{saleProduct.name}}
+            <mat-option
+              *ngFor="let saleProduct of products"
+              [value]="saleProduct"
+            >
+              {{ saleProduct.name }}
             </mat-option>
           </mat-select>
-          <input id="saleProduct" class="input-field" matInput type="text">
+          <input id="saleProduct" class="input-field" matInput type="text" />
         </mat-form-field>
         <mat-form-field color="primary">
-          <mat-label>
-            Sale
-          </mat-label>
+          <mat-label> Sale </mat-label>
           <mat-select formControlName="sale">
-            <mat-option *ngFor="let sale of sales " [value]="sale">
-              {{sale.name}}
+            <mat-option *ngFor="let sale of sales" [value]="sale">
+              {{ sale.name }}
             </mat-option>
           </mat-select>
-          <input id="sale" class="input-field" matInput type="text">
+          <input id="sale" class="input-field" matInput type="text" />
         </mat-form-field>
       </form>
       <button
@@ -265,20 +268,17 @@
       </button>
     </mat-card>
 
-
     <mat-card class="set-current-sale-card">
       <h1>Set current sale</h1>
       <form [formGroup]="formGroupSetCurrentSale" class="form-container">
         <mat-form-field color="primary">
-          <mat-label>
-            Sale
-          </mat-label>
+          <mat-label> Sale </mat-label>
           <mat-select formControlName="currentSale">
-            <mat-option *ngFor="let sale of sales " [value]="sale">
-              {{sale.name}}
+            <mat-option *ngFor="let sale of sales" [value]="sale">
+              {{ sale.name }}
             </mat-option>
           </mat-select>
-          <input id="currentSale" class="input-field" matInput type="text">
+          <input id="currentSale" class="input-field" matInput type="text" />
         </mat-form-field>
       </form>
       <button
@@ -289,6 +289,5 @@
         Set
       </button>
     </mat-card>
-
   </div>
 </div>

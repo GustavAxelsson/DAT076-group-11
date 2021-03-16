@@ -20,17 +20,15 @@ export class AppComponent {
     .numberOfItemsInShoppingCart;
 
   authUser: AuthUser | undefined;
-  authUser$: Observable<AuthUser | undefined> = this.authService.authUser$
+  authUser$: Observable<AuthUser | undefined> = this.authService.authUser$;
 
   constructor(
     private shoppingCartService: ShoppingCartService,
     private dialog: MatDialog,
     private router: Router,
-    private authService: AuthService) {
-
-    this.authUser$.subscribe(
-      res => this.authUser = res
-    );
+    private authService: AuthService
+  ) {
+    this.authUser$.subscribe((res) => (this.authUser = res));
   }
 
   openDialog(action: string): void {
@@ -59,9 +57,10 @@ export class AppComponent {
         }
         return;
       },
-      error => {
-        console.warn('')
-      });
+      (error) => {
+        console.warn('');
+      }
+    );
   }
 
   logout(): void {

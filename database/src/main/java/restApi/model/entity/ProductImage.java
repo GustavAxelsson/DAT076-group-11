@@ -22,7 +22,8 @@ public class ProductImage implements Serializable {
     private byte[] data;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "product_id", referencedColumnName = "id")    Product product;
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
 
     public ProductImage(String fileName, byte[] data) {
         this.fileName = fileName;

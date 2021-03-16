@@ -41,7 +41,7 @@ public class ProductResource {
     ProductOrderDAO productOrderDAO;
 
     @EJB
-    UserDao userDao;
+    UserDAO userDao;
 
     @Inject
     JsonWebToken token;

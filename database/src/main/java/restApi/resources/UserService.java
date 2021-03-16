@@ -2,7 +2,7 @@ package restApi.resources;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import restApi.model.dao.CustomerDAO;
-import restApi.model.dao.UserDao;
+import restApi.model.dao.UserDAO;
 import restApi.model.entity.Customer;
 import restApi.model.entity.WebshopUser;
 import restApi.model.external.model.ExternalUser;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Path("user")
 public class UserService {
     @EJB
-    UserDao userDao;
+    UserDAO userDao;
 
     @EJB
     CustomerDAO customerDAO;

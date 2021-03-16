@@ -13,13 +13,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
-public class UserDao extends AbstractDAO<WebshopUser>{
+public class UserDAO extends AbstractDAO<WebshopUser>{
 
     @Getter
     @PersistenceContext(unitName = "webshop")
     private EntityManager entityManager;
 
-    public UserDao() {super(WebshopUser.class);}
+    public UserDAO() {super(WebshopUser.class);}
 
     public void registerUser(String username, String password) {
         String salt = BCrypt.gensalt(10);

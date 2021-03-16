@@ -1,6 +1,6 @@
 package restApi.resources;
 
-import restApi.model.dao.UserDao;
+import restApi.model.dao.UserDAO;
 import restApi.model.entity.WebshopUser;
 
 import javax.ejb.EJB;
@@ -16,7 +16,7 @@ import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 @Path("auth")
 public class AuthService {
     @EJB
-    UserDao userDao;
+    UserDAO userDao;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)

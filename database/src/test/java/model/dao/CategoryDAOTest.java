@@ -6,13 +6,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import restApi.model.dao.CategoryDAO;
 import restApi.model.dao.ProductDAO;
-import restApi.model.dao.UserDao;
 import restApi.model.entity.Category;
 import restApi.model.entity.Product;
 
 import javax.ejb.EJB;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RunWith(Arquillian.class)

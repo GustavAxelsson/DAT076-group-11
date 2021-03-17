@@ -15,6 +15,10 @@ To run the application (on IntelliJ):
 10. Run.
 12. When deployed navigate to http://localhost:8080/database-2.0
 
+We also supplied our domain.xml file it is located in root/database.
+You can use override the file located in <payara-home>/glassfish/domains/domain1/config/
+This will set all connection pools and resources to our database config
+
 Disclaimer it might be possible to run the application easier.
 But this is the way we did it.
 

@@ -29,7 +29,7 @@ Structure of repo:
  Backend resources i.e. persistence.xml, microprofile-config and glassfish-resource
     is found under src/main/resources
 
- Rest of the application is found under src/main/java/restApi
+ Rest of the application is found under src/main/java
     
 
 

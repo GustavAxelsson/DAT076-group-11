@@ -1,12 +1,10 @@
-package restApi.model.dao;
+package dao;
 
 import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.Getter;
-import restApi.model.entity.Category;
-import restApi.model.entity.Product;
-import restApi.model.entity.ProductImage;
-import restApi.model.entity.QProduct;
+import model.Category;
+import model.Product;
+import model.QProduct;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

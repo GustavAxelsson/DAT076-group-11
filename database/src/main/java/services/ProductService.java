@@ -1,4 +1,4 @@
-package restApi.resources;
+package services;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;

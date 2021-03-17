@@ -5,10 +5,10 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import restApi.model.dao.CustomerDAO;
-import restApi.model.dao.ProductOrderDAO;
-import restApi.model.entity.Customer;
-import restApi.model.entity.ProductOrder;
+import dao.CustomerDAO;
+import dao.ProductOrderDAO;
+import model.Customer;
+import model.ProductOrder;
 
 import javax.ejb.EJB;
 import java.util.Arrays;

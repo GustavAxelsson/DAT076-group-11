@@ -4,11 +4,10 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import restApi.model.dao.ProductDAO;
-import restApi.model.dao.SaleDAO;
-import restApi.model.entity.Product;
-import restApi.model.entity.Sale;
-import restApi.model.entity.SaleProduct;
+import dao.ProductDAO;
+import dao.SaleDAO;
+import model.Product;
+import model.Sale;
 
 import javax.ejb.EJB;
 import java.util.ArrayList;

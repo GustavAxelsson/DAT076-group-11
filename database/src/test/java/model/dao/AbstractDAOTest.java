@@ -1,12 +1,13 @@
 package model.dao;
 
+
+import dao.*;
+import model.*;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
-import restApi.model.dao.*;
-import restApi.model.entity.*;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;

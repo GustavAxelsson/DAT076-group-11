@@ -1,4 +1,4 @@
-package restApi.resources;
+package services;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import dao.CustomerDAO;

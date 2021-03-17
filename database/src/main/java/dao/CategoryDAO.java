@@ -1,15 +1,11 @@
-package restApi.model.dao;
+package dao;
 
-import com.querydsl.jpa.impl.JPAQuery;
 import lombok.Getter;
-import restApi.model.entity.Category;
-import restApi.model.entity.Product;
-import restApi.model.entity.QCategory;
+import model.Category;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 
 @Stateless
 public class CategoryDAO extends AbstractDAO<Category>{

@@ -1,4 +1,4 @@
-package restApi.model.external.model;
+package external;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

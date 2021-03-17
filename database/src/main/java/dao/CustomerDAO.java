@@ -1,16 +1,14 @@
-package restApi.model.dao;
+package dao;
 
 import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.Getter;
-import restApi.model.entity.Customer;
-import restApi.model.entity.ProductOrder;
-import restApi.model.entity.QCustomer;
+import model.Customer;
+import model.QCustomer;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 
 @Stateless
 public class CustomerDAO extends AbstractDAO<Customer>{

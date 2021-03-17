@@ -1,4 +1,4 @@
-package restApi.resources;
+package services;
 
 import dao.ProductDAO;
 import dao.SaleDAO;

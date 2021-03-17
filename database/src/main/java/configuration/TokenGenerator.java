@@ -1,4 +1,4 @@
-package restApi.resources;
+package configuration;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;

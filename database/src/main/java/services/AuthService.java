@@ -1,8 +1,9 @@
-package restApi.resources;
+package services;
 
 import dao.UserDAO;
 import org.apache.commons.lang3.RandomStringUtils;
 import model.WebshopUser;
+import configuration.TokenGenerator;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;

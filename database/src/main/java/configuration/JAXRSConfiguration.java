@@ -1,7 +1,8 @@
-package restApi.resources;
+package configuration;
 
 import org.eclipse.microprofile.auth.LoginConfig;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import services.*;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

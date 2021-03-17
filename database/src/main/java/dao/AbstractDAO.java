@@ -1,4 +1,4 @@
-package restApi.model.dao;
+package dao;
 
 import lombok.RequiredArgsConstructor;
 

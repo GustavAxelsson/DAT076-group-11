@@ -1,4 +1,4 @@
-package restApi.resources;
+package services;
 
 import dao.CategoryDAO;
 import model.Category;

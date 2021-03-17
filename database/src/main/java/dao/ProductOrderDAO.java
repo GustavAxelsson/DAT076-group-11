@@ -1,13 +1,12 @@
-package restApi.model.dao;
+package dao;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.Getter;
-import restApi.model.entity.*;
+import model.*;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 

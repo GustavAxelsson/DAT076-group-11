@@ -10,6 +10,9 @@
         <img [src]="product.url" [alt]="product.name" />
       </div>
     </mat-card-content>
+    <div class="rating-and-price">
+      <div class="price">{{product.price}} SEK</div>
+    </div>
     <mat-card-actions id="actions">
       <button (click)="addToCart(product, $event)" mat-button>
         Add to cart

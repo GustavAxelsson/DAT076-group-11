@@ -31,3 +31,9 @@ h3 {
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 16px;
 }
+
+.rating-and-price {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}

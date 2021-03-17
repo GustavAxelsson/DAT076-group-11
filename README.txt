@@ -14,7 +14,6 @@ To run the application (on IntelliJ):
     when the server is running.
 10. Run.
 12. When deployed navigate to http://localhost:8080/database-2.0
-11. Enjoy.
 
 Disclaimer it might be possible to run the application easier.
 But this is the way we did it.
